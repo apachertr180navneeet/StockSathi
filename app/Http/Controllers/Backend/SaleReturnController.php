@@ -223,4 +223,38 @@ class SaleReturnController extends Controller
             return redirect()->back()->with('error', 'Something went wrong: ' . $e->getMessage());
         }
     }
+
+
+    /////////// Due Sale And Due Return Sale Manage Methods///////
+
+    public function DueSale(){
+        try {
+            $sales = Sale::with(['customer','warehouse'])
+                ->select('id','customer_id','warehouse_id','due_amount')
+                ->where('due_amount', '>', 0)
+                ->get();
+
+            return view('admin.backend.due.sale_due', compact('sales'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong while fetching due sales!');
+        }
+    }
+    // End Method 
+
+
+    public function DueSaleReturn(){
+        try {
+            $sales = SaleReturn::with(['customer','warehouse'])
+                ->select('id','customer_id','warehouse_id','due_amount')
+                ->where('due_amount', '>', 0)
+                ->get();
+
+            return view('admin.backend.due.sale_return_due', compact('sales'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Something went wrong while fetching due sale returns!');
+        }
+    }
+    // End Method 
 }
