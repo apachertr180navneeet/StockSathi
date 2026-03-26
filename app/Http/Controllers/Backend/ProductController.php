@@ -12,6 +12,9 @@ use App\Models\Brand;
 use App\Models\WareHouse;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductController extends Controller
 {
@@ -205,7 +208,7 @@ class ProductController extends Controller
     public function EditProduct($id)
     {
         try {
-            $product = Product::findOrFail($id);
+            $editData = Product::find($id);
             $categories = ProductCategory::all();
             $brands = Brand::all();
             $suppliers = Supplier::all();
@@ -213,7 +216,7 @@ class ProductController extends Controller
             $multiImgs = ProductImage::where('product_id', $id)->get();
 
             return view('admin.backend.product.edit_product', compact(
-                'product',
+                'editData',
                 'categories',
                 'brands',
                 'suppliers',
@@ -290,6 +293,20 @@ class ProductController extends Controller
                 }
             }
 
+
+
+            if ($request->has('remove_image')) {
+                foreach($request->remove_image as $removeImageId) {
+                    $img = ProductImage::find($removeImageId);
+                    if ($img ) {
+                        if (file_exists(public_path($img->image))) {
+                        unlink(public_path($img->image));
+                        }
+                        $img->delete();
+                    }
+                }
+            }
+
             DB::commit();
 
             return redirect()->route('all.product')->with([
@@ -350,6 +367,14 @@ class ProductController extends Controller
                 'alert-type' => 'error'
             ]);
         }
+    }
+
+    // ===============================
+    // 🟢 Product Detail
+    // ===============================
+    public function DetailsProduct($id){
+        $product = Product::findOrFail($id);
+        return view('admin.backend.product.details_product',compact('product'));
     }
 
 
