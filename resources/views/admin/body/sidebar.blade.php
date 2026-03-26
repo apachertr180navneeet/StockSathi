@@ -1,323 +1,308 @@
-
-<style>
-    #sidebar-menu .menuitem-active > a {
-        background-color: #eef2ff !important;
-        color: #556ee6 !important;
-        font-weight: 600;
-    }
-
-    #sidebar-menu a.active {
-        color: #556ee6 !important;
-        font-weight: 600;
-    }
-</style>
 <div class="app-sidebar-menu">
     <div class="h-100" data-simplebar>
 
+        <!--- Sidemenu -->
         <div id="sidebar-menu">
 
-            <!-- Logo -->
             <div class="logo-box">
-                <a href="{{ route('dashboard') }}" class="logo logo-light">
-                    <span class="logo-sm fw-bold text-white">SS</span>
-                    <span class="logo-lg fw-bold text-white">StockSathi</span>
+                <a href="index.html" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="{{ asset('backend/assets/images/logo-sm.png') }}" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{ asset('backend/assets/images/logo-light.png') }}" alt="" height="24">
+                    </span>
                 </a>
-
-                <a href="{{ route('dashboard') }}" class="logo logo-dark">
-                    <span class="logo-sm fw-bold text-dark">SS</span>
-                    <span class="logo-lg fw-bold text-dark">StockSathi</span>
+                <a href="index.html" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="{{ asset('backend/assets/images/logo-sm.png') }}" alt="" height="22">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{ asset('backend/assets/images/logo-dark.png') }}" alt="" height="24">
+                    </span>
                 </a>
             </div>
 
             <ul id="side-menu">
 
-                <!-- Dashboard -->
                 <li class="menu-title">Menu</li>
-                <li class="{{ request()->routeIs('dashboard') ? 'menuitem-active' : '' }}">
-                    <a href="{{ route('dashboard') }}"
-                       class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
+
+                <li>
+                    <a href="{{ route('dashboard') }}" class="tp-link">
                         <i data-feather="home"></i>
                         <span> Dashboard </span>
                     </a>
                 </li>
 
+
                 <li class="menu-title">Pages</li>
 
-                <!-- Brand -->
-                <li class="{{ request()->is('*/brand*') ? 'menuitem-active' : '' }}">
-                    <a href="#brandMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/brand*') ? 'active' : 'collapsed' }}">
+                @if (Auth::guard('web')->user()->can('brand.menu'))
+                    <li>
+                        <a href="#sidebarAuth" data-bs-toggle="collapse">
+                            <i data-feather="users"></i>
+                            <span> Brand Manage </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="sidebarAuth">
+                            <ul class="nav-second-level">
+                                @if (Auth::guard('web')->user()->can('all.brand'))
+                                    <li>
+                                        <a href="{{ route('all.brand') }}" class="tp-link">All Brand</a>
+                                    </li>
+                                @endif
+
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+
+                @if (Auth::guard('web')->user()->can('warehouse.menu'))
+                    <li>
+                        <a href="#WareHouse" data-bs-toggle="collapse">
+                            <i data-feather="users"></i>
+                            <span> WareHouse Manage </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="WareHouse">
+                            <ul class="nav-second-level">
+                                @if (Auth::guard('web')->user()->can('all.warehouse'))
+                                    <li>
+                                        <a href="{{ route('all.warehouse') }}" class="tp-link">All WareHouse</a>
+                                    </li>
+                                @endif
+
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+
+                @if (Auth::guard('web')->user()->can('supplier.menu'))
+                    <li>
+                        <a href="#Supplier" data-bs-toggle="collapse">
+                            <i data-feather="users"></i>
+                            <span> Supplier Manage </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="Supplier">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{ route('all.supplier') }}" class="tp-link">All Supplier</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+
+                @if (Auth::guard('web')->user()->can('customer.menu'))
+                    <li>
+                        <a href="#Customer" data-bs-toggle="collapse">
+                            <i data-feather="users"></i>
+                            <span> Customer Manage </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <div class="collapse" id="Customer">
+                            <ul class="nav-second-level">
+                                <li>
+                                    <a href="{{ route('all.customer') }}" class="tp-link">All Customer</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                @endif
+
+                <li>
+                    <a href="#Product" data-bs-toggle="collapse">
                         <i data-feather="users"></i>
-                        <span> Brand Manage </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-
-                    <div class="collapse {{ request()->is('*/brand*') ? 'show' : '' }}" id="brandMenu">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('all.brand') }}"
-                                   class="{{ request()->is('*/brand*') ? 'active' : '' }}">
-                                    All Brand
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- Warehouse -->
-                <li class="{{ request()->is('*/warehouse*') ? 'menuitem-active' : '' }}">
-                    <a href="#warehouseMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/warehouse*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="alert-octagon"></i>
-                        <span> WareHouse Manage </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-
-                    <div class="collapse {{ request()->is('*/warehouse*') ? 'show' : '' }}" id="warehouseMenu">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('all.warehouse') }}"
-                                   class="{{ request()->is('*/warehouse*') ? 'active' : '' }}">
-                                    All WareHouse
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- Supplier -->
-                <li class="{{ request()->is('*/supplier*') ? 'menuitem-active' : '' }}">
-                    <a href="#supplierMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/supplier*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="file-text"></i>
-                        <span> Supplier Manage </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-
-                    <div class="collapse {{ request()->is('*/supplier*') ? 'show' : '' }}" id="supplierMenu">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('all.supplier') }}"
-                                   class="{{ request()->is('*/supplier*') ? 'active' : '' }}">
-                                    All Supplier
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- Customer -->
-                <li class="{{ request()->is('*/customer*') ? 'menuitem-active' : '' }}">
-                    <a href="#customerMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/customer*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="calendar"></i>
-                        <span> Customer Manage </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-
-                    <div class="collapse {{ request()->is('*/customer*') ? 'show' : '' }}" id="customerMenu">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('all.customer') }}"
-                                   class="{{ request()->is('*/customer*') ? 'active' : '' }}">
-                                    All Customer
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- Product -->
-                <li class="{{ request()->is('*/category*') || request()->is('*/product*') ? 'menuitem-active' : '' }}">
-                    <a href="#productMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/category*') || request()->is('*/product*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="package"></i>
                         <span> Product Manage </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/category*') || request()->is('*/product*') ? 'show' : '' }}" id="productMenu">
+                    <div class="collapse" id="Product">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('all.category') }}"
-                                   class="{{ request()->is('*/category*') ? 'active' : '' }}">
-                                    All Category
-                                </a>
+                                <a href="{{ route('all.category') }}" class="tp-link">All Category</a>
                             </li>
+
                             <li>
-                                <a href="{{ route('all.product') }}"
-                                   class="{{ request()->is('*/product*') ? 'active' : '' }}">
-                                    All Product
-                                </a>
+                                <a href="{{ route('all.product') }}" class="tp-link">All Product</a>
                             </li>
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- Purchase -->
-                <li class="{{ request()->is('*/purchase*') ? 'menuitem-active' : '' }}">
-                    <a href="#purchaseMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/purchase*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="aperture"></i>
+
+                <li>
+                    <a href="#Purchase" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
                         <span> Purchase Manage </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/purchase*') ? 'show' : '' }}" id="purchaseMenu">
+                    <div class="collapse" id="Purchase">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('all.purchase') }}"
-                                   class="{{ request()->is('*/purchase*') ? 'active' : '' }}">
-                                    All Purchase
-                                </a>
+                                <a href="{{ route('all.purchase') }}" class="tp-link">All Purchase</a>
                             </li>
                             <li>
-                                <a href="{{ route('all.return.purchase') }}"
-                                   class="{{ request()->is('*/purchase*') ? 'active' : '' }}">
-                                    Purchase Return
-                                </a>
+                                <a href="{{ route('all.return.purchase') }}" class="tp-link">Purchase Return</a>
                             </li>
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- Sale -->
-                <li class="{{ request()->is('*/sale*') ? 'menuitem-active' : '' }}">
-                    <a href="#saleMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/sale*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="award"></i>
+
+                <li>
+                    <a href="#Sale" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
                         <span> Sale Manage </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/sale*') ? 'show' : '' }}" id="saleMenu">
+                    <div class="collapse" id="Sale">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('all.sale') }}"
-                                   class="{{ request()->is('*/sale*') ? 'active' : '' }}">
-                                    All Sale
-                                </a>
+                                <a href="{{ route('all.sale') }}" class="tp-link">All Sale</a>
                             </li>
                             <li>
-                                <a href="{{ route('all.sale.return') }}"
-                                   class="{{ request()->is('*/sale*') ? 'active' : '' }}">
-                                    Sale Return
-                                </a>
+                                <a href="{{ route('all.sale.return') }}" class="tp-link">Sale Return</a>
                             </li>
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- Due -->
-                <li class="{{ request()->is('*/due*') ? 'menuitem-active' : '' }}">
-                    <a href="#dueMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/due*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="briefcase"></i>
+                <li>
+                    <a href="#Due" data-bs-toggle="collapse">
+                        <i data-feather="alert-octagon"></i>
                         <span> Due Setup </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/due*') ? 'show' : '' }}" id="dueMenu">
+                    <div class="collapse" id="Due">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('due.sale') }}"
-                                   class="{{ request()->is('*/due*') ? 'active' : '' }}">
-                                    Sales Due
-                                </a>
+                                <a href="{{ route('due.sale') }}" class="tp-link">Sales Due</a>
                             </li>
                             <li>
-                                <a href="{{ route('due.sale.return') }}"
-                                   class="{{ request()->is('*/due*') ? 'active' : '' }}">
-                                    Sales Return Due
-                                </a>
+                                <a href="{{ route('due.sale.return') }}" class="tp-link">Sales Return Due</a>
                             </li>
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- Transfers -->
-                <li class="{{ request()->is('*/transfer*') ? 'menuitem-active' : '' }}">
-                    <a href="#transferMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/transfer*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="table"></i>
+
+                <li>
+                    <a href="#Transfers" data-bs-toggle="collapse">
+                        <i data-feather="alert-octagon"></i>
                         <span> Transfers Setup </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/transfer*') ? 'show' : '' }}" id="transferMenu">
+                    <div class="collapse" id="Transfers">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('all.transfer') }}"
-                                   class="{{ request()->is('*/transfer*') ? 'active' : '' }}">
-                                    Transfers
-                                </a>
+                                <a href="{{ route('all.transfer') }}" class="tp-link">Transfers </a>
                             </li>
+
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- Report -->
-                <li class="{{ request()->is('*/report*') ? 'menuitem-active' : '' }}">
+
+                <li>
                     <a href="#Report" data-bs-toggle="collapse">
                         <i data-feather="alert-octagon"></i>
                         <span> Report Setup </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse {{ request()->is('*/report*') ? 'show' : '' }}" id="Report">
+                    <div class="collapse" id="Report">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('all.report') }}" class="{{ request()->is('*/report*') ? 'active' : '' }}">All Reports </a>
+                                <a href="{{ route('all.report') }}" class="tp-link">All Reports </a>
                             </li>
-                            
-                            
+
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- General -->
+
+
+
                 <li class="menu-title mt-2">General</li>
 
-                <!-- Role & Permission -->
-                <li class="{{ request()->is('*/role*') || request()->is('*/permission*')|| request()->is('*/roles/permission*') ? 'menuitem-active' : '' }}">
-                    <a href="#roleMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/role*') || request()->is('*/permission*') || request()->is('*/roles/permission*') ? 'active' : 'collapsed' }}">
+                <li>
+                    <a href="#sidebarBaseui" data-bs-toggle="collapse">
                         <i data-feather="package"></i>
                         <span> Role & Permission </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/role*') || request()->is('*/permission*') ? 'show' : '' }}" id="roleMenu">
+                    <div class="collapse" id="sidebarBaseui">
                         <ul class="nav-second-level">
-                            <li><a href="{{ route('all.permission') }}" class="{{ request()->is('*/permission*') ? 'active' : '' }}">All Permission</a></li>
-                            <li><a href="{{ route('all.roles') }}" class="{{ request()->is('*/roles*') ? 'active' : '' }}">All Roles</a></li>
-                            <li><a href="{{ route('all.roles.permission') }}" class="{{ request()->is('*/roles/permission*') ? 'active' : '' }}">All Role Permission</a></li>
+                            <li>
+                                <a href="{{ route('all.permission') }}" class="tp-link">All Permission</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.roles') }}" class="tp-link">All Roles</a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('add.roles.permission') }}" class="tp-link">Role In Permission</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.roles.permission') }}" class="tp-link">All Role Permission</a>
+                            </li>
+
                         </ul>
                     </div>
                 </li>
 
-                <!-- Admin -->
-                <li class="{{ request()->is('*/admin*') ? 'menuitem-active' : '' }}">
-                    <a href="#adminMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/admin*') ? 'active' : 'collapsed' }}">
-                        <i data-feather="map"></i>
+
+                <li>
+                    <a href="#sidebarBaseui" data-bs-toggle="collapse">
+                        <i data-feather="package"></i>
                         <span> Manage Admin </span>
                         <span class="menu-arrow"></span>
                     </a>
-
-                    <div class="collapse {{ request()->is('*/admin*') ? 'show' : '' }}" id="adminMenu">
+                    <div class="collapse" id="sidebarBaseui">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('all.admin') }}"
-                                   class="{{ request()->is('*/admin*') ? 'active' : '' }}">
-                                    All Admin
-                                </a>
+                                <a href="{{ route('all.admin') }}" class="tp-link">All Admin</a>
                             </li>
+
                         </ul>
                     </div>
                 </li>
 
+
+                <li>
+                    <a href="#sidebarAdvancedUI" data-bs-toggle="collapse">
+                        <i data-feather="cpu"></i>
+                        <span> Extended UI </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarAdvancedUI">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="extended-carousel.html" class="tp-link">Carousel</a>
+                            </li>
+                            <li>
+                                <a href="extended-notifications.html" class="tp-link">Notifications</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+
+
             </ul>
+
         </div>
+        <!-- End Sidebar -->
+
+        <div class="clearfix"></div>
 
     </div>
 </div>

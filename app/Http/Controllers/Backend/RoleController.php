@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Permission;
 use App\Models\User; 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -342,6 +343,146 @@ class RoleController extends Controller
 
             return redirect()->back()->with([
                 'message' => 'Failed to delete role!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+    //////////////// Admin User All Method ////////////
+
+    public function AllAdmin(){
+        try {
+            $alladmin = User::where('role','admin')->latest()->get();
+            return view('admin.backend.pages.admin.all_admin', compact('alladmin'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'message' => 'Something went wrong: '.$e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function AddAdmin(){
+        try {
+            $roles = Role::all();
+            return view('admin.backend.pages.admin.add_admin', compact('roles'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'message' => 'Something went wrong: '.$e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function StoreAdmin(Request $request){
+        try {
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->role = 'admin';
+            $user->save();
+
+            if ($request->roles) {
+                $role = Role::where('id', $request->roles)
+                            ->where('guard_name', 'web')
+                            ->first();
+
+                if ($role) {
+                    $user->assignRole($role->name);
+                }
+            }
+
+            return redirect()->route('all.admin')->with([
+                'message' => 'New Admin Inserted Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'message' => 'Error: '.$e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function EditAdmin($id){
+        try {
+            $admin = User::findOrFail($id);
+            $roles = Role::all();
+
+            return view('admin.backend.pages.admin.edit_admin', compact('admin','roles'));
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'message' => 'Admin not found or error occurred',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function UpdateAdmin(Request $request, $id){
+        try {
+            $user = User::findOrFail($id);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->role = 'admin';
+            $user->save();
+
+            // Remove old roles
+            $user->roles()->detach();
+
+            // Assign new role
+            if ($request->roles) {
+                $role = Role::where('id', $request->roles)
+                            ->where('guard_name', 'web')
+                            ->first();
+
+                if ($role) {
+                    $user->assignRole($role->name);
+                }
+            }
+
+            return redirect()->route('all.admin')->with([
+                'message' => 'Admin Updated Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'message' => 'Error: '.$e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function DeleteAdmin($id){
+        try {
+            $admin = User::findOrFail($id);
+            $admin->delete();
+
+            return redirect()->back()->with([
+                'message' => 'Admin Deleted Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'message' => 'Error: '.$e->getMessage(),
                 'alert-type' => 'error'
             ]);
         }
