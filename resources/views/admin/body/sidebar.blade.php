@@ -256,6 +256,24 @@
                     </div>
                 </li>
 
+                <!-- Report -->
+                <li class="{{ request()->is('*/report*') ? 'menuitem-active' : '' }}">
+                    <a href="#Report" data-bs-toggle="collapse">
+                        <i data-feather="alert-octagon"></i>
+                        <span> Report Setup </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->is('*/report*') ? 'show' : '' }}" id="Report">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.report') }}" class="{{ request()->is('*/report*') ? 'active' : '' }}">All Reports </a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+                </li>
+
                 <!-- General -->
                 <li class="menu-title mt-2">General</li>
 
