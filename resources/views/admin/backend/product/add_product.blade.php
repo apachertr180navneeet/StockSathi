@@ -1,226 +1,221 @@
 @extends('admin.admin_master')
 @section('admin')
-    <div class="content d-flex flex-column flex-column-fluid">
-        <div class="d-flex flex-column-fluid">
-            <div class="container-fluid my-0">
-                <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                    <div class="flex-grow-1">
-                        <h2 class="fs-22 fw-semibold m-0">Add Product</h2>
-                    </div>
 
-                    <div class="text-end">
-                        <ol class="breadcrumb m-0 py-0">
-                            <a href="{{ route('all.product') }}" class="btn btn-dark">Back</a>
-                        </ol>
-                    </div>
+<div class="content d-flex flex-column flex-column-fluid">
+    <div class="d-flex flex-column-fluid">
+        <div class="container-fluid my-0">
+
+            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                <div class="flex-grow-1">
+                    <h2 class="fs-22 fw-semibold m-0">Add Product</h2>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <form action="{{ route('store.product') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <div class="col-xl-8">
-                                    <div class="card">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Product Name: <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text" name="name" placeholder="Enter Name"
-                                                    class="form-control">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Code: <span class="text-danger">*</span></label>
-                                                <input type="text" name="code" class=" form-control"
-                                                    placeholder="Enter Code">
 
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <div class="form-group w-100">
-                                                    <label class="form-label" for="formBasic">Product Category : <span
-                                                            class="text-danger">*</span></label>
-                                                    <select name="category_id" id="category_id"
-                                                        class="form-control form-select">
-                                                        <option value="">Select Category</option>
-                                                        @foreach ($categories as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->category_name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <div class="form-group w-100">
-                                                    <label class="form-label" for="formBasic">Brand : <span
-                                                            class="text-danger">*</span></label>
-                                                    <select name="brand_id" id="brand_id" class="form-control form-select">
-                                                        <option value="">Select Brand</option>
-                                                        @foreach ($brands as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Product Price: </label>
-                                                <input type="text" name="price" class="form-control"
-                                                    placeholder="Enter product price">
-
-                                            </div>
-
-
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Stock Alert: <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="number" name="stock_alert" class="form-control"
-                                                    placeholder="Enter Stock Alert" min="0">
-
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <label class="form-label">Notes: </label>
-                                                <textarea class="form-control" name="note" rows="3" placeholder="Enter Notes"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4">
-                                    <div class="card">
-                                        <label class="form-label">Multiple Image: <span class="text-danger">*</span></label>
-                                        <div class="mb-3">
-                                            <input name="image[]" accept=".png, .jpg, .jpeg" multiple="" type="file"
-                                                id="multiImg" class="upload-input-file form-control">
-                                        </div>
-
-                                        <div class="row" id="preview_img"></div>
-                                    </div>
-                                    <div>
-                                        <div class="col-md-12 mb-3">
-                                            <h4 class="text-center">Add Stock : </h4>
-                                        </div>
-                                        <div class="col-md-12 mb-3">
-                                            <div class="form-group w-100">
-                                                <label class="form-label" for="formBasic">Warehouse : <span
-                                                        class="text-danger">*</span></label>
-                                                <select name="warehouse_id" id="warehouse_id"
-                                                    class="form-control form-select">
-                                                    <option value="">Select Warehouse</option>
-                                                    @foreach ($warehouses as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 mb-3">
-                                            <div class="form-group w-100">
-                                                <label class="form-label" for="formBasic">Supplier : <span
-                                                        class="text-danger">*</span></label>
-                                                <select name="supplier_id" id="supplier_id"
-                                                    class="form-control form-select">
-                                                    <option value="">Select Supplier</option>
-                                                    @foreach ($suppliers as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
-                                                </select>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12 mb-3">
-                                            <label class="form-label">Product Quantity: <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="number" name="product_qty" class="form-control"
-                                                placeholder="Enter Product Quantity" min="1">
-
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="form-group w-100">
-                                                <label class="form-label" for="formBasic">Status : <span
-                                                        class="text-danger">*</span></label>
-                                                <select name="status" id="status" class="form-control form-select">
-                                                    <option selected="">Select Status</option>
-                                                    <option value="Received">Received</option>
-                                                    <option value="Pending">Pending</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-12">
-                                    <div class="d-flex mt-5 justify-content-start">
-                                        <button class="btn btn-primary me-3" type="submit">Save</button>
-                                        <a class="btn btn-secondary" href="{{ route('all.product') }}">Cancel</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                <div class="text-end">
+                    <a href="{{ route('all.product') }}" class="btn btn-dark">Back</a>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-body">
+
+                    <form action="{{ route('store.product') }}" method="post" enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="row">
+
+                            <!-- LEFT -->
+                            <div class="col-xl-8">
+                                <div class="row">
+
+                                    <!-- Name -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Product Name: *</label>
+                                        <input type="text" name="name"
+                                            value="{{ old('name') }}"
+                                            class="form-control" placeholder="Enter Name">
+
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Code -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Code: *</label>
+                                        <input type="text" name="code"
+                                            value="{{ old('code') }}"
+                                            class="form-control" placeholder="Enter Code">
+
+                                        @error('code')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Category -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Product Category : *</label>
+                                        <select name="category_id" class="form-control form-select">
+                                            <option value="">Select Category</option>
+                                            @foreach ($categories as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ old('category_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->category_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('category_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Brand -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Brand :</label>
+                                        <select name="brand_id" class="form-control form-select">
+                                            <option value="">Select Brand</option>
+                                            @foreach ($brands as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ old('brand_id') == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('brand_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Price -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Product Price:</label>
+                                        <input type="text" name="price"
+                                            value="{{ old('price') }}"
+                                            class="form-control" placeholder="Enter product price">
+
+                                        @error('price')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Stock Alert -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Stock Alert:</label>
+                                        <input type="number" name="stock_alert"
+                                            value="{{ old('stock_alert') }}"
+                                            class="form-control" placeholder="Enter Stock Alert">
+
+                                        @error('stock_alert')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Notes -->
+                                    <div class="col-md-12">
+                                        <label class="form-label">Notes:</label>
+                                        <textarea class="form-control" name="note" rows="3">{{ old('note') }}</textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- RIGHT -->
+                            <div class="col-xl-4">
+
+                                <!-- Images -->
+                                <div class="mb-3">
+                                    <label class="form-label">Multiple Image:</label>
+                                    <input name="image[]" multiple type="file" class="form-control">
+
+                                    @error('image.*')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <h4 class="text-center">Add Stock :</h4>
+
+                                <!-- Warehouse -->
+                                <div class="mb-3">
+                                    <label class="form-label">Warehouse :</label>
+                                    <select name="warehouse_id" class="form-control form-select">
+                                        <option value="">Select Warehouse</option>
+                                        @foreach ($warehouses as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ old('warehouse_id') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('warehouse_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Supplier -->
+                                <div class="mb-3">
+                                    <label class="form-label">Supplier :</label>
+                                    <select name="supplier_id" class="form-control form-select">
+                                        <option value="">Select Supplier</option>
+                                        @foreach ($suppliers as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ old('supplier_id') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('supplier_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Quantity -->
+                                <div class="mb-3">
+                                    <label class="form-label">Product Quantity:</label>
+                                    <input type="number" name="product_qty"
+                                        value="{{ old('product_qty') }}"
+                                        class="form-control" placeholder="Enter Product Quantity">
+
+                                    @error('product_qty')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Status -->
+                                <div class="mb-3">
+                                    <label class="form-label">Status :</label>
+                                    <select name="status" class="form-control form-select">
+                                        <option value="">Select Status</option>
+                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                                    </select>
+
+                                    @error('status')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                            </div>
+
+                            <!-- BUTTON -->
+                            <div class="col-xl-12">
+                                <div class="d-flex mt-5 justify-content-start">
+                                    <button class="btn btn-primary me-3" type="submit">Save</button>
+                                    <a class="btn btn-secondary" href="{{ route('all.product') }}">Cancel</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
         </div>
     </div>
+</div>
 
-    <!-- JavaScript for Image Preview with Remove Button -->
-    <script>
-        document.getElementById('multiImg').addEventListener('change', function(event) {
-            const previewContainer = document.getElementById('preview_img');
-            previewContainer.innerHTML = ''; // Clear previous previews
-
-            const files = Array.from(event.target.files); // Convert FileList to Array
-            const input = event.target;
-
-            files.forEach((file, index) => {
-                // Check if the file is an image
-                if (file.type.match('image.*')) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        // Create preview container
-                        const col = document.createElement('div');
-                        col.className = 'col-md-3 mb-3';
-
-                        // Create image
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.className = 'img-fluid rounded';
-                        img.style.maxHeight = '150px';
-                        img.alt = 'Image Preview';
-
-                        // Create remove button
-                        const removeBtn = document.createElement('button');
-                        removeBtn.type = 'button';
-                        removeBtn.className = 'btn btn-danger btn-sm position-absolute';
-                        removeBtn.style.top = '10px';
-                        removeBtn.style.right = '10px';
-                        removeBtn.innerHTML = '&times;'; // Cross icon
-                        removeBtn.title = 'Remove Image';
-
-                        // Remove button functionality
-                        removeBtn.addEventListener('click', function() {
-                            col.remove(); // Remove the image preview
-                            // Update the file input by creating a new FileList
-                            const newFiles = files.filter((_, i) => i !== index);
-                            const dataTransfer = new DataTransfer();
-                            newFiles.forEach(f => dataTransfer.items.add(f));
-                            input.files = dataTransfer.files;
-                        });
-
-                        // Create wrapper for positioning
-                        const wrapper = document.createElement('div');
-                        wrapper.style.position = 'relative';
-                        wrapper.appendChild(img);
-                        wrapper.appendChild(removeBtn);
-
-                        col.appendChild(wrapper);
-                        previewContainer.appendChild(col);
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-    </script>
 @endsection
