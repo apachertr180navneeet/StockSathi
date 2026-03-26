@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
- 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
@@ -10,109 +10,189 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class BrandController extends Controller
 {
-    public function AllBrand(){
-        $brand = Brand::latest()->get();
-        return view('admin.backend.brand.all_brand',compact('brand'));
+    /**
+     * Display all brands
+     */
+    public function AllBrand()
+    {
+        try {
+            $brand = Brand::latest()->get();
+            return view('admin.backend.brand.all_brand', compact('brand'));
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
     }
-    //End Method 
 
-    public function AddBrand(){ 
+    /**
+     * Show add brand form
+     */
+    public function AddBrand()
+    {
         return view('admin.backend.brand.add_brand');
     }
-    //End Method
 
-    public function StoreBrand(Request $request){
+    /**
+     * Store brand
+     */
+    public function StoreBrand(Request $request)
+    {
+        try {
 
-        if ($request->file('image')) {
-           $image = $request->file('image');
-           $manager = new ImageManager(new Driver());
-           $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-           $img = $manager->read($image);
-           $img->resize(100,90)->save(public_path('upload/brand/'.$name_gen));
-           $save_url = 'upload/brand/'.$name_gen;
+            // ✅ Validation
+            $request->validate([
+                'name'  => 'required|max:100',
+                'image' => 'nullable|mimes:jpg,jpeg,png',
+            ]);
 
-           Brand::create([
-                'name' => $request->name,
-                'image' => $save_url
-           ]);  
-        }
+            $imagePath = null;
 
-        $notification = array(
-            'message' => 'Brand Inserted Successfully',
-            'alert-type' => 'success'
-         ); 
-         return redirect()->route('all.brand')->with($notification);  
-    }
-    //End Method
+            if ($request->file('image')) {
+                $image = $request->file('image');
 
-    public function EditBrand($id){
-        $brand = Brand::find($id);
-        return view('admin.backend.brand.edit_brand',compact('brand'));
+                $manager = new ImageManager(new Driver());
+                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
 
-    }
-     //End Method
+                $img = $manager->read($image);
+                $img->resize(100, 90)->save(public_path('upload/brand/' . $name_gen));
 
+                // ✅ FULL URL save
+                $imagePath = url('upload/brand/' . $name_gen);
+            }
 
-     public function UpdateBrand(Request $request){
+            Brand::create([
+                'name'  => $request->name,
+                'image' => $imagePath
+            ]);
 
-        $brand_id = $request->id;
-        $brand = Brand::find($brand_id);
+            return redirect()->route('all.brand')->with([
+                'message' => 'Brand Inserted Successfully',
+                'alert-type' => 'success'
+            ]);
 
-        if ($request->file('image')) {
-           $image = $request->file('image');
-           $manager = new ImageManager(new Driver());
-           $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-           $img = $manager->read($image);
-           $img->resize(100,90)->save(public_path('upload/brand/'.$name_gen));
-           $save_url = 'upload/brand/'.$name_gen;
-
-           if (file_exists(public_path($brand->image))) {
-             @unlink(public_path($brand->image));
-           }
-
-           Brand::find($brand_id)->update([
-                'name' => $request->name,
-                'image' => $save_url
-           ]);  
-
-           $notification = array(
-            'message' => 'Brand Updated with image Successfully',
-            'alert-type' => 'success'
-         ); 
-          return redirect()->route('all.brand')->with($notification); 
- 
-        } else {
-
-            Brand::find($brand_id)->update([
-                'name' => $request->name, 
-           ]);  
-
-           $notification = array(
-            'message' => 'Brand Updated without image Successfully',
-            'alert-type' => 'success'
-         ); 
-          return redirect()->route('all.brand')->with($notification); 
- 
         } 
-         
+        catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e;
+        } 
+        catch (\Exception $e) {
+            return back()->withInput()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
     }
-    //End Method
 
-    public function DeleteBrand($id){
-        $item = Brand::find($id);
-        $img = $item->image;
-        unlink($img);
-
-        Brand::find($id)->delete();
-
-        $notification = array(
-            'message' => 'Brand Deleted Successfully',
-            'alert-type' => 'success'
-         ); 
-          return redirect()->back()->with($notification); 
+    /**
+     * Edit brand
+     */
+    public function EditBrand($id)
+    {
+        try {
+            $brand = Brand::findOrFail($id);
+            return view('admin.backend.brand.edit_brand', compact('brand'));
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Brand not found!',
+                'alert-type' => 'error'
+            ]);
+        }
     }
-     //End Method
 
+    /**
+     * Update brand
+     */
+    public function UpdateBrand(Request $request)
+    {
+        try {
 
+            // ✅ Proper Validation
+            $request->validate([
+                'id'    => 'required|exists:brands,id',
+                'name'  => 'required|string|max:100',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
 
+            $brand = Brand::findOrFail($request->id);
+
+            // ✅ If Image Uploaded
+            if ($request->hasFile('image')) {
+
+                $image = $request->file('image');
+
+                $manager = new ImageManager(new Driver());
+                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+
+                $img = $manager->read($image);
+                $img->resize(100, 90)->save(public_path('upload/brand/' . $name_gen));
+
+                $save_url = 'upload/brand/' . $name_gen;
+
+                // ✅ Delete Old Image (safe)
+                if (!empty($brand->image) && file_exists(public_path($brand->image))) {
+                    unlink(public_path($brand->image));
+                }
+
+                $brand->update([
+                    'name'  => $request->name,
+                    'image' => $save_url
+                ]);
+
+                $message = 'Brand Updated with Image Successfully';
+
+            } else {
+
+                // ✅ Only Name Update
+                $brand->update([
+                    'name' => $request->name
+                ]);
+
+                $message = 'Brand Updated Successfully';
+            }
+
+            return redirect()->route('all.brand')->with([
+                'message' => $message,
+                'alert-type' => 'success'
+            ]);
+
+        } 
+        catch (\Illuminate\Validation\ValidationException $e) {
+            throw $e; // ❌ toastr me convert nahi karega
+        } 
+        catch (\Exception $e) {
+            return back()->withInput()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Delete brand
+     */
+    public function DeleteBrand($id)
+    {
+        try {
+            $brand = Brand::findOrFail($id);
+
+            // Delete image safely
+            if (!empty($brand->image) && file_exists(public_path($brand->image))) {
+                unlink(public_path($brand->image));
+            }
+
+            $brand->delete();
+
+            return back()->with([
+                'message' => 'Brand Deleted Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Error: ' . $e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }
+    }
 }
