@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User; 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+
 
 class RoleController extends Controller
 {
@@ -182,6 +187,159 @@ class RoleController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'message' => 'Failed to delete role!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    ///////////////// Add Role Permission All Methods /////////
+
+    public function AddRolesPermission(){
+        try {
+            $roles = Role::all();
+            $permissions = Permission::all();
+            $permission_groups = User::getpermissionGroups();
+
+            return view('admin.backend.pages.rolesetup.add_roles_permission',
+                compact('roles','permissions','permission_groups'));
+
+        } catch (\Exception $e) {
+            dd($e);
+            Log::error('AddRolesPermission Error: '.$e->getMessage());
+
+            return redirect()->back()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function RolePermissionStore(Request $request){
+        try {
+            $request->validate([
+                'role_id' => 'required|exists:roles,id',
+                'permission' => 'required|array'
+            ]);
+
+            DB::beginTransaction();
+
+            foreach ($request->permission as $permissionId) {
+                DB::table('role_has_permissions')->insert([
+                    'role_id' => $request->role_id,
+                    'permission_id' => $permissionId,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->route('all.roles.permission')->with([
+                'message' => 'Role Permission Added Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('RolePermissionStore Error: '.$e->getMessage());
+
+            return redirect()->back()->with([
+                'message' => 'Failed to add role permissions!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function AllRolesPermission(){
+        try {
+            $roles = Role::all();
+
+            return view('admin.backend.pages.rolesetup.all_roles_permission', compact('roles'));
+
+        } catch (\Exception $e) {
+            Log::error('AllRolesPermission Error: '.$e->getMessage());
+
+            return redirect()->back()->with([
+                'message' => 'Unable to fetch roles!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function AdminEditRoles($id){
+        try {
+            $role = Role::findOrFail($id);
+            $permissions = Permission::all();
+            $permission_groups = User::getpermissionGroups();
+
+            return view('admin.backend.pages.rolesetup.edit_roles_permission',
+                compact('role','permissions','permission_groups'));
+
+        } catch (\Exception $e) {
+            Log::error('AdminEditRoles Error: '.$e->getMessage());
+
+            return redirect()->route('all.roles.permission')->with([
+                'message' => 'Role not found!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function AdminRolesUpdate(Request $request, $id){
+        try {
+            $role = Role::findOrFail($id);
+            $permissions = $request->permission;
+
+            if (!empty($permissions)) {
+                $permissionNames = Permission::whereIn('id', $permissions)
+                    ->pluck('name')
+                    ->toArray();
+
+                $role->syncPermissions($permissionNames);
+            } else {
+                $role->syncPermissions([]);
+            }
+
+            return redirect()->route('all.roles.permission')->with([
+                'message' => 'Role Permission Updated Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('AdminRolesUpdate Error: '.$e->getMessage());
+
+            return redirect()->back()->with([
+                'message' => 'Failed to update role permissions!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+    // End Method
+
+
+    public function AdminDeleteRoles($id){
+        try {
+            $role = Role::findOrFail($id);
+            $role->delete();
+
+            return redirect()->back()->with([
+                'message' => 'Role Permission Deleted Successfully',
+                'alert-type' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('AdminDeleteRoles Error: '.$e->getMessage());
+
             return redirect()->back()->with([
                 'message' => 'Failed to delete role!',
                 'alert-type' => 'error'

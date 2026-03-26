@@ -278,9 +278,9 @@
                 <li class="menu-title mt-2">General</li>
 
                 <!-- Role & Permission -->
-                <li class="{{ request()->is('*/role*') || request()->is('*/permission*') ? 'menuitem-active' : '' }}">
+                <li class="{{ request()->is('*/role*') || request()->is('*/permission*')|| request()->is('*/roles/permission*') ? 'menuitem-active' : '' }}">
                     <a href="#roleMenu" data-bs-toggle="collapse"
-                       class="{{ request()->is('*/role*') || request()->is('*/permission*') ? 'active' : 'collapsed' }}">
+                       class="{{ request()->is('*/role*') || request()->is('*/permission*') || request()->is('*/roles/permission*') ? 'active' : 'collapsed' }}">
                         <i data-feather="package"></i>
                         <span> Role & Permission </span>
                         <span class="menu-arrow"></span>
@@ -289,7 +289,8 @@
                     <div class="collapse {{ request()->is('*/role*') || request()->is('*/permission*') ? 'show' : '' }}" id="roleMenu">
                         <ul class="nav-second-level">
                             <li><a href="{{ route('all.permission') }}" class="{{ request()->is('*/permission*') ? 'active' : '' }}">All Permission</a></li>
-                            <li><a href="{{ route('all.roles') }}" class="{{ request()->is('*/role*') ? 'active' : '' }}">All Roles</a></li>
+                            <li><a href="{{ route('all.roles') }}" class="{{ request()->is('*/roles*') ? 'active' : '' }}">All Roles</a></li>
+                            <li><a href="{{ route('all.roles.permission') }}" class="{{ request()->is('*/roles/permission*') ? 'active' : '' }}">All Role Permission</a></li>
                         </ul>
                     </div>
                 </li>
