@@ -1,3 +1,13 @@
+<style>
+    .logo-lg {
+        font-size: 20px;
+        letter-spacing: 1px;
+    }
+
+    .logo-sm {
+        font-size: 16px;
+    }
+</style>
 <div class="app-sidebar-menu">
     <div class="h-100" data-simplebar>
 
@@ -5,22 +15,27 @@
         <div id="sidebar-menu">
 
             <div class="logo-box">
+
+                <!-- Light Logo -->
                 <a href="index.html" class="logo logo-light">
-                    <span class="logo-sm">
-                        <img src="{{ asset('backend/assets/images/logo-sm.png') }}" alt="" height="22">
+                    <span class="logo-sm fw-bold text-white">
+                        SS
                     </span>
-                    <span class="logo-lg">
-                        <img src="{{ asset('backend/assets/images/logo-light.png') }}" alt="" height="24">
+                    <span class="logo-lg fw-bold text-white">
+                        Stocksathi
                     </span>
                 </a>
+
+                <!-- Dark Logo -->
                 <a href="index.html" class="logo logo-dark">
-                    <span class="logo-sm">
-                        <img src="{{ asset('backend/assets/images/logo-sm.png') }}" alt="" height="22">
+                    <span class="logo-sm fw-bold text-dark">
+                        SS
                     </span>
-                    <span class="logo-lg">
-                        <img src="{{ asset('backend/assets/images/logo-dark.png') }}" alt="" height="24">
+                    <span class="logo-lg fw-bold text-dark">
+                        Stocksathi
                     </span>
                 </a>
+
             </div>
 
             <ul id="side-menu">
