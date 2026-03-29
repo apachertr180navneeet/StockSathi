@@ -213,41 +213,6 @@
                     </div>
                 </li>
 
-                <li class="menu-title mt-2">General</li>
-
-                <!-- Role Permission -->
-                <li>
-                    <a href="#RolePermission" data-bs-toggle="collapse">
-                        <i data-feather="package"></i>
-                        <span> Role & Permission </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="RolePermission">
-                        <ul class="nav-second-level">
-                            <li><a href="{{ route('all.permission') }}" class="tp-link">All Permission</a></li>
-                            <li><a href="{{ route('all.roles') }}" class="tp-link">All Roles</a></li>
-                            <li><a href="{{ route('add.roles.permission') }}" class="tp-link">Role In Permission</a></li>
-                            <li><a href="{{ route('all.roles.permission') }}" class="tp-link">All Role Permission</a></li>
-                        </ul>
-                    </div>
-                </li>
-
-                <!-- Admin -->
-                <li>
-                    <a href="#Admin" data-bs-toggle="collapse">
-                        <i data-feather="package"></i>
-                        <span> Manage Admin </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse" id="Admin">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('all.admin') }}" class="tp-link">All Admin</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-
             </ul>
 
         </div>
