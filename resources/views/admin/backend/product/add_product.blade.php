@@ -183,20 +183,6 @@
                                     @enderror
                                 </div>
 
-                                <!-- Status -->
-                                <div class="mb-3">
-                                    <label class="form-label">Status :</label>
-                                    <select name="status" class="form-control form-select">
-                                        <option value="">Select Status</option>
-                                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                                    </select>
-
-                                    @error('status')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
                             </div>
 
                             <!-- BUTTON -->

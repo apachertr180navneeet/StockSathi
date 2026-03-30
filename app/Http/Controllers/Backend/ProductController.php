@@ -138,7 +138,6 @@ class ProductController extends Controller
             'price'         => 'required|numeric|min:0',
             'product_qty'   => 'required|numeric|min:0',
             'stock_alert'   => 'nullable|numeric|min:0',
-            'status'        => 'required|in:0,1',
             'image.*'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
@@ -158,7 +157,6 @@ class ProductController extends Controller
                 'stock_alert'   => $request->stock_alert,
                 'note'          => $request->note,
                 'product_qty'   => $request->product_qty,
-                'status'        => $request->status,
                 'created_at'    => now(),
             ]);
 
@@ -270,7 +268,6 @@ class ProductController extends Controller
                 'stock_alert'   => $request->stock_alert,
                 'note'          => $request->note,
                 'product_qty'   => $request->product_qty,
-                'status'        => $request->status,
             ]);
 
             // ✅ New Images Upload

@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
     let productSearchInput = document.getElementById("product_search");
     let warehouseDropdown = document.getElementById("warehouse_id");
+    let supplierDropdown = document.getElementById("supplier_id"); // ✅ NEW
     let productList = document.getElementById("product_list");
     let warehouseError = document.getElementById("warehouse_error");
     let orderItemsTableBody = document.querySelector("tbody");
@@ -9,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function(){
     productSearchInput.addEventListener("keyup", function(){
         let query = this.value;
         let warehouse_id = warehouseDropdown.value;
+        let supplier_id = supplierDropdown ? supplierDropdown.value : null;// ✅ NEW
 
         if (!warehouse_id ) {
             warehouseError.classList.remove('d-none'); 
@@ -17,47 +19,56 @@ document.addEventListener("DOMContentLoaded", function(){
         } else{
             warehouseError.classList.add('d-none'); 
         }
+
         if (query.length > 1) {
-            fetchProducts(query,warehouse_id);
-        }else{
+            fetchProducts(query, warehouse_id, supplier_id); // ✅ pass supplier
+        } else {
             productList.innerHTML = "";
         }
     });
 
+    function fetchProducts(query, warehouse_id, supplier_id) {
 
-    function fetchProducts(query,warehouse_id) {
-        fetch(productSearchUrl + "?query=" + query + "&warehouse_id=" + warehouse_id)
-            .then(response => response.json())
-            .then(data => {
-                productList.innerHTML = "";
-                if (data.length > 0) {
-                    data.forEach(product => {
-                        let item = `<a href="#" class="list-group-item list-group-item-action product-item"
-                            data-id="${product.id}"
-                            data-code="${product.code}"
-                            data-name="${product.name}"
-                            data-cost="${product.price}"
-                            data-stock="${product.product_qty}">
-                            <span class="mdi mdi-text-search"></span>
-                            ${product.code} - ${product.name}
-                            </a> `;
-                            productList.innerHTML += item; 
-                           // console.log(item);
-                    });
+        let url = productSearchUrl + 
+            "?query=" + query + 
+            "&warehouse_id=" + warehouse_id;
 
-        // add event listener for product selection 
-        document.querySelectorAll(".product-item").forEach(item => {
-            item.addEventListener("click", function(e) {
-                e.preventDefault();
-                addProductToTable(this);
-            });
-        });
- 
-        } else {
-            productList.innerHTML = '<p class="text-muted">No Product Found</p>'
+        // ✅ Only add supplier if selected
+        if (supplier_id) {
+            url += "&supplier_id=" + supplier_id;
         }
-    });
-        
+
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            productList.innerHTML = "";
+
+            if (data.length > 0) {
+                data.forEach(product => {
+                    let item = `<a href="#" class="list-group-item list-group-item-action product-item"
+                        data-id="${product.id}"
+                        data-code="${product.code}"
+                        data-name="${product.name}"
+                        data-cost="${product.price}"
+                        data-stock="${product.product_qty}">
+                        <span class="mdi mdi-text-search"></span>
+                        ${product.code} - ${product.name}
+                    </a>`;
+                    
+                    productList.innerHTML += item;
+                });
+
+                document.querySelectorAll(".product-item").forEach(item => {
+                    item.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        addProductToTable(this);
+                    });
+                });
+
+            } else {
+                productList.innerHTML = '<p class="text-muted">No Product Found</p>';
+            }
+        });
     }
 
     ///// Add Product in to the table 

@@ -13,43 +13,67 @@ use App\Models\PurchaseItem;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
 class PurchaseController extends Controller
 {
-    // ===============================
-    // Show All Purchases
-    // ===============================
-    public function AllPurchase(){
+    /**
+     * ===============================
+     * Display All Purchases
+     * ===============================
+     */
+    public function AllPurchase()
+    {
+        // Get latest purchases
         $allData = Purchase::latest()->get();
-        return view('admin.backend.purchase.all_purchase', compact('allData')); 
+
+        return view('admin.backend.purchase.all_purchase', compact('allData'));
     }
 
-    // ===============================
-    // Add Purchase Page
-    // ===============================
-    public function AddPurchase(){
-        $suppliers = Supplier::all();
-        $warehouses = WareHouse::all();
-        return view('admin.backend.purchase.add_purchase', compact('suppliers','warehouses'));
+    /**
+     * ===============================
+     * Show Add Purchase Page
+     * ===============================
+     */
+    public function AddPurchase()
+    {
+        return view('admin.backend.purchase.add_purchase', [
+            'suppliers'  => Supplier::all(),
+            'warehouses' => WareHouse::all(),
+        ]);
     }
 
-    // ===============================
-    // Product Search (AJAX)
-    // ===============================
-    public function PurchaseProductSearch(Request $request){
+    /**
+     * ===============================
+     * AJAX Product Search
+     * ===============================
+     */
+    public function PurchaseProductSearch(Request $request)
+    {
         try {
-
-            $query = $request->input('query');
+            $query        = $request->input('query');
             $warehouse_id = $request->input('warehouse_id');
+            $supplier_id  = $request->input('supplier_id'); // ✅ NEW
 
-            $products = Product::where(function($q) use ($query){
-                    $q->where('name', 'like', "%{$query}%")
-                      ->orWhere('code', 'like', "%{$query}%");
+            $products = Product::query()
+
+                // 🔍 Search by name or code
+                ->when($query, function ($q) use ($query) {
+                    $q->where(function ($sub) use ($query) {
+                        $sub->where('name', 'like', "%{$query}%")
+                            ->orWhere('code', 'like', "%{$query}%");
+                    });
                 })
-                ->when($warehouse_id, function ($q) use ($warehouse_id){
+
+                // 🏬 Filter by warehouse
+                ->when($warehouse_id, function ($q) use ($warehouse_id) {
                     $q->where('warehouse_id', $warehouse_id);
                 })
-                ->select('id','name','code','price','product_qty')
+
+                // 🧑‍💼 Filter by supplier (NEW)
+                ->when($supplier_id, function ($q) use ($supplier_id) {
+                    $q->where('supplier_id', $supplier_id);
+                })
+
+                ->select('id', 'name', 'code', 'price', 'product_qty')
                 ->limit(10)
                 ->get();
 
@@ -57,35 +81,33 @@ class PurchaseController extends Controller
 
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Something went wrong while searching products.'
+                'error'   => 'Product search failed!',
+                'message' => $e->getMessage()
             ], 500);
         }
     }
 
-    // ===============================
-    // Store Purchase
-    // ===============================
-    public function StorePurchase(Request $request){
-
-        // ✅ Validation
+    /**
+     * ===============================
+     * Store Purchase
+     * ===============================
+     */
+    public function StorePurchase(Request $request)
+    {
+        // Validate request
         $request->validate([
             'date'        => 'required|date',
             'status'      => 'required',
             'supplier_id' => 'required',
             'products'    => 'required|array|min:1',
-        ],[
-            'date.required'        => 'Purchase date is required',
-            'supplier_id.required' => 'Supplier is required',
-            'products.required'    => 'Please add at least one product',
         ]);
 
+        DB::beginTransaction();
+
         try {
-
-            DB::beginTransaction();
-
             $grandTotal = 0;
 
-            // ✅ Create Purchase
+            // Create Purchase
             $purchase = Purchase::create([
                 'date'         => $request->date,
                 'warehouse_id' => $request->warehouse_id,
@@ -94,28 +116,28 @@ class PurchaseController extends Controller
                 'shipping'     => $request->shipping ?? 0,
                 'status'       => $request->status,
                 'note'         => $request->note,
-                'grand_total'  => 0,
+                'grand_total'  => 0, // will update later
             ]);
 
-            // ✅ Store Items
-            foreach($request->products as $productData){
+            // Loop through products
+            foreach ($request->products as $productData) {
 
                 $product = Product::findOrFail($productData['id']);
 
                 $netUnitCost = $productData['net_unit_cost'] ?? $product->price;
+                $qty         = $productData['quantity'];
+                $discount    = $productData['discount'] ?? 0;
 
+                // Validate cost
                 if (!$netUnitCost) {
-                    throw new \Exception("Net Unit Cost missing for product ID: " . $productData['id']);
+                    throw new \Exception("Missing cost for product ID: {$product->id}");
                 }
 
-                $qty      = $productData['quantity'];
-                $discount = $productData['discount'] ?? 0;
-
+                // Calculate subtotal
                 $subtotal = ($netUnitCost * $qty) - $discount;
-
                 $grandTotal += $subtotal;
 
-                // ✅ Save Purchase Item
+                // Save item
                 PurchaseItem::create([
                     'purchase_id'   => $purchase->id,
                     'product_id'    => $product->id,
@@ -126,11 +148,11 @@ class PurchaseController extends Controller
                     'subtotal'      => $subtotal,
                 ]);
 
-                // ✅ Update Stock
+                // Update stock
                 $product->increment('product_qty', $qty);
             }
 
-            // ✅ Final Total Update
+            // Update final total
             $purchase->update([
                 'grand_total' => $grandTotal + ($request->shipping ?? 0) - ($request->discount ?? 0)
             ]);
@@ -138,99 +160,93 @@ class PurchaseController extends Controller
             DB::commit();
 
             return redirect()->route('all.purchase')->with([
-                'message' => 'Purchase Stored Successfully',
+                'message' => 'Purchase Created Successfully',
                 'alert-type' => 'success'
             ]);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
 
-            return redirect()->back()
-                ->withInput()
-                ->with([
-                    'message' => 'Error: '.$e->getMessage(),
-                    'alert-type' => 'error'
-                ]);
+            return back()->withInput()->with([
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            ]);
         }
     }
 
-    public function EditPurchase($id){
+    /**
+     * ===============================
+     * Edit Purchase
+     * ===============================
+     */
+    public function EditPurchase($id)
+    {
         $editData = Purchase::with('purchaseItems.product')->findOrFail($id);
-        $suppliers = Supplier::all();
-        $warehouses = WareHouse::all();
 
-        return view('admin.backend.purchase.edit_purchase', compact('editData','suppliers','warehouses'));
+        return view('admin.backend.purchase.edit_purchase', [
+            'editData'   => $editData,
+            'suppliers'  => Supplier::all(),
+            'warehouses' => WareHouse::all(),
+        ]);
     }
-    // End Method 
 
-
+    /**
+     * ===============================
+     * Update Purchase
+     * ===============================
+     */
     public function UpdatePurchase(Request $request, $id)
     {
-        // ✅ Validation
         $request->validate([
-            'date' => 'required|date',
-            'status' => 'required',
+            'date'        => 'required|date',
+            'status'      => 'required',
             'supplier_id' => 'required',
-            'products' => 'required|array',
+            'products'    => 'required|array',
         ]);
 
         DB::beginTransaction();
 
         try {
-
-            // ✅ Find Purchase
             $purchase = Purchase::findOrFail($id);
 
-            // ✅ Update Purchase
+            // Update main purchase
             $purchase->update([
-                'date' => $request->date,
+                'date'         => $request->date,
                 'warehouse_id' => $request->warehouse_id,
-                'supplier_id' => $request->supplier_id,
-                'discount' => $request->discount ?? 0,
-                'shipping' => $request->shipping ?? 0,
-                'status' => $request->status,
-                'note' => $request->note,
-                'grand_total' => $request->grand_total,
+                'supplier_id'  => $request->supplier_id,
+                'discount'     => $request->discount ?? 0,
+                'shipping'     => $request->shipping ?? 0,
+                'status'       => $request->status,
+                'note'         => $request->note,
+                'grand_total'  => $request->grand_total,
             ]);
 
-            // ✅ Get Old Items
-            $oldPurchaseItems = PurchaseItem::where('purchase_id', $purchase->id)->get();
-
-            // ✅ Decrease Old Stock
-            foreach ($oldPurchaseItems as $oldItem) {
-                $product = Product::find($oldItem->product_id);
-                if ($product) {
-                    $product->decrement('product_qty', $oldItem->quantity);
-                }
+            // Reverse old stock
+            foreach ($purchase->purchaseItems as $item) {
+                optional($item->product)->decrement('product_qty', $item->quantity);
             }
 
-            // ✅ Delete Old Items
-            PurchaseItem::where('purchase_id', $purchase->id)->delete();
+            // Delete old items
+            $purchase->purchaseItems()->delete();
 
-            // ✅ Insert New Items + Update Stock
-            foreach ($request->products as $product_id => $productData) {
+            // Insert new items
+            foreach ($request->products as $product_id => $data) {
 
-                // Skip empty rows (important)
-                if (empty($productData['quantity'])) {
-                    continue;
-                }
+                if (empty($data['quantity'])) continue;
 
                 PurchaseItem::create([
-                    'purchase_id' => $purchase->id,
-                    'product_id' => $product_id,
-                    'net_unit_cost' => $productData['net_unit_cost'] ?? 0,
-                    'stock' => $productData['stock'] ?? 0,
-                    'quantity' => $productData['quantity'],
-                    'discount' => $productData['discount'] ?? 0,
-                    'subtotal' => $productData['subtotal'] ?? 0,
+                    'purchase_id'   => $purchase->id,
+                    'product_id'    => $product_id,
+                    'net_unit_cost' => $data['net_unit_cost'] ?? 0,
+                    'stock'         => $data['stock'] ?? 0,
+                    'quantity'      => $data['quantity'],
+                    'discount'      => $data['discount'] ?? 0,
+                    'subtotal'      => $data['subtotal'] ?? 0,
                 ]);
 
-                // ✅ Increase New Stock
-                $product = Product::find($product_id);
-                if ($product) {
-                    $product->increment('product_qty', $productData['quantity']);
-                }
+                // Update stock
+                optional(Product::find($product_id))
+                    ->increment('product_qty', $data['quantity']);
             }
 
             DB::commit();
@@ -241,18 +257,20 @@ class PurchaseController extends Controller
             ]);
 
         } catch (\Exception $e) {
-
             DB::rollBack();
 
-            // ✅ Redirect with error (better for UI)
-            return redirect()->back()->withInput()->with([
-                'message' => 'Something went wrong: ' . $e->getMessage(),
+            return back()->withInput()->with([
+                'message' => $e->getMessage(),
                 'alert-type' => 'error'
             ]);
         }
     }
-    // End Method
 
+    /**
+     * ===============================
+     * Purchase Details
+     * ===============================
+     */
     public function DetailsPurchase($id)
     {
         try {
@@ -261,68 +279,70 @@ class PurchaseController extends Controller
             return view('admin.backend.purchase.purchase_details', compact('purchase'));
 
         } catch (\Exception $e) {
-
-            // Optional: Log error
             \Log::error('Purchase Details Error: ' . $e->getMessage());
 
-            // Redirect back with error message
-            return redirect()->back()->with('error', 'Something went wrong while fetching purchase details.');
+            return back()->with('error', 'Unable to load purchase details.');
         }
     }
-    // End Method
 
+    /**
+     * ===============================
+     * Generate Invoice PDF
+     * ===============================
+     */
     public function InvoicePurchase($id)
     {
         try {
-            // Fetch purchase with relations
             $purchase = Purchase::with(['supplier', 'warehouse', 'purchaseItems.product'])->findOrFail($id);
 
-            // Generate PDF
             $pdf = Pdf::loadView('admin.backend.purchase.invoice_pdf', compact('purchase'));
 
-            // Download PDF
-            return $pdf->download('purchase_' . $id . '.pdf');
+            return $pdf->download("purchase_{$id}.pdf");
 
         } catch (\Exception $e) {
+            \Log::error('Invoice Error: ' . $e->getMessage());
 
-            // Optional: log error
-            \Log::error('Invoice Purchase Error: ' . $e->getMessage());
-
-            // Redirect back with error message
-            return redirect()->back()->with([
-                'message' => 'Something went wrong while generating invoice!',
+            return back()->with([
+                'message' => 'Invoice generation failed!',
                 'alert-type' => 'error'
             ]);
         }
     }
-    // End Method
 
-    public function DeletePurchase($id){
+    /**
+     * ===============================
+     * Delete Purchase
+     * ===============================
+     */
+    public function DeletePurchase($id)
+    {
+        DB::beginTransaction();
+
         try {
-          DB::beginTransaction();
-          $purchase = Purchase::findOrFail($id);
-          $purchaseItems = PurchaseItem::where('purchase_id',$id)->get();
+            $purchase = Purchase::findOrFail($id);
 
-          foreach($purchaseItems as $item){
-            $product = Product::find($item->product_id);
-            if ($product) {
-                $product->decrement('product_qty',$item->quantity);
+            // Reverse stock
+            foreach ($purchase->purchaseItems as $item) {
+                optional($item->product)->decrement('product_qty', $item->quantity);
             }
-          }
-          PurchaseItem::where('purchase_id',$id)->delete();
-          $purchase->delete();
-          DB::commit();
 
-          $notification = array(
-            'message' => 'Purchase Deleted Successfully',
-            'alert-type' => 'success'
-         ); 
-         return redirect()->route('all.purchase')->with($notification);  
-            
+            // Delete items & purchase
+            $purchase->purchaseItems()->delete();
+            $purchase->delete();
+
+            DB::commit();
+
+            return redirect()->route('all.purchase')->with([
+                'message' => 'Purchase Deleted Successfully',
+                'alert-type' => 'success'
+            ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()], 500);
-          }  
+
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-    // End Method 
 }

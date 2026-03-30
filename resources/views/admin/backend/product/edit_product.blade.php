@@ -205,24 +205,6 @@
                                         @enderror
                                     </div>
 
-                                    <!-- STATUS (UNCHANGED UI) -->
-                                    <div class="col-md-12">
-                                        <label class="form-label">Status :</label>
-                                        <select name="status" class="form-control form-select">
-                                            <option selected="">Select Status</option>
-                                            <option value="Received"
-                                                {{ old('status', $editData->status) == 'Received' ? 'selected' : '' }}>
-                                                Received</option>
-                                            <option value="Pending"
-                                                {{ old('status', $editData->status) == 'Pending' ? 'selected' : '' }}>
-                                                Pending</option>
-                                        </select>
-
-                                        @error('status')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
                                 </div>
                             </div>
 
