@@ -58,7 +58,7 @@ class BrandController extends Controller
                 $img = $manager->read($image);
                 $img->resize(100, 90)->save(public_path('upload/brand/' . $name_gen));
 
-                // ✅ FULL URL save
+                // ✅ Store only relative path
                 $imagePath = url('upload/brand/' . $name_gen);
             }
 
@@ -127,11 +127,18 @@ class BrandController extends Controller
                 $img = $manager->read($image);
                 $img->resize(100, 90)->save(public_path('upload/brand/' . $name_gen));
 
-                $save_url = 'upload/brand/' . $name_gen;
+                // ✅ STORE FULL URL HERE
+                $save_url = url('upload/brand/' . $name_gen);
 
-                // ✅ Delete Old Image (safe)
-                if (!empty($brand->image) && file_exists(public_path($brand->image))) {
-                    unlink(public_path($brand->image));
+                // ⚠️ Delete Old Image (handle both cases)
+                if (!empty($brand->image)) {
+
+                    // If old value is full URL → convert to path
+                    $oldPath = str_replace(url('/') . '/', '', $brand->image);
+
+                    if (file_exists(public_path($oldPath))) {
+                        unlink(public_path($oldPath));
+                    }
                 }
 
                 $brand->update([
@@ -158,7 +165,7 @@ class BrandController extends Controller
 
         } 
         catch (\Illuminate\Validation\ValidationException $e) {
-            throw $e; // ❌ toastr me convert nahi karega
+            throw $e;
         } 
         catch (\Exception $e) {
             return back()->withInput()->with([
