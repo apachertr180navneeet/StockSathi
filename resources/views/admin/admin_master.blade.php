@@ -79,6 +79,41 @@
         body.sidebar-open .sidebar-overlay {
             display: block;
         }
+
+        /* 🔥 PAGE LOADER */
+        #page-loader {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+
+        .loader-content p {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .spinner {
+            width: 45px;
+            height: 45px;
+            border: 4px solid #eee;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 
 </head>
@@ -86,7 +121,13 @@
 <!-- body start -->
 
 <body data-menu-color="light" data-sidebar="default">
-
+    <!-- 🔥 PAGE LOADER -->
+    <div id="page-loader">
+        <div class="loader-content text-center">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
     <!-- Begin page -->
     <div id="app-layout">
 
@@ -174,6 +215,16 @@
                     break;
             }
         @endif
+    </script>
+    <script>
+        window.addEventListener("load", function() {
+            let loader = document.getElementById("page-loader");
+            loader.style.opacity = "0";
+
+            setTimeout(() => {
+                loader.style.display = "none";
+            }, 300);
+        });
     </script>
 
     @yield('scripts')
