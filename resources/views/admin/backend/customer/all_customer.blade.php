@@ -1,33 +1,56 @@
 @extends('admin.admin_master')
+
 @section('admin')
-    <div class="content">
 
-        <!-- Start Content-->
-        <div class="container-xxl">
+<style>
+    /* Responsive Table */
+    @media (max-width: 768px) {
+        .table td, .table th {
+            white-space: nowrap;
+            font-size: 12px;
+        }
 
-            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">All Customer</h4>
-                </div>
+        .btn-sm {
+            padding: 4px 6px;
+            font-size: 11px;
+        }
+    }
 
-                <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <a href="{{ route('add.customer') }}" class="btn btn-secondary">Add Customer</a>
-                    </ol>
-                </div>
-            </div>
+    @media (max-width: 576px) {
+        .py-3 {
+            gap: 10px;
+        }
 
-            <!-- Datatables  -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
+        .btn-sm {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+    }
+</style>
 
-                        <div class="card-header">
+<div class="content">
 
-                        </div><!-- end card header -->
+    <div class="container-xxl">
 
-                        <div class="card-body">
-                            <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
+        <!-- Header -->
+        <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
+            <h4 class="fs-18 fw-semibold m-0">All Customer</h4>
+
+            <a href="{{ route('add.customer') }}" class="btn btn-primary btn-sm">
+                + Add Customer
+            </a>
+        </div>
+
+        <!-- Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-header"></div>
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-bordered nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>Sl</th>
@@ -38,6 +61,7 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
                                     @foreach ($customer as $key => $item)
                                         <tr>
@@ -45,28 +69,40 @@
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->phone }}</td>
-                                            <td>{{ Str::limit($item->address, 50, '...') }}</td>
+
+                                            <!-- Address with tooltip -->
+                                            <td title="{{ $item->address }}">
+                                                {{ \Illuminate\Support\Str::limit($item->address, 30, '...') }}
+                                            </td>
+
                                             <td>
                                                 <a href="{{ route('edit.customer', $item->id) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
+
                                                 <a href="{{ route('delete.customer', $item->id) }}"
                                                     class="btn btn-danger btn-sm" id="delete">Delete</a>
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </tbody>
+
                             </table>
                         </div>
-
                     </div>
+
                 </div>
             </div>
+        </div>
 
+    </div>
 
+</div>
 
-
-        </div> <!-- container-fluid -->
-
-    </div> <!-- content -->
 @endsection
+
+
+@push('scripts')
+<script>
+    
+</script>
+@endpush
