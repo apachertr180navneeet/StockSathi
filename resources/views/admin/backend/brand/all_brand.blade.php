@@ -1,103 +1,192 @@
 @extends('admin.admin_master')
+
 @section('admin')
     <style>
-        .brand-img {
-            width: 70px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 4px;
+        .card-ui {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* Mobile Optimization */
+        .page-header {
+            font-weight: 600;
+            font-size: 22px;
+        }
+
+        .search-box {
+            border-radius: 10px;
+            padding-left: 40px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            color: #999;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Button styling */
+        .btn i {
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
-            .table td, .table th {
-                white-space: nowrap;
-                font-size: 12px;
+            .table-view {
+                display: none;
             }
 
-            .btn-sm {
-                padding: 4px 6px;
-                font-size: 11px;
+            .card-view {
+                display: block;
             }
 
-            .brand-img {
-                width: 50px;
-                height: 30px;
+            .btn {
+                padding: 6px 8px;
             }
         }
 
-        @media (max-width: 576px) {
-            .py-3 {
-                gap: 10px;
-            }
-
-            .btn-sm {
-                font-size: 12px;
-                padding: 6px 10px;
+        @media (min-width: 769px) {
+            .card-view {
+                display: none;
             }
         }
     </style>
-    <div class="content">
-        <!-- Start Content-->
-        <div class="container-xxl">
 
-            <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
-    
-                <!-- Left Side: Title -->
-                <h4 class="fs-18 fw-semibold m-0">All Brand</h4>
+    <div class="content mt-4">
+        <div class="container-fluid">
 
-                <!-- Right Side: Button -->
-                <a href="{{ route('add.brand') }}" class="btn btn-primary btn-sm">
-                    + Add Brand
-                </a>
+            <div class="card-ui mt-4 fade-in">
 
-            </div>
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="page-header">All Brand</div>
 
-            <!-- Datatables  -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-
-                        <div class="card-header">
-
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="datatable" class="table table-bordered nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Sl</th>
-                                            <th>Brand Name</th>
-                                            <th>Image</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($brand as $key => $item)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>
-                                                    <img src="{{ asset($item->image) }}" class="brand-img">
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('edit.brand', $item->id) }}"
-                                                        class="btn btn-success btn-sm">Edit</a>
-                                                    <a href="{{ route('delete.brand', $item->id) }}"
-                                                        class="btn btn-danger btn-sm" id="delete">Delete</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
+                    <a href="{{ route('add.brand') }}" class="btn btn-primary btn-sm">
+                        + Add Brand
+                    </a>
                 </div>
-            </div>
-        </div> <!-- container-fluid -->
 
-    </div> <!-- content -->
+                <!-- Search -->
+                <div class="position-relative mb-3">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search" class="form-control search-box" placeholder="Search brands...">
+                </div>
+
+                <!-- Loader -->
+                <div class="loader" id="loader">
+                    <div class="spinner-border text-primary"></div>
+                </div>
+
+                <!-- Data -->
+                <div id="brandTable">
+                    @include('admin.backend.brand.partials.brand_table')
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            let delayTimer;
+
+            function showLoader() {
+                $('#loader').show();
+            }
+
+            function hideLoader() {
+                $('#loader').hide();
+            }
+
+            // 🔍 SEARCH
+            $('#search').keyup(function() {
+
+                clearTimeout(delayTimer);
+
+                let search = $(this).val();
+
+                delayTimer = setTimeout(function() {
+                    loadTable(search);
+                }, 400);
+            });
+
+            // 📄 PAGINATION
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+
+                let url = $(this).attr('href');
+                let search = $('#search').val();
+
+                showLoader();
+
+                $.get(url, {
+                    search: search
+                }, function(data) {
+                    $('#brandTable').html(data);
+                    hideLoader();
+                });
+            });
+
+            // 🔄 LOAD TABLE
+            function loadTable(search = '') {
+
+                showLoader();
+
+                $.get("{{ route('all.brand') }}", {
+                    search: search
+                }, function(data) {
+                    $('#brandTable').html(data);
+                    hideLoader();
+                });
+            }
+
+            // 🗑 DELETE
+            $(document).on('click', '.deleteBtn', function() {
+
+                let id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Delete this brand?',
+                    icon: 'warning',
+                    showCancelButton: true
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        showLoader();
+
+                        $.ajax({
+                            url: "{{ url('delete/brand') }}/" + id,
+                            type: "POST",
+                            data: {
+                                _method: "DELETE"
+                            },
+
+                            success: function(res) {
+                                toastr.success(res.message);
+                                loadTable($('#search').val());
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
 @endsection

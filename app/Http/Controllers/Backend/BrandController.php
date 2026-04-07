@@ -13,10 +13,22 @@ class BrandController extends Controller
     /**
      * Display all brands
      */
-    public function AllBrand()
+    public function AllBrand(Request $request)
     {
         try {
-            $brand = Brand::latest()->get();
+            $query = Brand::query();
+
+            // 🔍 SEARCH
+            if ($request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            }
+
+            $brand = $query->orderBy('name', 'asc')->paginate(10);
+
+            // ✅ AJAX RESPONSE (IMPORTANT)
+            if ($request->ajax()) {
+                return view('admin.backend.brand.partials.brand_table', compact('brand'))->render();
+            }
             return view('admin.backend.brand.all_brand', compact('brand'));
         } catch (\Exception $e) {
             return back()->with([
@@ -175,6 +187,7 @@ class BrandController extends Controller
         }
     }
 
+
     /**
      * Delete brand
      */
@@ -190,15 +203,15 @@ class BrandController extends Controller
 
             $brand->delete();
 
-            return back()->with([
-                'message' => 'Brand Deleted Successfully',
-                'alert-type' => 'success'
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Brand Deleted Successfully'
             ]);
 
         } catch (\Exception $e) {
-            return back()->with([
-                'message' => 'Error: ' . $e->getMessage(),
-                'alert-type' => 'error'
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }
