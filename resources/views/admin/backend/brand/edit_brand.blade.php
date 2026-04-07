@@ -1,259 +1,234 @@
 @extends('admin.admin_master')
 
 @section('admin')
+    <style>
+        /* 🌈 Background */
+        body {
+            background: #f4f6fb;
+        }
 
-<style>
+        /* 💎 Card */
+        .card-ui {
+            background: #fff;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        }
 
-/* 🌈 Background */
-body {
-    background: linear-gradient(135deg, #eef2ff, #f8fafc);
-}
+        /* Header */
+        .page-header {
+            font-size: 22px;
+            font-weight: 600;
+        }
 
-/* 💎 Card */
-.card {
-    border-radius: 16px;
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-}
+        /* Input */
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+        }
 
-/* Input */
-.form-control {
-    border-radius: 10px;
-    padding: 10px 14px;
-}
+        /* Upload */
+        .drop-zone {
+            border: 2px dashed #4f46e5;
+            border-radius: 14px;
+            padding: 35px;
+            text-align: center;
+            background: #fafbff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-/* 🔥 Drop Zone */
-.drop-zone {
-    border: 2px dashed #6366f1;
-    border-radius: 14px;
-    padding: 40px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s;
-    position: relative;
-}
+        .drop-zone:hover {
+            background: #eef2ff;
+        }
 
-.drop-zone:hover {
-    background: rgba(99,102,241,0.05);
-}
+        /* Preview wrapper */
+        .preview-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
 
-.drop-zone.dragover {
-    background: rgba(99,102,241,0.1);
-}
+        /* 🔥 Image container (IMPORTANT FIX) */
+        .img-box {
+            position: relative;
+            display: inline-block;
+        }
 
-/* Upload text */
-.drop-content {
-    transition: 0.3s;
-}
+        /* Image */
+        .preview-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #eee;
+        }
 
-/* Preview wrapper */
-.preview-wrapper {
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
+        /* ❌ Remove button (FIXED POSITION) */
+        .remove-btn {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 26px;
+        }
 
-/* Image */
-.preview-img {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #e5e7eb;
-}
+        /* Button */
+        .btn-primary {
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
+            border: none;
+        }
 
-/* Remove button */
-.remove-btn {
-    position: absolute;
-    top: -5px;
-    right: calc(50% - 65px);
-    background: #ef4444;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
-}
+        /* Mobile */
+        @media (max-width: 768px) {
+            .card-ui {
+                padding: 18px;
+            }
+        }
+    </style>
 
-/* Button */
-.btn-primary {
-    border-radius: 10px;
-    background: linear-gradient(135deg,#4f46e5,#6366f1);
-}
+    <div class="content mt-4">
+        <div class="container-fluid">
 
-/* Animation */
-.fade-in {
-    animation: fadeIn 0.4s ease;
-}
+            <div class="card-ui">
 
-@keyframes fadeIn {
-    from {opacity:0; transform:translateY(8px);}
-    to {opacity:1; transform:translateY(0);}
-}
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="page-header">Edit Brand</div>
 
-</style>
-
-<div class="content">
-    <div class="container-xxl">
-
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-3 fade-in">
-            <div>
-                <h4 class="mb-0 fw-semibold">Edit Brand</h4>
-                <small class="text-muted">Update brand</small>
-            </div>
-
-            <ol class="breadcrumb m-0">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('all.brand') }}">
-                        <i class="fas fa-list me-1"></i> Brand
+                    <a href="{{ route('all.brand') }}" class="btn btn-light btn-sm">
+                        ← Back
                     </a>
-                </li>
-                <li class="breadcrumb-item active">Edit</li>
-            </ol>
-        </div>
+                </div>
 
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
+                <form action="{{ route('update.brand') }}" method="post" enctype="multipart/form-data">
+                    @csrf
 
-                <div class="card p-4 fade-in">
+                    <input type="hidden" name="id" value="{{ $brand->id }}">
 
-                    <h5 class="mb-4">Edit Brand Details</h5>
+                    <!-- Name -->
+                    <div class="mb-4">
+                        <label class="mb-2">Brand Name</label>
+                        <input type="text" name="name" value="{{ old('name', $brand->name) }}" class="form-control"
+                            placeholder="Enter brand name">
+                    </div>
 
-                    <form action="{{ route('update.brand') }}" method="post" enctype="multipart/form-data">
-                        @csrf
+                    <!-- Image -->
+                    <div class="mb-4">
+                        <label class="mb-2">Brand Image</label>
 
-                        <input type="hidden" name="id" value="{{ $brand->id }}">
+                        <div class="drop-zone" id="dropArea">
 
-                        <!-- Name -->
-                        <div class="mb-3">
-                            <label class="form-label">Brand Name</label>
-                            <input type="text" name="name"
-                                   value="{{ old('name', $brand->name) }}"
-                                   class="form-control">
-                        </div>
+                            <input type="file" name="image" id="image" hidden>
 
-                        <!-- 🔥 Drag Drop -->
-                        <div class="mb-4">
-                            <label class="form-label">Brand Image</label>
+                            <!-- Upload text -->
+                            <div id="dropText" style="display:none;">
+                                <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+                                <p class="mb-0 fw-semibold">Upload Brand Image</p>
+                                <small class="text-muted">Click or drag & drop</small>
+                            </div>
 
-                            <div id="dropArea" class="drop-zone">
+                            <!-- Preview -->
+                            <div class="preview-wrapper" id="previewWrapper">
 
-                                <input type="file" name="image" id="image" hidden>
-
-                                <!-- Upload text -->
-                                <div id="dropContent" class="drop-content" style="display:none;">
-                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                                    <p>Drag & Drop Image</p>
-                                    <small>or click to upload</small>
-                                </div>
-
-                                <!-- Preview -->
-                                <div id="previewWrapper" class="preview-wrapper">
-                                    <img id="showImage"
-                                         src="{{ $brand->image ? asset($brand->image) : url('upload/no_image.jpg') }}"
-                                         class="preview-img">
+                                <div class="img-box">
+                                    <img id="preview"
+                                        src="{{ $brand->image ? asset($brand->image) : url('upload/no_image.jpg') }}"
+                                        class="preview-img">
 
                                     <button type="button" id="removeImage" class="remove-btn">×</button>
                                 </div>
 
                             </div>
+
                         </div>
+                    </div>
 
-                        <!-- Buttons -->
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ route('all.brand') }}" class="btn btn-light">← Back</a>
+                    <!-- Button -->
+                    <div class="text-end">
+                        <button class="btn btn-primary px-4 py-2">
+                            <i class="fas fa-save me-1"></i> Update Brand
+                        </button>
+                    </div>
 
-                            <button class="btn btn-primary px-4">
-                                <i class="fas fa-save me-1"></i> Update
-                            </button>
-                        </div>
-
-                    </form>
-
-                </div>
+                </form>
 
             </div>
+
         </div>
-
     </div>
-</div>
-
 @endsection
 
 
 @section('scripts')
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
 
-    const dropArea = document.getElementById('dropArea');
-    const fileInput = document.getElementById('image');
-    const preview = document.getElementById('showImage');
-    const previewWrapper = document.getElementById('previewWrapper');
-    const dropContent = document.getElementById('dropContent');
-    const removeBtn = document.getElementById('removeImage');
+            const dropArea = document.getElementById('dropArea');
+            const fileInput = document.getElementById('image');
+            const preview = document.getElementById('preview');
+            const removeBtn = document.getElementById('removeImage');
+            const dropText = document.getElementById('dropText');
 
-    // Click upload
-    dropArea.addEventListener('click', function(e) {
-        if (e.target !== removeBtn) {
-            fileInput.click();
-        }
-    });
+            // Click upload
+            dropArea.addEventListener('click', function(e) {
+                if (e.target !== removeBtn) {
+                    fileInput.click();
+                }
+            });
 
-    // Change
-    fileInput.addEventListener('change', function(e) {
-        if (e.target.files.length > 0) {
-            previewImage(e.target.files[0]);
-        }
-    });
+            // Change image
+            fileInput.addEventListener('change', function(e) {
+                showPreview(e.target.files[0]);
+            });
 
-    // Drag
-    dropArea.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        dropArea.classList.add('dragover');
-    });
+            // Drag
+            dropArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                dropArea.style.background = "#eef2ff";
+            });
 
-    dropArea.addEventListener('dragleave', function() {
-        dropArea.classList.remove('dragover');
-    });
+            dropArea.addEventListener('dragleave', function() {
+                dropArea.style.background = "#fafbff";
+            });
 
-    dropArea.addEventListener('drop', function(e) {
-        e.preventDefault();
-        dropArea.classList.remove('dragover');
+            dropArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                dropArea.style.background = "#fafbff";
 
-        let file = e.dataTransfer.files[0];
-        if (file) {
-            fileInput.files = e.dataTransfer.files;
-            previewImage(file);
-        }
-    });
+                let file = e.dataTransfer.files[0];
+                if (file) {
+                    fileInput.files = e.dataTransfer.files;
+                    showPreview(file);
+                }
+            });
 
-    function previewImage(file) {
-        let reader = new FileReader();
+            function showPreview(file) {
+                let reader = new FileReader();
 
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            previewWrapper.style.display = "flex";
-            dropContent.style.display = "none";
-        };
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                };
 
-        reader.readAsDataURL(file);
-    }
+                reader.readAsDataURL(file);
+            }
 
-    // Remove
-    removeBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
+            // Remove image
+            removeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
 
-        fileInput.value = "";
-        preview.src = "{{ url('upload/no_image.jpg') }}";
+                fileInput.value = "";
+                preview.src = "{{ url('upload/no_image.jpg') }}";
+            });
 
-        previewWrapper.style.display = "none";
-        dropContent.style.display = "block";
-    });
-
-});
-</script>
+        });
+    </script>
 @endsection

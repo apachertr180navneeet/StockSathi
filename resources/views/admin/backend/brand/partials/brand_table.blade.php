@@ -18,7 +18,7 @@
                     <!-- 🖼 Image -->
                     <td>
                         <img src="{{ $item->image ? asset($item->image) : url('upload/no_image.jpg') }}"
-                             class="brand-img">
+                            class="brand-img">
                     </td>
 
                     <!-- Name -->
@@ -28,15 +28,13 @@
 
                     <!-- Action -->
                     <td class="text-end">
-                        <a href="{{ route('edit.brand', $item->id) }}"
-                           class="btn btn-sm btn-outline-primary me-1"
-                           title="Edit">
+                        <a href="{{ route('edit.brand', $item->id) }}" class="btn btn-sm btn-outline-warning me-1"
+                            title="Edit">
                             <i class="fas fa-edit"></i>
                         </a>
 
-                        <button class="btn btn-sm btn-outline-danger deleteBtn"
-                                data-id="{{ $item->id }}"
-                                title="Delete">
+                        <button class="btn btn-sm btn-outline-danger deleteBtn" data-id="{{ $item->id }}"
+                            title="Delete">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -62,8 +60,7 @@
                 <!-- Left (Image + Name) -->
                 <div class="d-flex align-items-center gap-2">
 
-                    <img src="{{ $item->image ? asset($item->image) : url('upload/no_image.jpg') }}"
-                         class="brand-img">
+                    <img src="{{ $item->image ? asset($item->image) : url('upload/no_image.jpg') }}" class="brand-img">
 
                     <strong>{{ $item->name }}</strong>
 
@@ -71,15 +68,13 @@
 
                 <!-- Right (Actions) -->
                 <div>
-                    <a href="{{ route('edit.brand', $item->id) }}"
-                       class="btn btn-sm btn-outline-primary me-1"
-                       title="Edit">
+                    <a href="{{ route('edit.brand', $item->id) }}" class="btn btn-sm btn-outline-warning me-1"
+                        title="Edit">
                         <i class="fas fa-edit"></i>
                     </a>
 
-                    <button class="btn btn-sm btn-outline-danger deleteBtn"
-                            data-id="{{ $item->id }}"
-                            title="Delete">
+                    <button class="btn btn-sm btn-outline-danger deleteBtn" data-id="{{ $item->id }}"
+                        title="Delete">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -102,30 +97,30 @@
 
 {{-- 🎨 CSS --}}
 <style>
-.brand-img {
-    width: 45px;
-    height: 45px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #e5e7eb;
-    transition: 0.3s;
-}
-
-/* 🔥 Hover zoom effect */
-.brand-img:hover {
-    transform: scale(1.2);
-}
-
-/* 📱 Mobile switch */
-@media (max-width: 768px) {
-    .table-view {
-        display: none;
+    .brand-img {
+        width: 45px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        transition: 0.3s;
     }
-}
 
-@media (min-width: 769px) {
-    .card-view {
-        display: none;
+    /* 🔥 Hover zoom effect */
+    .brand-img:hover {
+        transform: scale(1.2);
     }
-}
+
+    /* 📱 Mobile switch */
+    @media (max-width: 768px) {
+        .table-view {
+            display: none;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .card-view {
+            display: none;
+        }
+    }
 </style>
