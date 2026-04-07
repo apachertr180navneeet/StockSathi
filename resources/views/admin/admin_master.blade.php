@@ -37,6 +37,48 @@
         .d-flex.justify-content-between {
             margin: 0px 13px;
         }
+
+        .leftside-menu {
+            position: fixed;
+            width: 250px;
+            z-index: 100;
+            /* LOWER */
+        }
+
+        .content-page {
+            margin-left: 250px;
+        }
+
+        @media (max-width: 991px) {
+
+            .content-page {
+                margin-left: 0 !important;
+            }
+
+            .leftside-menu {
+                transform: translateX(-100%);
+                transition: 0.3s;
+                z-index: 999;
+                /* ONLY when open */
+            }
+
+            body.sidebar-open .leftside-menu {
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 150;
+            display: none;
+        }
+
+        body.sidebar-open .sidebar-overlay {
+            display: block;
+        }
     </style>
 
 </head>
@@ -88,7 +130,7 @@
     <script src="{{ asset('backend/assets/libs/jquery.counterup/jquery.counterup.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/feather-icons/feather.min.js') }}"></script>
 
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('backend/assets/js/code.js') }}"></script>

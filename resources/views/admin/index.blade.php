@@ -22,9 +22,8 @@ body {
     border-radius: 18px;
     margin-bottom: 50px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-    position: sticky;
+    position: relative;
     top: 10px;
-    z-index: 99;
 }
 
 /* ===== CARD ===== */
