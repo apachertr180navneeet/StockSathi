@@ -1,106 +1,184 @@
 @extends('admin.admin_master')
+
 @section('admin')
     <style>
-        .brand-img {
-            width: 70px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 4px;
+        .card-ui {
+            background: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* Mobile Optimization */
+        .page-header {
+            font-weight: 600;
+            font-size: 22px;
+        }
+
+        .search-box {
+            border-radius: 10px;
+            padding-left: 40px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            color: #999;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .table-view {
+            display: block;
+        }
+
+        .card-view {
+            display: none;
+        }
+
         @media (max-width: 768px) {
-            .table td, .table th {
-                white-space: nowrap;
-                font-size: 12px;
+            .table-view {
+                display: none;
             }
 
-            .btn-sm {
-                padding: 4px 6px;
-                font-size: 11px;
-            }
-
-            .brand-img {
-                width: 50px;
-                height: 30px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .py-3 {
-                gap: 10px;
-            }
-
-            .btn-sm {
-                font-size: 12px;
-                padding: 6px 10px;
+            .card-view {
+                display: block;
             }
         }
     </style>
-    <div class="content">
 
-        <!-- Start Content-->
-        <div class="container-xxl">
+    <div class="content mt-4">
+        <div class="container-fluid">
 
-            <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
+            <div class="card-ui mt-4">
 
-                <!-- Left -->
-                <h4 class="fs-18 fw-semibold m-0">All WareHouse</h4>
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="page-header">All Warehouse</div>
 
-                <!-- Right -->
-                <a href="{{ route('add.warehouse') }}" class="btn btn-primary btn-sm">
-                    + Add WareHouse
-                </a>
-
-            </div>
-
-            <!-- Datatables  -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-
-                        <div class="card-header">
-                            <!-- Optional: you can add title here if needed -->
-                        </div>
-
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="datatable" class="table table-bordered nowrap w-100">
-                                    <thead>
-                                        <tr>
-                                            <th>Sl</th>
-                                            <th>WareHouse Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>City</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($warehouse as $key => $item)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->email }}</td>
-                                                <td>{{ $item->phone }}</td>
-                                                <td>{{ $item->city }}</td>
-                                                <td>
-                                                    <a href="{{ route('edit.warehouse', $item->id) }}"
-                                                        class="btn btn-success btn-sm">Edit</a>
-                                                    <a href="{{ route('delete.warehouse', $item->id) }}"
-                                                        class="btn btn-danger btn-sm" id="delete">Delete</a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
+                    <a href="{{ route('add.warehouse') }}" class="btn btn-primary btn-sm">
+                        + Add Warehouse
+                    </a>
                 </div>
-            </div>
-        </div> <!-- container-fluid -->
 
-    </div> <!-- content -->
+                <!-- Search -->
+                <div class="position-relative mb-3">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search" class="form-control search-box" placeholder="Search warehouse...">
+                </div>
+
+                <!-- Loader -->
+                <div class="loader" id="loader">
+                    <div class="spinner-border text-primary"></div>
+                </div>
+
+                <!-- Table -->
+                <div id="warehouseTable">
+                    @include('admin.backend.warehouse.partials.warehouse_table')
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+
+            // ✅ GLOBAL CSRF FIX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            let delayTimer;
+
+            function showLoader() {
+                $('#loader').show();
+            }
+
+            function hideLoader() {
+                $('#loader').hide();
+            }
+
+            // 🔍 SEARCH
+            $('#search').keyup(function() {
+                clearTimeout(delayTimer);
+                let search = $(this).val();
+
+                delayTimer = setTimeout(function() {
+                    loadTable(search);
+                }, 400);
+            });
+
+            // 📄 PAGINATION
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+
+                let url = $(this).attr('href');
+                let search = $('#search').val();
+
+                showLoader();
+
+                $.get(url, {
+                    search: search
+                }, function(data) {
+                    $('#warehouseTable').html(data);
+                    hideLoader();
+                });
+            });
+
+            // 🔄 LOAD TABLE
+            function loadTable(search = '') {
+                showLoader();
+
+                $.get("{{ route('all.warehouse') }}", {
+                    search: search
+                }, function(data) {
+                    $('#warehouseTable').html(data);
+                    hideLoader();
+                });
+            }
+
+            // 🗑 DELETE (FINAL FIX)
+            $(document).on('click', '.deleteBtn', function() {
+
+                let id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Delete this warehouse?',
+                    icon: 'warning',
+                    showCancelButton: true
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        showLoader();
+
+                        $.ajax({
+                            url: "{{ url('delete/warehouse') }}/" + id,
+                            type: "POST",
+                            data: {
+                                _token: '{{ csrf_token() }}', // ✅ FIX
+                                _method: "DELETE"
+                            },
+
+                            success: function(res) {
+                                toastr.success(res.message);
+                                loadTable($('#search').val());
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
 @endsection

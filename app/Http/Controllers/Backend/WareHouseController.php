@@ -13,11 +13,29 @@ class WareHouseController extends Controller
     /**
      * Display all warehouses
      */
-    public function AllWarehouse()
+    public function AllWarehouse(Request $request)
     {
         try {
-            $warehouse = WareHouse::latest()->get();
+            $query = WareHouse::query();
+
+            // 🔍 SEARCH (same as brand)
+            if ($request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('email', 'like', '%' . $request->search . '%')
+                    ->orWhere('phone', 'like', '%' . $request->search . '%')
+                    ->orWhere('city', 'like', '%' . $request->search . '%');
+            }
+
+            // 📄 PAGINATION + SORT
+            $warehouse = $query->orderBy('name', 'asc')->paginate(10);
+
+            // ✅ AJAX RESPONSE (VERY IMPORTANT)
+            if ($request->ajax()) {
+                return view('admin.backend.warehouse.partials.warehouse_table', compact('warehouse'))->render();
+            }
+
             return view('admin.backend.warehouse.all_warehouse', compact('warehouse'));
+
         } catch (\Exception $e) {
             return back()->with([
                 'message' => 'Something went wrong!',
@@ -158,17 +176,18 @@ class WareHouseController extends Controller
     {
         try {
             $warehouse = WareHouse::findOrFail($id);
+
             $warehouse->delete();
 
-            return back()->with([
-                'message' => 'Warehouse Deleted Successfully',
-                'alert-type' => 'success'
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Warehouse Deleted Successfully'
             ]);
 
         } catch (\Exception $e) {
-            return back()->with([
-                'message' => 'Failed to delete warehouse!',
-                'alert-type' => 'error'
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }

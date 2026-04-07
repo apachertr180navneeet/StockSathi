@@ -60,7 +60,7 @@ Route::controller(WareHouseController::class)->group(function(){
     Route::post('/store/warehouse', 'StoreWarehouse')->name('store.warehouse');
     Route::get('/edit/warehouse/{id}', 'EditWarehouse')->name('edit.warehouse');
     Route::post('/update/warehouse', 'UpdateWarehouse')->name('update.warehouse');
-    Route::get('/delete/warehouse/{id}', 'DeleteWarehouse')->name('delete.warehouse');
+    Route::delete('/delete/warehouse/{id}', 'DeleteWarehouse')->name('delete.warehouse');
 });
 
 
