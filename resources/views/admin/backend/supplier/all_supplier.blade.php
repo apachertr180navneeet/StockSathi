@@ -1,106 +1,131 @@
 @extends('admin.admin_master')
 
 @section('admin')
+    <link href="{{ asset('backend/assets/css/supplier.css') }}" rel="stylesheet" type="text/css" id="app-style" />
+    <div class="content mt-3 px-2 px-md-3 px-lg-4">
+        <div class="container-fluid">
 
-<style>
-    /* Responsive Table */
-    @media (max-width: 768px) {
-        .table td, .table th {
-            white-space: nowrap;
-            font-size: 12px;
-        }
+            <div class="card-ui">
 
-        .btn-sm {
-            padding: 4px 6px;
-            font-size: 11px;
-        }
-    }
+                <!-- HEADER -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="page-header">All Supplier</div>
 
-    @media (max-width: 576px) {
-        .py-3 {
-            gap: 10px;
-        }
-
-        .btn-sm {
-            font-size: 12px;
-            padding: 6px 10px;
-        }
-    }
-</style>
-
-<div class="content">
-
-    <div class="container-xxl">
-
-        <!-- Header -->
-        <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
-            <h4 class="fs-18 fw-semibold m-0">All Supplier</h4>
-
-            <a href="{{ route('add.supplier') }}" class="btn btn-primary btn-sm">
-                + Add Supplier
-            </a>
-        </div>
-
-        <!-- Table -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header"></div>
-
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="datatable" class="table table-bordered nowrap w-100">
-                                <thead>
-                                    <tr>
-                                        <th>Sl</th>
-                                        <th>Supplier Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Address</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    @foreach ($supplier as $key => $item)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>{{ $item->phone }}</td>
-
-                                            <!-- Address with tooltip -->
-                                            <td title="{{ $item->address }}">
-                                                {{ \Illuminate\Support\Str::limit($item->address, 30, '...') }}
-                                            </td>
-
-                                            <td>
-                                                <a href="{{ route('edit.supplier', $item->id) }}"
-                                                    class="btn btn-success btn-sm">Edit</a>
-
-                                                <a href="{{ route('delete.supplier', $item->id) }}"
-                                                    class="btn btn-danger btn-sm" id="delete">Delete</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
-
+                    <a href="{{ route('add.supplier') }}" class="btn btn-primary btn-sm">
+                        + Add Supplier
+                    </a>
                 </div>
+
+                <!-- SEARCH -->
+                <div class="mb-3">
+                    <input type="text" id="search" class="form-control search-box" placeholder="Search supplier...">
+                </div>
+
+                <!-- DATA -->
+                <div id="supplierTable">
+                    @include('admin.backend.supplier.partials.supplier_table')
+                </div>
+
             </div>
+
         </div>
-
     </div>
-
-</div>
-
 @endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
 
+            // CSRF (safe way)
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-@push('scripts')
+            let delayTimer;
 
-@endpush
+            function showLoader() {
+                $('#loader').show();
+            }
+
+            function hideLoader() {
+                $('#loader').hide();
+            }
+
+            // 🔍 SEARCH
+            $('#search').keyup(function() {
+
+                clearTimeout(delayTimer);
+
+                let search = $(this).val();
+
+                delayTimer = setTimeout(function() {
+                    loadTable(search);
+                }, 400);
+            });
+
+            // 📄 PAGINATION
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+
+                let url = $(this).attr('href');
+                let search = $('#search').val();
+
+                showLoader();
+
+                $.get(url, {
+                    search: search
+                }, function(data) {
+                    $('#supplierTable').html(data); // 👈 CHANGE ID ACCORDING TO FILE
+                    hideLoader();
+                });
+            });
+
+            // 🔄 LOAD TABLE
+            function loadTable(search = '') {
+
+                showLoader();
+
+                $.get("{{ route('all.supplier') }}", {
+                    search: search
+                }, function(data) {
+                    $('#supplierTable').html(data); // 👈 IMPORTANT
+                    hideLoader();
+                });
+            }
+
+            // 🗑 DELETE
+            $(document).on('click', '.deleteBtn', function() {
+
+                let id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Delete this supplier?',
+                    icon: 'warning',
+                    showCancelButton: true
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+
+                        showLoader();
+
+                        $.ajax({
+                            url: "{{ url('delete/supplier') }}/" + id,
+                            type: "POST",
+                            data: {
+                                _method: "DELETE"
+                            },
+
+                            success: function(res) {
+                                toastr.success(res.message);
+                                loadTable($('#search').val());
+                            }
+                        });
+
+                    }
+                });
+            });
+
+        });
+    </script>
+@endsection

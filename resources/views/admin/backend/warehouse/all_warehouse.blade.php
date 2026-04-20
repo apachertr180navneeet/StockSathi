@@ -1,55 +1,7 @@
 @extends('admin.admin_master')
 
 @section('admin')
-    <style>
-        .card-ui {
-            background: #fff;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .page-header {
-            font-weight: 600;
-            font-size: 22px;
-        }
-
-        .search-box {
-            border-radius: 10px;
-            padding-left: 40px;
-        }
-
-        .search-icon {
-            position: absolute;
-            top: 10px;
-            left: 12px;
-            color: #999;
-        }
-
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .table-view {
-            display: block;
-        }
-
-        .card-view {
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .table-view {
-                display: none;
-            }
-
-            .card-view {
-                display: block;
-            }
-        }
-    </style>
+    <link href="{{ asset('backend/assets/css/warehouse.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 
     <div class="content mt-4">
         <div class="container-fluid">
@@ -67,13 +19,7 @@
 
                 <!-- Search -->
                 <div class="position-relative mb-3">
-                    <i class="fas fa-search search-icon"></i>
                     <input type="text" id="search" class="form-control search-box" placeholder="Search warehouse...">
-                </div>
-
-                <!-- Loader -->
-                <div class="loader" id="loader">
-                    <div class="spinner-border text-primary"></div>
                 </div>
 
                 <!-- Table -->

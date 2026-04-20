@@ -1,0 +1,52 @@
+/* CARD GRID */
+.grid-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: 0.2s;
+}
+
+.grid-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ACTION BUTTON */
+.action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-btn i {
+    font-size: 13px;
+}
+
+.action-btn:hover {
+    background: #e0e7ff;
+}
+
+/* HEADER */
+.page-header {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* SEARCH */
+.search-box {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+/* PAGINATION */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}

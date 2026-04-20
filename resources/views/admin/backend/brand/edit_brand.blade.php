@@ -1,102 +1,13 @@
 @extends('admin.admin_master')
 
 @section('admin')
-    <style>
-        /* 🌈 Background */
-        body {
-            background: #f4f6fb;
-        }
+<link href="{{ asset('backend/assets/css/brand.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 
-        /* 💎 Card */
-        .card-ui {
-            background: #fff;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-        }
 
-        /* Header */
-        .page-header {
-            font-size: 22px;
-            font-weight: 600;
-        }
+<div class="content mt-3 px-2 px-md-3 px-lg-4">
+    <div class="container-fluid">
 
-        /* Input */
-        .form-control {
-            border-radius: 10px;
-            padding: 12px;
-        }
-
-        /* Upload */
-        .drop-zone {
-            border: 2px dashed #4f46e5;
-            border-radius: 14px;
-            padding: 35px;
-            text-align: center;
-            background: #fafbff;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .drop-zone:hover {
-            background: #eef2ff;
-        }
-
-        /* Preview wrapper */
-        .preview-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        /* 🔥 Image container (IMPORTANT FIX) */
-        .img-box {
-            position: relative;
-            display: inline-block;
-        }
-
-        /* Image */
-        .preview-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #eee;
-        }
-
-        /* ❌ Remove button (FIXED POSITION) */
-        .remove-btn {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #ef4444;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 26px;
-            height: 26px;
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 26px;
-        }
-
-        /* Button */
-        .btn-primary {
-            border-radius: 10px;
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            border: none;
-        }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            .card-ui {
-                padding: 18px;
-            }
-        }
-    </style>
-
-    <div class="content mt-4">
-        <div class="container-fluid">
+        <div class="page-container">
 
             <div class="card-ui">
 
@@ -114,47 +25,51 @@
 
                     <input type="hidden" name="id" value="{{ $brand->id }}">
 
-                    <!-- Name -->
-                    <div class="mb-4">
-                        <label class="mb-2">Brand Name</label>
-                        <input type="text" name="name" value="{{ old('name', $brand->name) }}" class="form-control"
-                            placeholder="Enter brand name">
+                    <!-- Brand Name -->
+                    <div class="mb-3">
+                        <label class="mb-1">Brand Name</label>
+
+                        <input type="text"
+                               name="name"
+                               value="{{ old('name', $brand->name) }}"
+                               class="form-control @error('name') is-invalid @enderror"
+                               placeholder="Enter brand name">
+
+                        @error('name')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <!-- Image -->
-                    <div class="mb-4">
-                        <label class="mb-2">Brand Image</label>
+                    <div class="mb-3">
+                        <label class="mb-1">Brand Image</label>
 
-                        <div class="drop-zone" id="dropArea">
+                        <input type="file"
+                               name="image"
+                               id="image"
+                               class="form-control @error('image') is-invalid @enderror">
 
-                            <input type="file" name="image" id="image" hidden>
+                        @error('image')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
 
-                            <!-- Upload text -->
-                            <div id="dropText" style="display:none;">
-                                <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                                <p class="mb-0 fw-semibold">Upload Brand Image</p>
-                                <small class="text-muted">Click or drag & drop</small>
-                            </div>
+                        <!-- Preview -->
+                        <div class="preview-box">
+                            <img id="showImage"
+                                 src="{{ $brand->image ? asset($brand->image) : url('upload/no_image.jpg') }}"
+                                 class="preview-img">
 
-                            <!-- Preview -->
-                            <div class="preview-wrapper" id="previewWrapper">
-
-                                <div class="img-box">
-                                    <img id="preview"
-                                        src="{{ $brand->image ? asset($brand->image) : url('upload/no_image.jpg') }}"
-                                        class="preview-img">
-
-                                    <button type="button" id="removeImage" class="remove-btn">×</button>
-                                </div>
-
-                            </div>
-
+                            <small class="text-muted">Current image</small>
                         </div>
                     </div>
 
-                    <!-- Button -->
-                    <div class="text-end">
-                        <button class="btn btn-primary px-4 py-2">
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{{ route('all.brand') }}" class="btn btn-light">
+                            Cancel
+                        </a>
+
+                        <button class="btn btn-primary">
                             <i class="fas fa-save me-1"></i> Update Brand
                         </button>
                     </div>
@@ -164,71 +79,24 @@
             </div>
 
         </div>
+
     </div>
-@endsection
+</div>
 
 
-@section('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+<!-- Image Preview Script -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-            const dropArea = document.getElementById('dropArea');
-            const fileInput = document.getElementById('image');
-            const preview = document.getElementById('preview');
-            const removeBtn = document.getElementById('removeImage');
-            const dropText = document.getElementById('dropText');
+<script>
+$(document).ready(function() {
+    $('#image').change(function(e) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#showImage').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+});
+</script>
 
-            // Click upload
-            dropArea.addEventListener('click', function(e) {
-                if (e.target !== removeBtn) {
-                    fileInput.click();
-                }
-            });
-
-            // Change image
-            fileInput.addEventListener('change', function(e) {
-                showPreview(e.target.files[0]);
-            });
-
-            // Drag
-            dropArea.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                dropArea.style.background = "#eef2ff";
-            });
-
-            dropArea.addEventListener('dragleave', function() {
-                dropArea.style.background = "#fafbff";
-            });
-
-            dropArea.addEventListener('drop', function(e) {
-                e.preventDefault();
-                dropArea.style.background = "#fafbff";
-
-                let file = e.dataTransfer.files[0];
-                if (file) {
-                    fileInput.files = e.dataTransfer.files;
-                    showPreview(file);
-                }
-            });
-
-            function showPreview(file) {
-                let reader = new FileReader();
-
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                };
-
-                reader.readAsDataURL(file);
-            }
-
-            // Remove image
-            removeBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-
-                fileInput.value = "";
-                preview.src = "{{ url('upload/no_image.jpg') }}";
-            });
-
-        });
-    </script>
 @endsection

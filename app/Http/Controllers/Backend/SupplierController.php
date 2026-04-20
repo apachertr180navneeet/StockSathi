@@ -9,9 +9,33 @@ use App\Models\Customer;
 
 class SupplierController extends Controller
 {
-    public function AllSupplier(){
-        $supplier = Supplier::latest()->get();
-        return view('admin.backend.supplier.all_supplier',compact('supplier'));
+    public function AllSupplier(Request $request)
+    {
+        try {
+            $query = Supplier::query();
+
+            // 🔍 SEARCH
+            if ($request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('email', 'like', '%' . $request->search . '%')
+                    ->orWhere('phone', 'like', '%' . $request->search . '%');
+            }
+
+            $supplier = $query->orderBy('name', 'asc')->paginate(8);
+
+            // ✅ AJAX RESPONSE (IMPORTANT)
+            if ($request->ajax()) {
+                return view('admin.backend.supplier.partials.supplier_table', compact('supplier'))->render();
+            }
+
+            return view('admin.backend.supplier.all_supplier', compact('supplier'));
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
     }
     //End Method 
 

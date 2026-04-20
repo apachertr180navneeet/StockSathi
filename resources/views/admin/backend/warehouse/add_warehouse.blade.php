@@ -41,13 +41,13 @@
         }
     </style>
 
-    <div class="content mt-4">
+    <div class="content mt-3 px-2 px-md-3 px-lg-4">
         <div class="container-fluid">
 
             <div class="card-ui">
 
                 <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="page-header">Add Warehouse</div>
 
                     <a href="{{ route('all.warehouse') }}" class="btn btn-light btn-sm">
@@ -60,56 +60,33 @@
 
                     <div class="row">
 
-                        <!-- Name -->
-                        <div class="col-md-6 mb-3">
-                            <label class="mb-2">Warehouse Name</label>
-                            <input type="text" name="name" value="{{ old('name') }}"
-                                class="form-control @error('name') is-invalid @enderror" placeholder="Enter warehouse name">
-
-                            @error('name')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+                        <div class="col-lg-6 mb-3">
+                            <label>Warehouse Name</label>
+                            <input type="text" name="name" class="form-control">
                         </div>
 
-                        <!-- Email -->
-                        <div class="col-md-6 mb-3">
-                            <label class="mb-2">Warehouse Email</label>
-                            <input type="email" name="email" value="{{ old('email') }}"
-                                class="form-control @error('email') is-invalid @enderror" placeholder="Enter email">
-
-                            @error('email')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+                        <div class="col-lg-6 mb-3">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control">
                         </div>
 
-                        <!-- Phone -->
-                        <div class="col-md-6 mb-3">
-                            <label class="mb-2">Warehouse Phone</label>
-                            <input type="text" name="phone" value="{{ old('phone') }}"
-                                class="form-control @error('phone') is-invalid @enderror" placeholder="Enter phone">
-
-                            @error('phone')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+                        <div class="col-lg-6 mb-3">
+                            <label>Phone</label>
+                            <input type="text" name="phone" class="form-control">
                         </div>
 
-                        <!-- City -->
-                        <div class="col-md-6 mb-3">
-                            <label class="mb-2">Warehouse City</label>
-                            <input type="text" name="city" value="{{ old('city') }}"
-                                class="form-control @error('city') is-invalid @enderror" placeholder="Enter city">
-
-                            @error('city')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+                        <div class="col-lg-6 mb-3">
+                            <label>City</label>
+                            <input type="text" name="city" class="form-control">
                         </div>
 
                     </div>
 
-                    <!-- Submit -->
-                    <div class="text-end mt-3">
-                        <button class="btn btn-primary px-4 py-2">
-                            <i class="fas fa-save me-1"></i> Save Warehouse
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{{ route('all.warehouse') }}" class="btn btn-light">Cancel</a>
+
+                        <button class="btn btn-primary">
+                            Save Warehouse
                         </button>
                     </div>
 

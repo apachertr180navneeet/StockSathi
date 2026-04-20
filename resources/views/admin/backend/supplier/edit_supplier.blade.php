@@ -29,38 +29,46 @@
                         </div><!-- end card header -->
 
                         <div class="card-body">
-                            <form id="myForm" action="{{ route('update.supplier') }}" method="post" class="row g-3"
-                                enctype="multipart/form-data">
+                            <form id="myForm" action="{{ route('update.supplier') }}" method="POST">
                                 @csrf
 
                                 <input type="hidden" name="id" value="{{ $supplier->id }}">
 
-                                <div class="form-group col-md-4">
-                                    <label for="validationDefault01" class="form-label">Supplier Name</label>
-                                    <input type="text" class="form-control" name="name" value="{{ $supplier->name }}">
+                                <div class="row">
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label>Name</label>
+                                        <input type="text" name="name" value="{{ $supplier->name }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label>Email</label>
+                                        <input type="text" name="email" value="{{ $supplier->email }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-6 mb-3">
+                                        <label>Phone</label>
+                                        <input type="text" name="phone" value="{{ $supplier->phone }}"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-12 mb-3">
+                                        <label>Address</label>
+                                        <textarea name="address" class="form-control">{{ $supplier->address }}</textarea>
+                                    </div>
+
                                 </div>
 
-                                <div class="form-group col-md-4">
-                                    <label for="validationDefault01" class="form-label">Supplier Email</label>
-                                    <input type="text" class="form-control" name="email"
-                                        value="{{ $supplier->email }}">
+                                <div class="d-flex justify-content-end gap-2 mt-4">
+                                    <a href="{{ route('all.supplier') }}" class="btn btn-light">Cancel</a>
+
+                                    <button class="btn btn-primary">
+                                        Update Supplier
+                                    </button>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="validationDefault01" class="form-label">Supplier Phone</label>
-                                    <input type="text" class="form-control" name="phone"
-                                        value="{{ $supplier->phone }}">
-                                </div>
-
-                                <div class="form-group col-md-12">
-                                    <label for="validationDefault01" class="form-label">Supplier Address</label>
-                                    <textarea name="address" class="form-control">{{ $supplier->address }}</textarea>
-                                </div>
-
-
-                                <div class="col-12">
-                                    <button class="btn btn-primary" type="submit">Save Change</button>
-                                </div>
                             </form>
                         </div> <!-- end card-body -->
                     </div> <!-- end card-->

@@ -1,130 +1,98 @@
 @extends('admin.admin_master')
 
 @section('admin')
-<style>
-    body {
-        background: #f4f6fb;
-    }
+<link href="{{ asset('backend/assets/css/brand.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 
-    /* 💎 Card */
-    .card-ui {
-        background: #fff;
-        border-radius: 16px;
-        padding: 25px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-    }
-
-    /* Header */
-    .page-header {
-        font-size: 22px;
-        font-weight: 600;
-    }
-
-    /* Input */
-    .form-control {
-        border-radius: 10px;
-        padding: 12px;
-    }
-
-    /* Button */
-    .btn-primary {
-        border-radius: 10px;
-        background: linear-gradient(135deg, #4f46e5, #6366f1);
-        border: none;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-        .card-ui {
-            padding: 18px;
-        }
-    }
-</style>
-
-<div class="content mt-4">
+<div class="content mt-3 px-2 px-md-3 px-lg-4">
     <div class="container-fluid">
 
-        <div class="card-ui">
+        <div class="page-container">
 
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                <div class="page-header">Add Warehouse</div>
+            <div class="card-ui">
 
-                <a href="{{ route('all.warehouse') }}" class="btn btn-light btn-sm">
-                    ← Back
-                </a>
-            </div>
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="page-header">Add Brand</div>
 
-            <form action="{{ route('store.warehouse') }}" method="POST">
-                @csrf
+                    <a href="{{ route('all.brand') }}" class="btn btn-light btn-sm">
+                        ← Back
+                    </a>
+                </div>
 
-                <div class="row">
+                <form action="{{ route('store.brand') }}" method="post" enctype="multipart/form-data">
+                    @csrf
 
-                    <!-- Name -->
-                    <div class="col-md-6 mb-3">
-                        <label class="mb-2">Warehouse Name</label>
-                        <input type="text" name="name"
+                    <!-- Brand Name -->
+                    <div class="mb-3">
+                        <label class="mb-1">Brand Name</label>
+
+                        <input type="text"
+                               name="name"
                                value="{{ old('name') }}"
                                class="form-control @error('name') is-invalid @enderror"
-                               placeholder="Enter warehouse name">
+                               placeholder="Enter brand name">
 
                         @error('name')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <!-- Email -->
-                    <div class="col-md-6 mb-3">
-                        <label class="mb-2">Warehouse Email</label>
-                        <input type="email" name="email"
-                               value="{{ old('email') }}"
-                               class="form-control @error('email') is-invalid @enderror"
-                               placeholder="Enter email">
+                    <!-- Image Upload -->
+                    <div class="mb-3">
+                        <label class="mb-1">Brand Image</label>
 
-                        @error('email')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        <input type="file"
+                               name="image"
+                               id="image"
+                               class="form-control @error('image') is-invalid @enderror">
+
+                        @error('image')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
+
+                        <!-- Preview -->
+                        <div class="preview-box">
+                            <img id="showImage"
+                                 src="{{ url('upload/no_image.jpg') }}"
+                                 class="preview-img">
+
+                            <small class="text-muted">Image preview</small>
+                        </div>
                     </div>
 
-                    <!-- Phone -->
-                    <div class="col-md-6 mb-3">
-                        <label class="mb-2">Warehouse Phone</label>
-                        <input type="text" name="phone"
-                               value="{{ old('phone') }}"
-                               class="form-control @error('phone') is-invalid @enderror"
-                               placeholder="Enter phone">
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{{ route('all.brand') }}" class="btn btn-light">
+                            Cancel
+                        </a>
 
-                        @error('phone')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
+                        <button class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i> Save Brand
+                        </button>
                     </div>
 
-                    <!-- City -->
-                    <div class="col-md-6 mb-3">
-                        <label class="mb-2">Warehouse City</label>
-                        <input type="text" name="city"
-                               value="{{ old('city') }}"
-                               class="form-control @error('city') is-invalid @enderror"
-                               placeholder="Enter city">
+                </form>
 
-                        @error('city')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                </div>
-
-                <!-- Submit -->
-                <div class="text-end mt-3">
-                    <button class="btn btn-primary px-4 py-2">
-                        <i class="fas fa-save me-1"></i> Save Warehouse
-                    </button>
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
 </div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#image').change(function (e) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            $('#showImage').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+});
+</script>
+
 @endsection

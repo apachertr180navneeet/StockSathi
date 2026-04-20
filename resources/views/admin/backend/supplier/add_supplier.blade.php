@@ -2,73 +2,60 @@
 @section('admin')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <div class="content">
+    <div class="content mt-3 px-2 px-md-3 px-lg-4">
+        <div class="container-fluid">
 
-        <!-- Start Content-->
-        <div class="container-xxl">
+            <div class="card-ui">
 
-            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Add Supplier</h4>
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="page-header">Add Supplier</div>
+
+                    <a href="{{ route('all.supplier') }}" class="btn btn-light btn-sm">
+                        ← Back
+                    </a>
                 </div>
 
-                <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
+                <form id="myForm" action="{{ route('store.supplier') }}" method="POST">
+                    @csrf
 
-                        <li class="breadcrumb-item active">Add Supplier</li>
-                    </ol>
-                </div>
-            </div>
+                    <div class="row">
 
-            <!-- Form Validation -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Add Supplier</h5>
-                        </div><!-- end card header -->
+                        <div class="col-lg-6 mb-3">
+                            <label>Name</label>
+                            <input type="text" name="name" class="form-control">
+                        </div>
 
-                        <div class="card-body">
-                            <form id="myForm" action="{{ route('store.supplier') }}" method="post" class="row g-3"
-                                enctype="multipart/form-data">
-                                @csrf
+                        <div class="col-lg-6 mb-3">
+                            <label>Email</label>
+                            <input type="text" name="email" class="form-control">
+                        </div>
 
-                                <div class="form-group col-md-4">
-                                    <label for="validationDefault01" class="form-label">Supplier Name</label>
-                                    <input type="text" class="form-control" name="name">
-                                </div>
+                        <div class="col-lg-6 mb-3">
+                            <label>Phone</label>
+                            <input type="text" name="phone" class="form-control">
+                        </div>
 
-                                <div class="form-group col-md-4">
-                                    <label for="validationDefault01" class="form-label">Supplier Email</label>
-                                    <input type="text" class="form-control" name="email">
-                                </div>
+                        <div class="col-lg-12 mb-3">
+                            <label>Address</label>
+                            <textarea name="address" class="form-control"></textarea>
+                        </div>
 
-                                <div class="col-md-4">
-                                    <label for="validationDefault01" class="form-label">Supplier Phone</label>
-                                    <input type="text" class="form-control" name="phone">
-                                </div>
+                    </div>
 
-                                <div class="form-group col-md-12">
-                                    <label for="validationDefault01" class="form-label">Supplier Address</label>
-                                    <textarea name="address" class="form-control"></textarea>
-                                </div>
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{{ route('all.supplier') }}" class="btn btn-light">Cancel</a>
 
+                        <button class="btn btn-primary">
+                            Save Supplier
+                        </button>
+                    </div>
 
-                                <div class="col-12">
-                                    <button class="btn btn-primary" type="submit">Save Change</button>
-                                </div>
-                            </form>
-                        </div> <!-- end card-body -->
-                    </div> <!-- end card-->
-                </div> <!-- end col -->
-
+                </form>
 
             </div>
 
-
-
-        </div> <!-- container-fluid -->
-
+        </div>
     </div>
 
     <script type="text/javascript">
