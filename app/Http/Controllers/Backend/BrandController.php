@@ -23,7 +23,7 @@ class BrandController extends Controller
                 $query->where('name', 'like', '%' . $request->search . '%');
             }
 
-            $brand = $query->orderBy('name', 'asc')->paginate(10);
+            $brand = $query->orderBy('name', 'asc')->paginate(4);
 
             // ✅ AJAX RESPONSE (IMPORTANT)
             if ($request->ajax()) {
