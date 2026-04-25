@@ -41,5 +41,5 @@
 </div>
 
 <div class="mt-3">
-    {{ $designations->links('vendor.pagination.bootstrap-5') }}
+    {!! $designations->links('pagination::bootstrap-5') !!}
 </div>
