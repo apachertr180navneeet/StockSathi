@@ -327,6 +327,89 @@
                     </div>
                 </li>
 
+                <!-- =======================================
+                     INVENTORY & LOGISTICS
+                ======================================== -->
+                <li class="menu-title">Inventory & Logistics</li>
+
+                <!-- Stock Adjustment -->
+                <li>
+                    <a href="#StockAdj" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.stock.adjustment','add.stock.adjustment','details.stock.adjustment') ? '' : 'collapsed' }}">
+                        <i data-feather="sliders"></i>
+                        <span> Stock Adjustment </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('all.stock.adjustment','add.stock.adjustment','details.stock.adjustment') ? 'show' : '' }}" id="StockAdj">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.stock.adjustment') }}"
+                                   class="tp-link {{ request()->routeIs('all.stock.adjustment') ? 'active' : '' }}">
+                                    All Adjustments
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('add.stock.adjustment') }}"
+                                   class="tp-link {{ request()->routeIs('add.stock.adjustment') ? 'active' : '' }}">
+                                    Add Adjustment
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Batch / Lot Management -->
+                <li>
+                    <a href="#BatchLot" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.batch','add.batch','edit.batch') ? '' : 'collapsed' }}">
+                        <i data-feather="layers"></i>
+                        <span> Batch / Lot </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('all.batch','add.batch','edit.batch') ? 'show' : '' }}" id="BatchLot">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.batch') }}"
+                                   class="tp-link {{ request()->routeIs('all.batch') ? 'active' : '' }}">
+                                    All Batches
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('add.batch') }}"
+                                   class="tp-link {{ request()->routeIs('add.batch') ? 'active' : '' }}">
+                                    Add Batch
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Bin / Rack Management -->
+                <li>
+                    <a href="#BinRack" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.rack','all.bin') ? '' : 'collapsed' }}">
+                        <i data-feather="grid"></i>
+                        <span> Bin / Rack </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('all.rack','all.bin') ? 'show' : '' }}" id="BinRack">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.rack') }}"
+                                   class="tp-link {{ request()->routeIs('all.rack') ? 'active' : '' }}">
+                                    Rack Management
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.bin') }}"
+                                   class="tp-link {{ request()->routeIs('all.bin') ? 'active' : '' }}">
+                                    Bin Management
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <!-- Accounting Manage -->
                 <li>
                     <a href="#Accounting" data-bs-toggle="collapse"

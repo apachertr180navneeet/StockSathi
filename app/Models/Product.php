@@ -14,8 +14,16 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function batches(){
+        return $this->hasMany(ProductBatch::class);
+    }
+
     public function warehouse(){
         return $this->belongsTo(WareHouse::class, 'warehouse_id','id');
+    }
+
+    public function bin(){
+        return $this->belongsTo(Bin::class, 'bin_id','id');
     }
 
     public function brand(){

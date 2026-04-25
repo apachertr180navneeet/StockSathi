@@ -25,6 +25,9 @@ use App\Http\Controllers\Backend\AccountController;
 use App\Http\Controllers\Backend\TaxController;
 use App\Http\Controllers\Backend\ExpenseController;
 use App\Http\Controllers\Backend\FinancialReportController;
+use App\Http\Controllers\Backend\StockAdjustmentController;
+use App\Http\Controllers\Backend\ProductBatchController;
+use App\Http\Controllers\Backend\BinController;
 
 
 Route::get('/', function () {
@@ -262,6 +265,41 @@ Route::controller(TransferController::class)->group(function(){
     Route::get('/delete/transfer/{id}', 'DeleteTransfer')->name('delete.transfer');
     Route::get('/details/transfer/{id}', 'DetailsTransfer')->name('details.transfer'); 
      
+});
+
+
+Route::controller(StockAdjustmentController::class)->group(function(){
+    Route::get('/all/stock/adjustment', 'AllStockAdjustment')->name('all.stock.adjustment');
+    Route::get('/add/stock/adjustment', 'AddStockAdjustment')->name('add.stock.adjustment');
+    Route::post('/store/stock/adjustment', 'StoreStockAdjustment')->name('store.stock.adjustment');
+    Route::get('/details/stock/adjustment/{id}', 'DetailsStockAdjustment')->name('details.stock.adjustment');
+    Route::get('/delete/stock/adjustment/{id}', 'DeleteStockAdjustment')->name('delete.stock.adjustment');
+});
+
+
+Route::controller(ProductBatchController::class)->group(function(){
+    Route::get('/all/batch', 'AllBatch')->name('all.batch');
+    Route::get('/add/batch', 'AddBatch')->name('add.batch');
+    Route::post('/store/batch', 'StoreBatch')->name('store.batch');
+    Route::get('/edit/batch/{id}', 'EditBatch')->name('edit.batch');
+    Route::post('/update/batch', 'UpdateBatch')->name('update.batch');
+    Route::get('/delete/batch/{id}', 'DeleteBatch')->name('delete.batch');
+});
+
+
+Route::controller(BinController::class)->group(function(){
+    Route::get('/all/rack', 'AllRack')->name('all.rack');
+    Route::post('/store/rack', 'StoreRack')->name('store.rack');
+    Route::get('/edit/rack/{id}', 'EditRack')->name('edit.rack');
+    Route::post('/update/rack', 'UpdateRack')->name('update.rack');
+    Route::get('/delete/rack/{id}', 'DeleteRack')->name('delete.rack');
+
+    Route::get('/all/bin', 'AllBin')->name('all.bin');
+    Route::post('/store/bin', 'StoreBin')->name('store.bin');
+    Route::get('/edit/bin/{id}', 'EditBin')->name('edit.bin');
+    Route::post('/update/bin', 'UpdateBin')->name('update.bin');
+    Route::get('/delete/bin/{id}', 'DeleteBin')->name('delete.bin');
+    Route::get('/get/bins/{rack_id}', 'GetBinsByRack')->name('get.bins.by.rack');
 });
 
 
