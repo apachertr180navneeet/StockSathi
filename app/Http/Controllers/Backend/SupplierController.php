@@ -20,7 +20,9 @@ class SupplierController extends Controller
                     ->orWhere('phone', 'like', '%' . $request->search . '%');
             }
 
-            $supplier = $query->orderBy('name', 'asc')->paginate(8);
+            $supplier = $query->withSum('purchases', 'due_amount')
+                ->orderBy('name', 'asc')
+                ->paginate(8);
 
             // ✅ AJAX RESPONSE
             if ($request->ajax()) {

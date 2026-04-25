@@ -7,12 +7,12 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
                 <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">All Purchase</h4>
+                    <h4 class="fs-18 fw-semibold m-0">Purchase Orders</h4>
                 </div>
 
                 <div class="text-end">
                     <ol class="breadcrumb m-0 py-0">
-                        <a href="{{ route('add.purchase') }}" class="btn btn-secondary">Add Purchase</a>
+                        <a href="{{ route('add.purchase.order') }}" class="btn btn-secondary">Add Purchase Order</a>
                     </ol>
                 </div>
             </div>
@@ -23,7 +23,6 @@
                     <div class="card">
 
                         <div class="card-header">
-
                         </div><!-- end card header -->
 
                         <div class="card-body">
@@ -31,11 +30,12 @@
                                 <thead>
                                     <tr>
                                         <th>Sl</th>
-                                        <th>WareHouse</th>
+                                        <th>PO No</th>
+                                        <th>Date</th>
+                                        <th>Supplier</th>
+                                        <th>Warehouse</th>
                                         <th>Status</th>
                                         <th>Grand Total</th>
-                                        <th>Payment</th>
-                                        <th>Created</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -43,37 +43,40 @@
                                     @foreach ($allData as $key => $item)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
-                                            <td>{{ $item['warehouse']['name'] }}</td>
-                                            <td>{{ $item->status }}</td>
-                                            <td>₹{{ $item->grand_total }}</td>
+                                            <td>{{ $item->po_no }}</td>
+                                            <td>{{ $item->date }}</td>
+                                            <td>{{ $item['supplier']['name'] ?? 'N/A' }}</td>
+                                            <td>{{ $item['warehouse']['name'] ?? 'N/A' }}</td>
                                             <td>
-                                                @if($item->payment_status == 'Paid')
-                                                    <span class="badge bg-success">Paid</span>
-                                                @elseif($item->payment_status == 'Partial')
-                                                    <span class="badge bg-warning">Partial</span>
+                                                @if($item->status == 'Draft')
+                                                    <span class="badge bg-warning">Draft</span>
+                                                @elseif($item->status == 'Ordered')
+                                                    <span class="badge bg-primary">Ordered</span>
+                                                @elseif($item->status == 'Received')
+                                                    <span class="badge bg-success">Received</span>
+                                                @elseif($item->status == 'Cancelled')
+                                                    <span class="badge bg-danger">Cancelled</span>
                                                 @else
-                                                    <span class="badge bg-danger">Pending</span>
+                                                    <span class="badge bg-secondary">{{ $item->status }}</span>
                                                 @endif
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</td>
+                                            <td>₹{{ number_format($item->grand_total, 2) }}</td>
                                             <td>
-                                                <a title="Add Payment" href="{{ route('add.vendor.payment', $item->id) }}"
-                                                    class="btn btn-secondary btn-sm"> <span
-                                                        class="mdi mdi-cash-multiple mdi-18px"></span> </a>
-
-                                                <a title="Details" href="{{ route('details.purchase', $item->id) }}"
+                                                <a title="Details" href="{{ route('details.purchase.order', $item->id) }}"
                                                     class="btn btn-info btn-sm"> <span
                                                         class="mdi mdi-eye-circle mdi-18px"></span> </a>
 
-                                                <a title="PDF Invoice" href="{{ route('invoice.purchase', $item->id) }}"
+                                                <a title="PDF Invoice" href="{{ route('invoice.purchase.order', $item->id) }}"
                                                     class="btn btn-primary btn-sm"> <span
                                                         class="mdi mdi-download-circle mdi-18px"></span> </a>
 
-                                                <a title="Edit" href="{{ route('edit.purchase', $item->id) }}"
+                                                @if($item->status != 'Received')
+                                                <a title="Edit" href="{{ route('edit.purchase.order', $item->id) }}"
                                                     class="btn btn-success btn-sm"> <span
                                                         class="mdi mdi-book-edit mdi-18px"></span> </a>
+                                                @endif
 
-                                                <a title="Delete" href="{{ route('delete.purchase', $item->id) }}"
+                                                <a title="Delete" href="{{ route('delete.purchase.order', $item->id) }}"
                                                     class="btn btn-danger btn-sm" id="delete"><span
                                                         class="mdi mdi-delete-circle  mdi-18px"></span></a>
                                             </td>
@@ -87,9 +90,6 @@
                     </div>
                 </div>
             </div>
-
-
-
 
         </div> <!-- container-fluid -->
 

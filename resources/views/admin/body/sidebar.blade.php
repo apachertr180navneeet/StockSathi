@@ -165,12 +165,30 @@
                         <span class="menu-arrow"></span>
                     </a>
 
-                    <div class="collapse {{ request()->routeIs('all.purchase','add.purchase','edit.purchase','all.return.purchase') ? 'show' : '' }}" id="Purchase">
+                    <div class="collapse {{ request()->routeIs('all.purchase','add.purchase','edit.purchase','all.return.purchase','all.purchase.requisition','add.purchase.requisition','edit.purchase.requisition','details.purchase.requisition') ? 'show' : '' }}" id="Purchase">
                         <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.purchase.requisition') }}"
+                                   class="tp-link {{ request()->routeIs('all.purchase.requisition','add.purchase.requisition','edit.purchase.requisition','details.purchase.requisition') ? 'active' : '' }}">
+                                    Purchase Requisition
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.purchase.order') }}"
+                                   class="tp-link {{ request()->routeIs('all.purchase.order','add.purchase.order','edit.purchase.order','details.purchase.order') ? 'active' : '' }}">
+                                    Purchase Orders
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('all.purchase') }}"
                                    class="tp-link {{ request()->routeIs('all.purchase','add.purchase','edit.purchase') ? 'active' : '' }}">
                                     All Purchase
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.vendor.payment') }}"
+                                   class="tp-link {{ request()->routeIs('all.vendor.payment') ? 'active' : '' }}">
+                                    Vendor Payments
                                 </a>
                             </li>
                             <li>

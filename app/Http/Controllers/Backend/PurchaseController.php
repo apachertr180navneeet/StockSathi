@@ -153,8 +153,11 @@ class PurchaseController extends Controller
             }
 
             // Update final total
+            $grandTotalFinal = $grandTotal + ($request->shipping ?? 0) - ($request->discount ?? 0);
             $purchase->update([
-                'grand_total' => $grandTotal + ($request->shipping ?? 0) - ($request->discount ?? 0)
+                'grand_total' => $grandTotalFinal,
+                'due_amount' => $grandTotalFinal,
+                'payment_status' => 'Pending',
             ]);
 
             DB::commit();
@@ -219,7 +222,18 @@ class PurchaseController extends Controller
                 'status'       => $request->status,
                 'note'         => $request->note,
                 'grand_total'  => $request->grand_total,
+                'due_amount'   => $request->grand_total - $purchase->paid_amount,
             ]);
+
+            // Update payment status based on new grand total
+            if ($purchase->due_amount <= 0) {
+                $purchase->payment_status = 'Paid';
+            } elseif ($purchase->paid_amount > 0) {
+                $purchase->payment_status = 'Partial';
+            } else {
+                $purchase->payment_status = 'Pending';
+            }
+            $purchase->save();
 
             // Reverse old stock
             foreach ($purchase->purchaseItems as $item) {

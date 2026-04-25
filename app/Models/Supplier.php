@@ -10,4 +10,14 @@ class Supplier extends Model
     use SoftDeletes;
 
     protected $guarded = [];
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class, 'supplier_id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(VendorPayment::class, 'supplier_id');
+    }
 }

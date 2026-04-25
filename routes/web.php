@@ -126,6 +126,37 @@ Route::controller(PurchaseController::class)->group(function(){
     
 });
 
+Route::controller(App\Http\Controllers\Backend\VendorPaymentController::class)->group(function(){
+    Route::get('/all/vendor/payment', 'AllVendorPayment')->name('all.vendor.payment');
+    Route::get('/add/vendor/payment/{purchase_id?}', 'AddVendorPayment')->name('add.vendor.payment'); 
+    Route::post('/store/vendor/payment', 'StoreVendorPayment')->name('store.vendor.payment'); 
+    Route::get('/delete/vendor/payment/{id}', 'DeleteVendorPayment')->name('delete.vendor.payment');
+});
+
+Route::controller(App\Http\Controllers\Backend\PurchaseRequisitionController::class)->group(function(){
+    Route::get('/all/purchase/requisition', 'AllRequisition')->name('all.purchase.requisition');
+    Route::get('/add/purchase/requisition', 'AddRequisition')->name('add.purchase.requisition'); 
+    Route::post('/store/purchase/requisition', 'StoreRequisition')->name('store.purchase.requisition'); 
+    Route::get('/edit/purchase/requisition/{id}', 'EditRequisition')->name('edit.purchase.requisition');
+    Route::post('/update/purchase/requisition/{id}', 'UpdateRequisition')->name('update.purchase.requisition'); 
+    Route::get('/details/purchase/requisition/{id}', 'DetailsRequisition')->name('details.purchase.requisition'); 
+    Route::get('/invoice/purchase/requisition/{id}', 'InvoiceRequisition')->name('invoice.purchase.requisition');
+    Route::get('/delete/purchase/requisition/{id}', 'DeleteRequisition')->name('delete.purchase.requisition');
+    Route::get('/convert/purchase/requisition/{id}', 'ConvertToPurchase')->name('convert.purchase.requisition');
+});
+
+Route::controller(App\Http\Controllers\Backend\PurchaseOrderController::class)->group(function(){
+    Route::get('/all/purchase/order', 'AllPurchaseOrder')->name('all.purchase.order');
+    Route::get('/add/purchase/order', 'AddPurchaseOrder')->name('add.purchase.order'); 
+    Route::post('/store/purchase/order', 'StorePurchaseOrder')->name('store.purchase.order'); 
+    Route::get('/edit/purchase/order/{id}', 'EditPurchaseOrder')->name('edit.purchase.order');
+    Route::post('/update/purchase/order/{id}', 'UpdatePurchaseOrder')->name('update.purchase.order'); 
+    Route::get('/details/purchase/order/{id}', 'DetailsPurchaseOrder')->name('details.purchase.order'); 
+    Route::get('/invoice/purchase/order/{id}', 'InvoicePurchaseOrder')->name('invoice.purchase.order');
+    Route::get('/delete/purchase/order/{id}', 'DeletePurchaseOrder')->name('delete.purchase.order');
+    Route::get('/convert/purchase/requisition/to/po/{id}', 'ConvertFromRequisition')->name('convert.requisition.to.po');
+});
+
 
 
 Route::controller(ReturnPurchaseController::class)->group(function(){
