@@ -267,23 +267,7 @@
                     </div>
                 </li>
 
-                <li>
-                    <a href="#Delivery" data-bs-toggle="collapse">
-                        <i class="mdi mdi-truck-delivery"></i>
-                        <span> Delivery Manage </span>
-                        <span class="menu-arrow"></span>
-                    </a>
-                    <div class="collapse {{ request()->routeIs('all.delivery','add.delivery','edit.delivery') ? 'show' : '' }}" id="Delivery">
-                        <ul class="nav-second-level">
-                            <li>
-                                <a href="{{ route('all.delivery') }}"
-                                   class="tp-link {{ request()->routeIs('all.delivery','add.delivery','edit.delivery') ? 'active' : '' }}">
-                                    All Deliveries
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+
 
                 <!-- Transfers -->
                 <li>
@@ -404,6 +388,78 @@
                                 <a href="{{ route('all.bin') }}"
                                    class="tp-link {{ request()->routeIs('all.bin') ? 'active' : '' }}">
                                     Bin Management
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Shipment & Delivery -->
+                <li>
+                    <a href="#Delivery" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.delivery','create.delivery','add.delivery','edit.delivery','details.delivery') ? '' : 'collapsed' }}">
+                        <i data-feather="truck"></i>
+                        <span> Delivery Tracking </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('all.delivery','create.delivery','add.delivery','edit.delivery','details.delivery') ? 'show' : '' }}" id="Delivery">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.delivery') }}"
+                                   class="tp-link {{ request()->routeIs('all.delivery') ? 'active' : '' }}">
+                                    All Deliveries
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('create.delivery') }}"
+                                   class="tp-link {{ request()->routeIs('create.delivery','add.delivery') ? 'active' : '' }}">
+                                    Create Delivery
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- HR Management -->
+                <li class="menu-title">HR Management</li>
+                <li>
+                    <a href="#HRManage" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.department','all.designation','all.employee','all.attendance','all.payroll') ? '' : 'collapsed' }}">
+                        <i data-feather="briefcase"></i>
+                        <span> HR Management </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <div class="collapse {{ request()->routeIs('all.department','all.designation','all.employee','all.attendance','all.payroll') ? 'show' : '' }}" id="HRManage">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.department') }}"
+                                   class="tp-link {{ request()->routeIs('all.department') ? 'active' : '' }}">
+                                    Department
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.designation') }}"
+                                   class="tp-link {{ request()->routeIs('all.designation') ? 'active' : '' }}">
+                                    Designation
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.employee') }}"
+                                   class="tp-link {{ request()->routeIs('all.employee') ? 'active' : '' }}">
+                                    Employee
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.attendance') }}"
+                                   class="tp-link {{ request()->routeIs('all.attendance') ? 'active' : '' }}">
+                                    Attendance
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.payroll') }}"
+                                   class="tp-link {{ request()->routeIs('all.payroll') ? 'active' : '' }}">
+                                    Payroll
                                 </a>
                             </li>
                         </ul>

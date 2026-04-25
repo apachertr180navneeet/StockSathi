@@ -28,6 +28,11 @@ use App\Http\Controllers\Backend\FinancialReportController;
 use App\Http\Controllers\Backend\StockAdjustmentController;
 use App\Http\Controllers\Backend\ProductBatchController;
 use App\Http\Controllers\Backend\BinController;
+use App\Http\Controllers\Backend\DepartmentController;
+use App\Http\Controllers\Backend\DesignationController;
+use App\Http\Controllers\Backend\EmployeeController;
+use App\Http\Controllers\Backend\AttendanceController;
+use App\Http\Controllers\Backend\PayrollController;
 
 
 Route::get('/', function () {
@@ -381,6 +386,52 @@ Route::controller(AdminUserController::class)->group(function(){
     Route::controller(FinancialReportController::class)->group(function(){
         Route::get('/report/profit-loss', 'ProfitLoss')->name('report.profit.loss');
         Route::get('/report/ledger', 'LedgerReport')->name('report.ledger');
+    });
+
+    // HR Management Routes
+    Route::controller(DepartmentController::class)->group(function(){
+        Route::get('/all/department', 'AllDepartment')->name('all.department');
+        Route::get('/add/department', 'AddDepartment')->name('add.department');
+        Route::post('/store/department', 'StoreDepartment')->name('store.department');
+        Route::get('/edit/department/{id}', 'EditDepartment')->name('edit.department');
+        Route::post('/update/department', 'UpdateDepartment')->name('update.department');
+        Route::get('/delete/department/{id}', 'DeleteDepartment')->name('delete.department');
+    });
+
+    Route::controller(DesignationController::class)->group(function(){
+        Route::get('/all/designation', 'AllDesignation')->name('all.designation');
+        Route::get('/add/designation', 'AddDesignation')->name('add.designation');
+        Route::post('/store/designation', 'StoreDesignation')->name('store.designation');
+        Route::get('/edit/designation/{id}', 'EditDesignation')->name('edit.designation');
+        Route::post('/update/designation', 'UpdateDesignation')->name('update.designation');
+        Route::get('/delete/designation/{id}', 'DeleteDesignation')->name('delete.designation');
+    });
+
+    Route::controller(EmployeeController::class)->group(function(){
+        Route::get('/all/employee', 'AllEmployee')->name('all.employee');
+        Route::get('/add/employee', 'AddEmployee')->name('add.employee');
+        Route::post('/store/employee', 'StoreEmployee')->name('store.employee');
+        Route::get('/edit/employee/{id}', 'EditEmployee')->name('edit.employee');
+        Route::post('/update/employee', 'UpdateEmployee')->name('update.employee');
+        Route::get('/delete/employee/{id}', 'DeleteEmployee')->name('delete.employee');
+        Route::get('/details/employee/{id}', 'DetailsEmployee')->name('details.employee');
+    });
+
+    Route::controller(AttendanceController::class)->group(function(){
+        Route::get('/all/attendance', 'AllAttendance')->name('all.attendance');
+        Route::get('/add/attendance', 'AddAttendance')->name('add.attendance');
+        Route::post('/store/attendance', 'StoreAttendance')->name('store.attendance');
+        Route::get('/edit/attendance/{id}', 'EditAttendance')->name('edit.attendance');
+        Route::post('/update/attendance', 'UpdateAttendance')->name('update.attendance');
+        Route::get('/delete/attendance/{id}', 'DeleteAttendance')->name('delete.attendance');
+    });
+
+    Route::controller(PayrollController::class)->group(function(){
+        Route::get('/all/payroll', 'AllPayroll')->name('all.payroll');
+        Route::get('/add/payroll', 'AddPayroll')->name('add.payroll');
+        Route::post('/store/payroll', 'StorePayroll')->name('store.payroll');
+        Route::get('/details/payroll/{id}', 'DetailsPayroll')->name('details.payroll');
+        Route::get('/delete/payroll/{id}', 'DeletePayroll')->name('delete.payroll');
     });
 
 });
