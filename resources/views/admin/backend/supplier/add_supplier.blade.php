@@ -2,19 +2,18 @@
 @section('admin')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <div class="content mt-3 px-2 px-md-3 px-lg-4">
-        <div class="container-fluid">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-            <div class="card-ui">
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">Add Supplier</h4>
+            <a href="{{ route('all.supplier') }}" class="btn btn-dark btn-sm">Back</a>
+        </div>
 
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="page-header">Add Supplier</div>
-
-                    <a href="{{ route('all.supplier') }}" class="btn btn-light btn-sm">
-                        ← Back
-                    </a>
-                </div>
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
 
                 <form id="myForm" action="{{ route('store.supplier') }}" method="POST">
                     @csrf
@@ -54,9 +53,10 @@
                 </form>
 
             </div>
-
         </div>
+
     </div>
+</div>
 
     <script type="text/javascript">
         $(document).ready(function() {

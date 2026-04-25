@@ -1,22 +1,18 @@
 @extends('admin.admin_master')
 @section('admin')
 
-<div class="content d-flex flex-column flex-column-fluid">
-    <div class="d-flex flex-column-fluid">
-        <div class="container-fluid my-0">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h2 class="fs-22 fw-semibold m-0">Add Product</h2>
-                </div>
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">Add Product</h4>
+            <a href="{{ route('all.product') }}" class="btn btn-dark btn-sm">Back</a>
+        </div>
 
-                <div class="text-end">
-                    <a href="{{ route('all.product') }}" class="btn btn-dark">Back</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
 
                     <form action="{{ route('store.product') }}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -49,6 +45,33 @@
                                         @error('code')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
+                                    </div>
+
+                                    <!-- Barcode Symbology -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Barcode Symbology:</label>
+                                        <select name="barcode_symbology" class="form-control form-select">
+                                            <option value="C128" {{ old('barcode_symbology') == 'C128' ? 'selected' : '' }}>Code 128</option>
+                                            <option value="C39" {{ old('barcode_symbology') == 'C39' ? 'selected' : '' }}>Code 39</option>
+                                            <option value="EAN13" {{ old('barcode_symbology') == 'EAN13' ? 'selected' : '' }}>EAN-13</option>
+                                            <option value="UPCA" {{ old('barcode_symbology') == 'UPCA' ? 'selected' : '' }}>UPC-A</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Batch No -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Batch No:</label>
+                                        <input type="text" name="batch_no"
+                                            value="{{ old('batch_no') }}"
+                                            class="form-control" placeholder="Enter Batch/Lot Number">
+                                    </div>
+
+                                    <!-- Expiry Date -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Expiry Date:</label>
+                                        <input type="date" name="expiry_date"
+                                            value="{{ old('expiry_date') }}"
+                                            class="form-control">
                                     </div>
 
                                     <!-- Category -->
@@ -201,7 +224,6 @@
             </div>
 
         </div>
-    </div>
 </div>
 
 @endsection

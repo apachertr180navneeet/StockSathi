@@ -1,25 +1,18 @@
 @extends('admin.admin_master')
 @section('admin')
 
-<div class="content"> 
-    <!-- Start Content-->
-    <div class="container-xxl">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-        <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-            <div class="flex-grow-1">
-                <h4 class="fs-18 fw-semibold m-0"> Product Details</h4>
-            </div> 
-            
-            <div class="text-end">
-                <ol class="breadcrumb m-0 py-0">
-                     <a href="{{ route('all.product') }}" class="btn btn-dark">Back</a>
-                </ol>
-            </div>
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">Product Details</h4>
+            <a href="{{ route('all.product') }}" class="btn btn-dark btn-sm">Back</a>
         </div>
 
-    <hr>
-    <div class="card">
-        <div class="card-body">
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
             <div class="row">
             {{-- // Product Image     --}}
                 <div class="col-md-4">
@@ -32,6 +25,20 @@
        @endforelse     
 
     </div> 
+
+    @if($product->code)
+    <h5 class="mt-4 mb-3">Product Barcode</h5>
+    <div class="card p-3 border-0 shadow-sm" style="background: #f8f9fa;">
+        <div class="text-center">
+            <div class="mb-2 d-flex justify-content-center">
+                {!! DNS1D::getBarcodeHTML($product->code, $product->barcode_symbology ?? 'C128', 2, 60) !!}
+            </div>
+            <span class="fw-bold fs-16">{{ $product->code }}</span>
+            <br>
+            <small class="text-muted">Symbology: {{ $product->barcode_symbology ?? 'C128' }}</small>
+        </div>
+    </div>
+    @endif
         </div>
 
         {{-- // Product Details Data     --}}
@@ -40,6 +47,18 @@
         <ul class="list-group">
             <li class="list-group-item"><strong>Name:</strong> {{ $product->name }} </li>
             <li class="list-group-item"><strong>Code:</strong> {{ $product->code }} </li>
+            <li class="list-group-item"><strong>Batch/Lot No:</strong> {{ $product->batch_no ?? 'N/A' }} </li>
+            <li class="list-group-item"><strong>Expiry Date:</strong> 
+                @if($product->expiry_date)
+                    @if(strtotime($product->expiry_date) < time())
+                        <span class="badge text-bg-danger">{{ date('d M Y', strtotime($product->expiry_date)) }} (Expired)</span>
+                    @else
+                        <span class="badge text-bg-success">{{ date('d M Y', strtotime($product->expiry_date)) }}</span>
+                    @endif
+                @else
+                    N/A
+                @endif
+            </li>
             <li class="list-group-item"><strong>Warehouse:</strong> {{ $product->warehouse->name }} </li>
             <li class="list-group-item"><strong>Supplier:</strong> {{ $product->supplier->name }} </li>
             <li class="list-group-item"><strong>Category:</strong> {{ $product->category->category_name }} </li>
@@ -58,9 +77,8 @@
 
 
             </div> 
+            </div>
         </div>
-
-    </div>
 
     </div>
 </div> 

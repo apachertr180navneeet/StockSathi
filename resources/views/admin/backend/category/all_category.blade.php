@@ -28,29 +28,21 @@
     }
 </style>
 
-<div class="content">
-    <div class="container-xxl">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-        <!-- SAME HEADER STYLE AS BRAND -->
-        <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
-
-            <h4 class="fs-18 fw-semibold m-0">All Product Category</h4>
-
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">All Product Category</h4>
             <button type="button" class="btn btn-primary btn-sm"
                 data-bs-toggle="modal" data-bs-target="#standard-modal">
                 + Add Category
             </button>
-
         </div>
 
-        <!-- SAME CARD + TABLE STRUCTURE -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header"></div>
-
-                    <div class="card-body">
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
                         <div class="table-responsive">
                             <table id="datatable" class="table table-bordered nowrap w-100">
 
@@ -92,9 +84,6 @@
 
                             </table>
                         </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 

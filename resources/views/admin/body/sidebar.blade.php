@@ -36,6 +36,15 @@
 
                 <li class="menu-title">Pages</li>
 
+                <!-- POS -->
+                <li>
+                    <a href="{{ route('pos.index') }}"
+                       class="tp-link {{ request()->routeIs('pos.index') ? 'active' : '' }}">
+                        <i data-feather="monitor"></i>
+                        <span> POS </span>
+                    </a>
+                </li>
+
                 <!-- Brand -->
                 <li>
                     <a href="#Brand" data-bs-toggle="collapse"
@@ -177,14 +186,26 @@
                 <!-- Sale -->
                 <li>
                     <a href="#Sale" data-bs-toggle="collapse"
-                       class="{{ request()->routeIs('all.sale','add.sale','edit.sale','all.sale.return') ? '' : 'collapsed' }}">
+                       class="{{ request()->routeIs('all.sale','add.sale','edit.sale','all.sale.return','all.quotation','add.quotation','edit.quotation','details.quotation') ? '' : 'collapsed' }}">
                         <i data-feather="dollar-sign"></i>
                         <span> Sale Manage </span>
                         <span class="menu-arrow"></span>
                     </a>
 
-                    <div class="collapse {{ request()->routeIs('all.sale','add.sale','edit.sale','all.sale.return') ? 'show' : '' }}" id="Sale">
+                    <div class="collapse {{ request()->routeIs('all.sale','add.sale','edit.sale','all.sale.return','all.quotation','add.quotation','edit.quotation','details.quotation','all.sales.order','add.sales.order','edit.sales.order','details.sales.order') ? 'show' : '' }}" id="Sale">
                         <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.sales.order') }}"
+                                   class="tp-link {{ request()->routeIs('all.sales.order','add.sales.order','edit.sales.order','details.sales.order') ? 'active' : '' }}">
+                                    Sales Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.quotation') }}"
+                                   class="tp-link {{ request()->routeIs('all.quotation','add.quotation','edit.quotation','details.quotation') ? 'active' : '' }}">
+                                    Quotations
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('all.sale') }}"
                                    class="tp-link {{ request()->routeIs('all.sale','add.sale','edit.sale') ? 'active' : '' }}">
@@ -228,6 +249,24 @@
                     </div>
                 </li>
 
+                <li>
+                    <a href="#Delivery" data-bs-toggle="collapse">
+                        <i class="mdi mdi-truck-delivery"></i>
+                        <span> Delivery Manage </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse {{ request()->routeIs('all.delivery','add.delivery','edit.delivery') ? 'show' : '' }}" id="Delivery">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.delivery') }}"
+                                   class="tp-link {{ request()->routeIs('all.delivery','add.delivery','edit.delivery') ? 'active' : '' }}">
+                                    All Deliveries
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <!-- Transfers -->
                 <li>
                     <a href="#Transfers" data-bs-toggle="collapse"
@@ -264,6 +303,71 @@
                                 <a href="{{ route('all.report') }}"
                                    class="tp-link {{ request()->routeIs('all.report') ? 'active' : '' }}">
                                     All Reports
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                <!-- Role & Permission -->
+                <li class="menu-title">Role & Permission</li>
+                <li>
+                    <a href="#RolePermission" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.permission','all.roles','add.roles.permission','all.roles.permission') ? '' : 'collapsed' }}">
+                        <i data-feather="shield"></i>
+                        <span> Role & Permission </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <div class="collapse {{ request()->routeIs('all.permission','all.roles','add.roles.permission','all.roles.permission') ? 'show' : '' }}" id="RolePermission">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.permission') }}"
+                                   class="tp-link {{ request()->routeIs('all.permission') ? 'active' : '' }}">
+                                    All Permission
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.roles') }}"
+                                   class="tp-link {{ request()->routeIs('all.roles') ? 'active' : '' }}">
+                                    All Roles
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('add.roles.permission') }}"
+                                   class="tp-link {{ request()->routeIs('add.roles.permission') ? 'active' : '' }}">
+                                    Roles in Permission
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.roles.permission') }}"
+                                   class="tp-link {{ request()->routeIs('all.roles.permission') ? 'active' : '' }}">
+                                    All Roles in Permission
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- Admin User -->
+                <li>
+                    <a href="#AdminUser" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.admin','add.admin') ? '' : 'collapsed' }}">
+                        <i data-feather="users"></i>
+                        <span> Admin Manage </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <div class="collapse {{ request()->routeIs('all.admin','add.admin') ? 'show' : '' }}" id="AdminUser">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.admin') }}"
+                                   class="tp-link {{ request()->routeIs('all.admin') ? 'active' : '' }}">
+                                    All Admin
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('add.admin') }}"
+                                   class="tp-link {{ request()->routeIs('add.admin') ? 'active' : '' }}">
+                                    Add Admin
                                 </a>
                             </li>
                         </ul>

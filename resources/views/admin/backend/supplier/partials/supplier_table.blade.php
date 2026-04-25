@@ -1,41 +1,40 @@
-<div class="row g-3">
-
-@foreach ($supplier as $item)
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-
-        <div class="grid-card">
-
-            <div class="d-flex justify-content-between">
-
-                <div>
-                    <div class="fw-semibold">{{ $item->name }}</div>
-                    <small class="text-muted">{{ $item->email }}</small>
-                </div>
-
-                <div class="d-flex gap-1">
-                    <a href="{{ route('edit.supplier', $item->id) }}" class="action-btn">
-                        <i class="fa fa-pen"></i>
-                    </a>
-
-                    <a href="{{ route('delete.supplier', $item->id) }}" class="action-btn">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </div>
-
-            </div>
-
-            <div class="mt-2 small text-muted">
-                📞 {{ $item->phone }} <br>
-                📍 {{ \Illuminate\Support\Str::limit($item->address, 40) }}
-            </div>
-
-        </div>
-
-    </div>
-@endforeach
-
+<div class="table-responsive">
+    <table class="table table-bordered nowrap w-100">
+        <thead>
+            <tr>
+                <th>Sl</th>
+                <th>Supplier Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($supplier as $key => $item)
+                <tr>
+                    <td>{{ $supplier->firstItem() + $key }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->phone }}</td>
+                    <td title="{{ $item->address }}">
+                        {{ \Illuminate\Support\Str::limit($item->address, 30, '...') }}
+                    </td>
+                    <td>
+                        <a href="{{ route('edit.supplier', $item->id) }}" class="btn btn-success btn-sm">Edit</a>
+                        <button class="btn btn-danger btn-sm deleteBtn" data-id="{{ $item->id }}">Delete</button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">No Supplier Found</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 
-<div class="pagination-wrapper">
+{{-- Pagination --}}
+<div class="mt-3">
     {!! $supplier->links('pagination::bootstrap-5') !!}
 </div>

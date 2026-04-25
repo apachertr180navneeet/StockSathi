@@ -114,15 +114,20 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td class="py-3">Discount</td>
-                                                                        <td class="py-3" id="displayDiscount">TK 0.00</td>
+                                                                        <td class="py-3" id="displayDiscount">? 0.00</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="py-3">Order Tax</td>
+                                                                        <td class="py-3" id="taxDisplay">? 0.00</td>
+                                                                        <input type="hidden" name="tax_amount" value="0">
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="py-3">Shipping</td>
-                                                                        <td class="py-3" id="shippingDisplay">TK 0.00</td>
+                                                                        <td class="py-3" id="shippingDisplay">? 0.00</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="py-3 text-primary">Grand Total</td>
-                                                                        <td class="py-3 text-primary" id="grandTotal">TK
+                                                                        <td class="py-3 text-primary" id="grandTotal">?
                                                                             0.00</td>
                                                                         <input type="hidden" name="grand_total">
                                                                     </tr>
@@ -146,7 +151,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="py-3">Due Amount</td>
-                                                                        <td class="py-3" id="dueAmount">TK 0.00</td>
+                                                                        <td class="py-3" id="dueAmount">? 0.00</td>
                                                                         <input type="hidden" name="due_amount">
                                                                     </tr>
 
@@ -161,12 +166,17 @@
 
 
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <label class="form-label">Discount: </label>
                                                 <input type="number" id="inputDiscount" name="discount"
                                                     class="form-control" value="0.00">
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Order Tax (%): </label>
+                                                <input type="number" id="inputTax" name="tax_rate"
+                                                    class="form-control" value="0.00">
+                                            </div>
+                                            <div class="col-md-3">
                                                 <label class="form-label">Shipping: </label>
                                                 <input type="number" id="inputShipping" name="shipping"
                                                     class="form-control" value="0.00">

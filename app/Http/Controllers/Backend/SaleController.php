@@ -49,6 +49,8 @@ class SaleController extends Controller
                 'customer_id' => $request->customer_id,
                 'discount' => $request->discount ?? 0,
                 'shipping' => $request->shipping ?? 0,
+                'tax_rate' => $request->tax_rate ?? 0,
+                'tax_amount' => $request->tax_amount ?? 0,
                 'status' => $request->status,
                 'note' => $request->note,
                 'grand_total' => 0,
@@ -82,7 +84,7 @@ class SaleController extends Controller
                 $product->decrement('product_qty', $productData['quantity']); 
             }
 
-            $sales->update(['grand_total' => $grandTotal + $request->shipping - $request->discount]);
+            $sales->update(['grand_total' => ($grandTotal - $request->discount) + $request->tax_amount + $request->shipping]);
 
             DB::commit();
 
@@ -121,6 +123,8 @@ class SaleController extends Controller
             'customer_id' => $request->customer_id,
             'discount' => $request->discount ?? 0,
             'shipping' => $request->shipping ?? 0,
+            'tax_rate' => $request->tax_rate ?? 0,
+            'tax_amount' => $request->tax_amount ?? 0,
             'status' => $request->status,
             'note' => $request->note,
             'grand_total' => $request->grand_total,

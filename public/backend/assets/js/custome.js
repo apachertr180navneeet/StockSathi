@@ -152,10 +152,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         let discount = parseFloat(document.getElementById("inputDiscount")?.value) || 0;
+        let taxRate = parseFloat(document.getElementById("inputTax")?.value) || 0;
         let shipping = parseFloat(document.getElementById("inputShipping")?.value) || 0;
 
-        total = total - discount + shipping;
+        let subtotal = total - discount;
+        let taxAmount = (subtotal * taxRate) / 100;
+
+        total = subtotal + taxAmount + shipping;
         if (total < 0) total = 0;
+
+        document.getElementById("displayDiscount").innerText = "TK " + discount.toFixed(2);
+        document.getElementById("taxDisplay").innerText = "TK " + taxAmount.toFixed(2);
+        document.getElementById("shippingDisplay").innerText = "TK " + shipping.toFixed(2);
+        document.querySelector("input[name='tax_amount']").value = taxAmount.toFixed(2);
 
         document.getElementById("grandTotal").innerText = total.toFixed(2);
         document.querySelector("input[name='grand_total']").value = total.toFixed(2);
@@ -183,11 +192,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function bindStaticEvents() {
 
         let discount = document.getElementById("inputDiscount");
+        let tax = document.getElementById("inputTax");
         let shipping = document.getElementById("inputShipping");
         let paid = document.querySelector("input[name='paid_amount']");
         let full = document.querySelector("input[name='full_paid']");
 
         if (discount) discount.oninput = updateGrandTotal;
+        if (tax) tax.oninput = updateGrandTotal;
         if (shipping) shipping.oninput = updateGrandTotal;
         if (paid) paid.oninput = updateDueAmount;
         if (full) full.oninput = updateDueAmount;

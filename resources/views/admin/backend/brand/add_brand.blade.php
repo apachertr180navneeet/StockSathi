@@ -1,23 +1,18 @@
 @extends('admin.admin_master')
 
 @section('admin')
-<link href="{{ asset('backend/assets/css/brand.css') }}" rel="stylesheet" type="text/css" id="app-style" />
-
-<div class="content mt-3 px-2 px-md-3 px-lg-4">
+<div class="content mt-3 px-3">
     <div class="container-fluid">
 
-        <div class="page-container">
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">Add Brand</h4>
+            <a href="{{ route('all.brand') }}" class="btn btn-dark btn-sm">Back</a>
+        </div>
 
-            <div class="card-ui">
-
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="page-header">Add Brand</div>
-
-                    <a href="{{ route('all.brand') }}" class="btn btn-light btn-sm">
-                        ← Back
-                    </a>
-                </div>
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
 
                 <form action="{{ route('store.brand') }}" method="post" enctype="multipart/form-data">
                     @csrf
@@ -74,7 +69,6 @@
                 </form>
 
             </div>
-
         </div>
 
     </div>

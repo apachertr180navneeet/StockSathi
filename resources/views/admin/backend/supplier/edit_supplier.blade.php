@@ -2,33 +2,18 @@
 @section('admin')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <div class="content">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-        <!-- Start Content-->
-        <div class="container-xxl">
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">Edit Supplier</h4>
+            <a href="{{ route('all.supplier') }}" class="btn btn-dark btn-sm">Back</a>
+        </div>
 
-            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Edit Supplier</h4>
-                </div>
-
-                <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-
-                        <li class="breadcrumb-item active">Edit Supplier</li>
-                    </ol>
-                </div>
-            </div>
-
-            <!-- Form Validation -->
-            <div class="row">
-                <div class="col-xl-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Edit Supplier</h5>
-                        </div><!-- end card header -->
-
-                        <div class="card-body">
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
                             <form id="myForm" action="{{ route('update.supplier') }}" method="POST">
                                 @csrf
 
@@ -70,18 +55,11 @@
                                 </div>
 
                             </form>
-                        </div> <!-- end card-body -->
-                    </div> <!-- end card-->
-                </div> <!-- end col -->
-
-
             </div>
-
-
-
-        </div> <!-- container-fluid -->
+        </div>
 
     </div>
+</div>
 
     <script type="text/javascript">
         $(document).ready(function() {

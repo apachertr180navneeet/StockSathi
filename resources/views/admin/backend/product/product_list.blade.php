@@ -41,28 +41,20 @@
     }
 </style>
 
-<div class="content">
-    <div class="container-xxl">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-        <!-- SAME HEADER AS BRAND -->
-        <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
-
-            <h4 class="fs-18 fw-semibold m-0">All Product</h4>
-
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">All Product</h4>
             <a href="{{ route('add.product') }}" class="btn btn-primary btn-sm">
                 + Add Product
             </a>
-
         </div>
 
-        <!-- TABLE -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header"></div>
-
-                    <div class="card-body">
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
                         <div class="table-responsive">
                             <table id="datatable" class="table table-bordered nowrap w-100">
 
@@ -71,6 +63,9 @@
                                         <th>Sl</th>
                                         <th>Image</th>
                                         <th>Name</th>
+                                        <th>Barcode</th>
+                                        <th>Batch/Lot</th>
+                                        <th>Expiry</th>
                                         <th>Warehouse</th>
                                         <th>Price</th>
                                         <th>Stock</th>
@@ -91,8 +86,31 @@
                                             </td>
 
                                             <td>{{ $item->name }}</td>
+                                            
+                                            <td style="text-align: center;">
+                                                @if($item->code)
+                                                    <div style="margin-bottom: 2px;">
+                                                    {!! DNS1D::getBarcodeHTML($item->code, $item->barcode_symbology ?? 'C128', 1.2, 33) !!}
+                                                    </div>
+                                                    <span style="font-size: 10px;">{{ $item->code }}</span>
+                                                @endif
+                                            </td>
 
-                                            <td>{{ $item['warehouse']['name'] }}</td>
+                                            <td>{{ $item->batch_no ?? 'N/A' }}</td>
+                                            
+                                            <td>
+                                                @if($item->expiry_date)
+                                                    @if(strtotime($item->expiry_date) < time())
+                                                        <span class="badge text-bg-danger">{{ date('d M Y', strtotime($item->expiry_date)) }}</span>
+                                                    @else
+                                                        {{ date('d M Y', strtotime($item->expiry_date)) }}
+                                                    @endif
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
+
+                                            <td>{{ $item['warehouse']['name'] ?? 'N/A' }}</td>
 
                                             <td>₹{{ $item->price }}</td>
 
@@ -124,9 +142,6 @@
 
                             </table>
                         </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 

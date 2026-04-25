@@ -28,27 +28,20 @@
     }
 </style>
 
-<div class="content">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-    <div class="container-xxl">
-
-        <!-- Header -->
-        <div class="py-3 d-flex justify-content-between align-items-center flex-wrap">
-            <h4 class="fs-18 fw-semibold m-0">All Customer</h4>
-
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">All Customer</h4>
             <a href="{{ route('add.customer') }}" class="btn btn-primary btn-sm">
                 + Add Customer
             </a>
         </div>
 
-        <!-- Table -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-
-                    <div class="card-header"></div>
-
-                    <div class="card-body">
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
                         <div class="table-responsive">
                             <table id="datatable" class="table table-bordered nowrap w-100">
                                 <thead>
@@ -88,14 +81,10 @@
 
                             </table>
                         </div>
-                    </div>
-
-                </div>
             </div>
         </div>
 
     </div>
-
 </div>
 
 @endsection

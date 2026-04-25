@@ -46,13 +46,13 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $item['warehouse']['name'] }}</td>
                                             <td>{{ $item->status }}</td>
-                                            <td>${{ $item->grand_total }}</td>
+                                            <td>₹{{ $item->grand_total }}</td>
                                             <td>
-                                                <h4> <span class="badge text-bg-info">${{ $item->paid_amount }} </span>
+                                                <h4> <span class="badge text-bg-info">₹{{ $item->paid_amount }} </span>
                                                 </h4>
                                             </td>
                                             <td>
-                                                <h4> <span class="badge text-bg-secondary">${{ $item->due_amount }} </span>
+                                                <h4> <span class="badge text-bg-secondary">₹{{ $item->due_amount }} </span>
                                                 </h4>
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</td>
@@ -60,6 +60,10 @@
                                                 <a title="Details" href="{{ route('details.sale', $item->id) }}"
                                                     class="btn btn-info btn-sm"> <span
                                                         class="mdi mdi-eye-circle mdi-18px"></span> </a>
+
+                                                <a title="Create Delivery" href="{{ route('add.delivery', $item->id) }}"
+                                                    class="btn btn-secondary btn-sm"> <span
+                                                        class="mdi mdi-truck-delivery mdi-18px"></span> </a>
 
                                                 <a title="PDF Invoice" href="{{ route('invoice.sale', $item->id) }}"
                                                     class="btn btn-primary btn-sm"> <span

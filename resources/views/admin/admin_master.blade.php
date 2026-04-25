@@ -38,15 +38,20 @@
             margin: 0px 13px;
         }
 
-        .leftside-menu {
+        .app-sidebar-menu {
             position: fixed;
             width: 250px;
             z-index: 100;
             /* LOWER */
+            transition: transform 0.3s ease-in-out;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
         }
 
         .content-page {
             margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
         }
 
         @media (max-width: 991px) {
@@ -55,14 +60,13 @@
                 margin-left: 0 !important;
             }
 
-            .leftside-menu {
+            .app-sidebar-menu {
                 transform: translateX(-100%);
-                transition: 0.3s;
                 z-index: 999;
                 /* ONLY when open */
             }
 
-            body.sidebar-open .leftside-menu {
+            body.sidebar-open .app-sidebar-menu {
                 transform: translateX(0);
             }
         }
@@ -72,8 +76,16 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(3px);
             z-index: 150;
             display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        body.sidebar-open .sidebar-overlay {
+            display: block;
+            opacity: 1;
         }
 
         body.sidebar-open .sidebar-overlay {
@@ -130,8 +142,8 @@
     </div>
     <!-- Begin page -->
     <div id="app-layout">
-
-
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay"></div>
         <!-- Topbar Start -->
         @include('admin.body.header')
         <!-- end Topbar -->
@@ -224,6 +236,33 @@
             setTimeout(() => {
                 loader.style.display = "none";
             }, 300);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.querySelector('.button-toggle-menu');
+            const body = document.body;
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            if(toggleButton) {
+                toggleButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    body.classList.toggle('sidebar-open');
+                });
+            }
+
+            if(overlay) {
+                overlay.addEventListener('click', function() {
+                    body.classList.remove('sidebar-open');
+                });
+            }
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 991) {
+                    body.classList.remove('sidebar-open');
+                }
+            });
         });
     </script>
 

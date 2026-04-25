@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\WareHouseController;
 use App\Http\Controllers\Backend\SupplierController;
+use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\PurchaseController;
 use App\Http\Controllers\Backend\ReturnPurchaseController;
@@ -13,7 +14,13 @@ use App\Http\Controllers\Backend\SaleController;
 use App\Http\Controllers\Backend\SaleReturnController;
 use App\Http\Controllers\Backend\TransferController;
 use App\Http\Controllers\Backend\ReportController;
+use App\Http\Controllers\Backend\QuotationController;
+use App\Http\Controllers\Backend\PosController;
+use App\Http\Controllers\Backend\SalesOrderController;
+use App\Http\Controllers\Backend\DeliveryController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\PermissionController;
+use App\Http\Controllers\Backend\AdminUserController;
 
 
 Route::get('/', function () {
@@ -74,8 +81,8 @@ Route::controller(SupplierController::class)->group(function(){
 });
 
 
-Route::controller(SupplierController::class)->group(function(){
-    Route::get('/all/customer', 'AllCustomer')->name('all.customer'); 
+Route::controller(CustomerController::class)->group(function(){
+    Route::get('/all/customer', 'AllCustomer')->name('all.customer');
     Route::get('/add/customer', 'AddCustomer')->name('add.customer');
     Route::post('/store/customer', 'StoreCustomer')->name('store.customer');
     Route::get('/edit/customer/{id}', 'EditCustomer')->name('edit.customer');
@@ -148,6 +155,46 @@ Route::controller(SaleController::class)->group(function(){
     
 });
 
+Route::controller(QuotationController::class)->group(function(){
+    Route::get('/all/quotation', 'AllQuotation')->name('all.quotation');
+    Route::get('/add/quotation', 'AddQuotation')->name('add.quotation');
+    Route::post('/store/quotation', 'StoreQuotation')->name('store.quotation');
+    Route::get('/edit/quotation/{id}', 'EditQuotation')->name('edit.quotation');
+    Route::post('/update/quotation/{id}', 'UpdateQuotation')->name('update.quotation');
+    Route::get('/delete/quotation/{id}', 'DeleteQuotation')->name('delete.quotation');
+    Route::get('/details/quotation/{id}', 'DetailsQuotation')->name('details.quotation');
+    Route::get('/invoice/quotation/{id}', 'InvoiceQuotation')->name('invoice.quotation');
+    Route::get('/convert/quotation/{id}', 'ConvertToSale')->name('convert.quotation');
+});
+
+Route::controller(PosController::class)->group(function(){
+    Route::get('/pos', 'PosIndex')->name('pos.index');
+    Route::get('/pos/products', 'GetProducts')->name('pos.products');
+    Route::post('/pos/store', 'StorePos')->name('pos.store');
+    Route::get('/pos/receipt/{id}', 'PosReceipt')->name('pos.receipt');
+});
+
+Route::controller(SalesOrderController::class)->group(function(){
+    Route::get('/all/sales/order', 'AllSalesOrder')->name('all.sales.order'); 
+    Route::get('/add/sales/order', 'AddSalesOrder')->name('add.sales.order');
+    Route::post('/store/sales/order', 'StoreSalesOrder')->name('store.sales.order');
+    Route::get('/edit/sales/order/{id}', 'EditSalesOrder')->name('edit.sales.order');
+    Route::post('/update/sales/order/{id}', 'UpdateSalesOrder')->name('update.sales.order');
+    Route::get('/delete/sales/order/{id}', 'DeleteSalesOrder')->name('delete.sales.order');
+    Route::get('/details/sales/order/{id}', 'DetailsSalesOrder')->name('details.sales.order'); 
+    Route::get('/invoice/sales/order/{id}', 'InvoiceSalesOrder')->name('invoice.sales.order');
+    Route::get('/convert/sales/order/{id}', 'ConvertToSale')->name('convert.sales.order');
+});
+
+Route::controller(DeliveryController::class)->group(function(){
+    Route::get('/all/delivery', 'AllDelivery')->name('all.delivery');
+    Route::get('/add/delivery/{sale_id}', 'AddDelivery')->name('add.delivery');
+    Route::post('/store/delivery', 'StoreDelivery')->name('store.delivery');
+    Route::get('/edit/delivery/{id}', 'EditDelivery')->name('edit.delivery');
+    Route::post('/update/delivery', 'UpdateDelivery')->name('update.delivery');
+    Route::get('/delete/delivery/{id}', 'DeleteDelivery')->name('delete.delivery');
+});
+
 Route::controller(SaleReturnController::class)->group(function(){
     Route::get('/all/sale/return', 'AllSalesReturn')->name('all.sale.return'); 
     Route::get('/add/sale/return', 'AddSalesReturn')->name('add.sale.return');
@@ -197,7 +244,41 @@ Route::controller(ReportController::class)->group(function(){
 
 
 
-    
+Route::controller(RoleController::class)->group(function(){
+    Route::get('/all/roles', 'AllRoles')->name('all.roles');
+    Route::get('/add/roles', 'AddRoles')->name('add.roles');
+    Route::post('/store/roles', 'StoreRoles')->name('store.roles');
+    Route::get('/edit/roles/{id}', 'EditRoles')->name('edit.roles');
+    Route::post('/update/roles', 'UpdateRoles')->name('update.roles');
+    Route::get('/delete/roles/{id}', 'DeleteRoles')->name('delete.roles');
+
+    Route::get('/add/roles/permission', 'AddRolesPermission')->name('add.roles.permission');
+    Route::post('/role/permission/store', 'StoreRolesPermission')->name('role.permission.store');
+    Route::get('/all/roles/permission', 'AllRolesPermission')->name('all.roles.permission');
+    Route::get('/admin/edit/roles/{id}', 'AdminEditRoles')->name('admin.edit.roles');
+    Route::post('/admin/roles/update/{id}', 'AdminRolesUpdate')->name('admin.roles.update');
+    Route::get('/admin/delete/roles/{id}', 'AdminDeleteRoles')->name('admin.delete.roles');
+});
+
+Route::controller(PermissionController::class)->group(function(){
+    Route::get('/all/permission', 'AllPermission')->name('all.permission');
+    Route::get('/add/permission', 'AddPermission')->name('add.permission');
+    Route::post('/store/permission', 'StorePermission')->name('store.permission');
+    Route::get('/edit/permission/{id}', 'EditPermission')->name('edit.permission');
+    Route::post('/update/permission', 'UpdatePermission')->name('update.permission');
+    Route::get('/delete/permission/{id}', 'DeletePermission')->name('delete.permission');
+});
+
+Route::controller(AdminUserController::class)->group(function(){
+    Route::get('/all/admin', 'AllAdmin')->name('all.admin');
+    Route::get('/add/admin', 'AddAdmin')->name('add.admin');
+    Route::post('/store/admin', 'StoreAdmin')->name('store.admin');
+    Route::get('/edit/admin/{id}', 'EditAdmin')->name('edit.admin');
+    Route::post('/update/admin/{id}', 'UpdateAdmin')->name('update.admin');
+    Route::get('/delete/admin/{id}', 'DeleteAdmin')->name('delete.admin');
+});
+
+
 });
 
 

@@ -14,6 +14,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class ProductController extends Controller
@@ -131,6 +132,9 @@ class ProductController extends Controller
         $request->validate([
             'name'          => 'required|string|max:255',
             'code'          => 'required|string|max:100|unique:products,code',
+            'barcode_symbology' => 'nullable|string|max:50',
+            'batch_no'      => 'nullable|string|max:100',
+            'expiry_date'   => 'nullable|date',
             'category_id'   => 'required|exists:product_categories,id',
             'brand_id'      => 'nullable|exists:brands,id',
             'warehouse_id'  => 'nullable|exists:ware_houses,id',
@@ -149,6 +153,9 @@ class ProductController extends Controller
             $product = Product::create([
                 'name'          => $request->name,
                 'code'          => $request->code,
+                'barcode_symbology' => $request->barcode_symbology,
+                'batch_no'      => $request->batch_no,
+                'expiry_date'   => $request->expiry_date,
                 'category_id'   => $request->category_id,
                 'brand_id'      => $request->brand_id,
                 'warehouse_id'  => $request->warehouse_id,
@@ -248,6 +255,9 @@ class ProductController extends Controller
                 'max:100',
                 Rule::unique('products', 'code')->ignore($id),
             ],
+            'barcode_symbology' => 'nullable|string|max:50',
+            'batch_no' => 'nullable|string|max:100',
+            'expiry_date' => 'nullable|date',
             'price' => 'required|numeric|min:0',
             'product_qty' => 'required|numeric|min:0',
         ]);
@@ -260,6 +270,9 @@ class ProductController extends Controller
             Product::findOrFail($id)->update([
                 'name'          => $request->name,
                 'code'          => $request->code,
+                'barcode_symbology' => $request->barcode_symbology,
+                'batch_no'      => $request->batch_no,
+                'expiry_date'   => $request->expiry_date,
                 'category_id'   => $request->category_id,
                 'brand_id'      => $request->brand_id,
                 'warehouse_id'  => $request->warehouse_id,

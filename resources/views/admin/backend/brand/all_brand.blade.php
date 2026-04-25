@@ -1,20 +1,20 @@
 @extends('admin.admin_master')
 
 @section('admin')
-    <link href="{{ asset('backend/assets/css/brand.css') }}" rel="stylesheet" type="text/css" id="app-style" />
-    <div class="content mt-3 px-2 px-md-3 px-lg-4">
-        <div class="container-fluid">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
 
-            <div class="card-ui mt-3 p-3 p-md-4">
+        <!-- Unified Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fs-20 fw-semibold m-0">All Brand</h4>
+            <a href="{{ route('add.brand') }}" class="btn btn-primary btn-sm">
+                + Add Brand
+            </a>
+        </div>
 
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="page-header">All Brand</div>
-
-                    <a href="{{ route('add.brand') }}" class="btn btn-primary btn-sm">
-                        + Add Brand
-                    </a>
-                </div>
+        <!-- Unified Content Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
 
                 <!-- Search -->
                 <div class="mb-3">
@@ -27,9 +27,10 @@
                 </div>
 
             </div>
-
         </div>
+
     </div>
+</div>
 @endsection
 
 

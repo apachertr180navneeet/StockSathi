@@ -154,15 +154,15 @@
                 <tbody>
                    <tr>
                       <td class="py-3">Discount</td>
-                      <td class="py-3" id="displayDiscount">TK {{ $editData->discount }}</td>
+                      <td class="py-3" id="displayDiscount">? {{ $editData->discount }}</td>
                    </tr>
                    <tr>
                       <td class="py-3">Shipping</td>
-                      <td class="py-3" id="shippingDisplay">TK {{ $editData->shipping }}</td>
+                      <td class="py-3" id="shippingDisplay">? {{ $editData->shipping }}</td>
                    </tr>
                    <tr>
                       <td class="py-3 text-primary">Grand Total</td>
-                      <td class="py-3 text-primary" id="grandTotal">TK {{ $editData->grand_total }}</td>
+                      <td class="py-3 text-primary" id="grandTotal">? {{ $editData->grand_total }}</td>
                       <input type="hidden" name="grand_total" value="{{ $editData->grand_total }}">
                    </tr>      
                    
@@ -311,7 +311,7 @@
           }
  
           // Update Grand Total display
-          document.getElementById("grandTotal").textContent = `TK ${grandTotal.toFixed(2)}`;
+          document.getElementById("grandTotal").textContent = `? ${grandTotal.toFixed(2)}`;
  
           // Also update the hidden input field
           document.getElementById("grandTotalInput").value = grandTotal.toFixed(2);

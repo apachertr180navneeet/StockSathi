@@ -4,179 +4,144 @@
     <meta charset="UTF-8">
     <title>Purchase Invoice</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #333;
-            margin: 20mm;
-            background: #fff;
-        }
-        .invoice-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            page-break-inside: avoid;
-        }
-        .invoice-header {
-            background-color: #0d6efd; /* Fallback for gradient */
-            background: linear-gradient(135deg, #0d6efd, #17a2b8);
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            border-radius: 8px 8px 0 0;
-            margin-bottom: 20px;
-        }
-        .invoice-header h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .info-section {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .info-section td {
-            width: 33.33%;
-            padding: 15px;
-            vertical-align: top;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            margin: 0 5px;
-        }
-        .info-box h5 {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #0d6efd;
-        }
-        .info-box p {
-            margin: 5px 0;
-            font-size: 12px;
-        }
-        .info-box p strong {
-            color: #555;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .table th, .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-            font-size: 12px;
-        }
-        .table th {
-            background: #e9ecef;
-            font-weight: bold;
-            color: #333;
-        }
-        .table tbody tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-        .summary-table {
-            width: 50%;
-            margin-left: auto;
-            margin-top: 20px;
-            border-collapse: collapse;
-        }
-        .summary-table td {
-            padding: 5px;
-            text-align: right;
-            font-weight: bold;
-            border: none;
-            font-size: 12px;
-        }
-        @page {
-            margin: 20mm;
-        }
-        @media print {
-            .invoice-container {
-                border: none;
-                padding: 0;
-            }
-            .info-section td {
-                background: none;
-                border: 1px solid #ddd;
-            }
-        }
+        body { font-family: 'DejaVu Sans', sans-serif; font-size: 13px; color: #333; margin: 0; padding: 0; }
+        .invoice-container { width: 100%; max-width: 800px; margin: auto; }
+        .header { border-bottom: 2px solid #17a2b8; padding-bottom: 10px; margin-bottom: 20px; display: table; width: 100%; }
+        .header-left { display: table-cell; vertical-align: top; width: 50%; }
+        .header-right { display: table-cell; vertical-align: top; width: 50%; text-align: right; }
+        .header-right h1 { margin: 0; color: #17a2b8; font-size: 28px; font-weight: bold; text-transform: uppercase; }
+        .invoice-details { margin-top: 10px; font-size: 12px; }
+        .billing-info { display: table; width: 100%; margin-bottom: 20px; }
+        .bill-to { display: table-cell; width: 50%; }
+        .ship-from { display: table-cell; width: 50%; text-align: right; }
+        .section-title { font-weight: bold; color: #17a2b8; font-size: 14px; margin-bottom: 5px; border-bottom: 1px solid #ddd; padding-bottom: 3px; }
+        table.items { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table.items th { background: #17a2b8; color: white; text-align: left; padding: 10px; font-size: 13px; }
+        table.items td { border-bottom: 1px solid #ddd; padding: 10px; font-size: 12px; }
+        .text-right { text-align: right !important; }
+        .text-center { text-align: center !important; }
+        .totals-section { display: table; width: 100%; margin-top: 20px; }
+        .totals-space { display: table-cell; width: 60%; }
+        .totals { display: table-cell; width: 40%; }
+        .totals table { width: 100%; border-collapse: collapse; }
+        .totals table td { padding: 5px 10px; border-bottom: 1px solid #eee; }
+        .totals table td:first-child { font-weight: bold; }
+        .grand-total { background: #f4f6f9; font-weight: bold; color: #17a2b8; font-size: 14px; }
+        .footer { margin-top: 40px; text-align: center; font-size: 11px; color: #777; border-top: 1px solid #ddd; padding-top: 10px; }
+        .status-badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; color: #fff; background-color: #28a745; }
+        .status-badge.Pending { background-color: #ffc107; color: #212529; }
+        .status-badge.Ordered { background-color: #17a2b8; }
     </style>
 </head>
 <body>
     <div class="invoice-container">
-        <div class="invoice-header">
-            <h5>Purchase Invoice</h5>
+        <div class="header">
+            <div class="header-left">
+                <h2 style="margin:0; color:#333;">StockSathi</h2>
+                <p style="margin:5px 0 0; color:#555;">Inventory Management System<br>123 Business Road, Suite 100<br>City, State, 12345</p>
+            </div>
+            <div class="header-right">
+                <h1>PURCHASE INVOICE</h1>
+                <div class="invoice-details">
+                    <p><strong>Purchase No:</strong> #PO-{{ str_pad($purchase->id, 5, '0', STR_PAD_LEFT) }}</p>
+                    <p><strong>Date:</strong> {{ date('d M Y', strtotime($purchase->date)) }}</p>
+                    <p><strong>Status:</strong> <span class="status-badge {{ $purchase->status }}">{{ $purchase->status }}</span></p>
+                </div>
+            </div>
         </div>
 
-        <table class="info-section">
-            <tr>
-                <td class="info-box">
-                    <h5>Supplier Info</h5>
-<p><strong>Name:</strong> {{ $purchase->supplier->name }} </p>
-<p><strong>Email:</strong> {{ $purchase->supplier->email }}</p>
-<p><strong>Phone:</strong> {{ $purchase->supplier->phone }} </p>
-                </td>
-                <td class="info-box">
-                    <h5>Warehouse</h5>
-                    <p>{{ $purchase->warehouse->name }} </p>
-                </td>
-                <td class="info-box">
-                    <h5>Purchase Info</h5>
-<p><strong>Date:</strong> {{ $purchase->date }} </p>
-<p><strong>Status:</strong> {{ $purchase->status }} </p>
-<p><strong>Grand Total:</strong> ${{ number_format($purchase->grand_total, 2)  }} </p>
-                </td>
-            </tr>
-        </table>
+        <div class="billing-info">
+            <div class="bill-to">
+                <div class="section-title">Supplier (Bill From)</div>
+                <p style="margin: 5px 0 2px; font-weight: bold;">{{ $purchase->supplier->name }}</p>
+                @if($purchase->supplier->email)<p style="margin: 0 0 2px;">{{ $purchase->supplier->email }}</p>@endif
+                @if($purchase->supplier->phone)<p style="margin: 0 0 2px;">{{ $purchase->supplier->phone }}</p>@endif
+                @if($purchase->supplier->address)<p style="margin: 0 0 2px;">{{ $purchase->supplier->address }}</p>@endif
+            </div>
+            <div class="ship-from">
+                <div class="section-title" style="text-align: right;">Ship To</div>
+                <p style="margin: 5px 0 2px; font-weight: bold;">{{ $purchase->warehouse->name }}</p>
+                @if($purchase->warehouse->phone)<p style="margin: 0 0 2px;">Tel: {{ $purchase->warehouse->phone }}</p>@endif
+                @if($purchase->warehouse->email)<p style="margin: 0 0 2px;">{{ $purchase->warehouse->email }}</p>@endif
+                @if($purchase->warehouse->address)<p style="margin: 0 0 2px;">{{ $purchase->warehouse->address }}</p>@endif
+            </div>
+        </div>
 
-        <h5 style="font-weight: bold; margin: 20px 0 10px;">Order Summary</h5>
-        <table class="table">
+        <table class="items">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Net Unit Cost</th>
-                    <th>Discount</th>
-                    <th>Subtotal</th>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 35%;">Item Description</th>
+                    <th class="text-center" style="width: 15%;">Unit Cost</th>
+                    <th class="text-center" style="width: 10%;">Qty</th>
+                    <th class="text-center" style="width: 15%;">Discount</th>
+                    <th class="text-right" style="width: 20%;">Total</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($purchase->purchaseItems as $key => $item )
+                @foreach ($purchase->purchaseItems as $key => $item)
                     <tr>
-                <td>{{ $key + 1 }}</td>
-                <td>{{ $item->product->name }}</td>
-                <td>{{ $item->quantity }}</td>
-                <td>${{ number_format($item->net_unit_cost,2)  }}</td>
-                <td>${{ number_format($item->discount,2)  }}</td>
-                <td>${{ number_format($item->subtotal,2)  }}</td>
+                        <td>{{ $key + 1 }}</td>
+                        <td>
+                            <strong>{{ $item->product->name }}</strong>
+                            @if($item->product->code)
+                            <br><span style="font-size: 10px; color: #777;">Code: {{ $item->product->code }}</span>
+                            @endif
+                        </td>
+                        <td class="text-center">₹{{ number_format($item->net_unit_cost, 2) }}</td>
+                        <td class="text-center">{{ $item->quantity }}</td>
+                        <td class="text-center">₹{{ number_format($item->discount, 2) }}</td>
+                        <td class="text-right">₹{{ number_format($item->subtotal, 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <table class="summary-table">
-            <tr>
-                <td><strong>Total Discount:</strong> ${{ number_format($purchase->discount,2)  }} </td>
-            </tr>
-            <tr>
-                <td><strong>Shipping Cost:</strong> ${{ number_format($purchase->shipping,2)  }} </td>
-            </tr>
-            <tr>
-                <td><strong>Grand Total:</strong> ${{ number_format($purchase->grand_total,2)  }} </td>
-            </tr>
-        </table>
+        <div class="totals-section">
+            <div class="totals-space">
+                @if($purchase->note)
+                <div style="margin-top: 20px; padding: 10px; background: #f9f9f9; border-left: 3px solid #17a2b8;">
+                    <strong style="display: block; margin-bottom: 5px; font-size: 12px;">Notes/Terms:</strong>
+                    <p style="margin: 0; font-size: 11px;">{{ $purchase->note }}</p>
+                </div>
+                @endif
+            </div>
+            <div class="totals">
+                @php
+                    $subtotal = $purchase->purchaseItems->sum('subtotal');
+                @endphp
+                <table>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td class="text-right">₹{{ number_format($subtotal, 2) }}</td>
+                    </tr>
+                    @if($purchase->discount > 0)
+                    <tr>
+                        <td>Order Discount</td>
+                        <td class="text-right" style="color: #dc3545;">-₹{{ number_format($purchase->discount, 2) }}</td>
+                    </tr>
+                    @endif
+                    <tr>
+                        <td>Tax (GST @ {{ number_format($purchase->tax_rate ?? 0, 2) }}%)</td>
+                        <td class="text-right">₹{{ number_format($purchase->tax_amount ?? 0, 2) }}</td>
+                    </tr>
+                    @if($purchase->shipping > 0)
+                    <tr>
+                        <td>Shipping Cost</td>
+                        <td class="text-right">₹{{ number_format($purchase->shipping, 2) }}</td>
+                    </tr>
+                    @endif
+                    <tr class="grand-total">
+                        <td style="padding: 10px;">Grand Total</td>
+                        <td class="text-right" style="padding: 10px;">₹{{ number_format($purchase->grand_total, 2) }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>This is a computer-generated purchase order/invoice and requires no signature.</p>
+        </div>
     </div>
 </body>
 </html>
