@@ -17,6 +17,17 @@ class DeliveryController extends Controller
         return view('admin.backend.delivery.all_delivery', compact('allData'));
     }
 
+    public function CreateDelivery()
+    {
+        // Get sales that do not have a delivery record yet
+        $sales = Sale::whereDoesntHave('delivery')
+                     ->with('customer', 'warehouse')
+                     ->latest()
+                     ->get();
+                     
+        return view('admin.backend.delivery.create_delivery', compact('sales'));
+    }
+
     public function AddDelivery($sale_id)
     {
         $sale = Sale::with('customer')->findOrFail($sale_id);
@@ -104,5 +115,11 @@ class DeliveryController extends Controller
         );
 
         return redirect()->back()->with($notification);
+    }
+
+    public function DetailsDelivery($id)
+    {
+        $delivery = Delivery::with('sale.customer', 'sale.warehouse', 'sale.saleItems.product')->findOrFail($id);
+        return view('admin.backend.delivery.details_delivery', compact('delivery'));
     }
 }

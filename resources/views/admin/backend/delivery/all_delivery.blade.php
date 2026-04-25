@@ -6,6 +6,11 @@
                 <div class="flex-grow-1">
                     <h4 class="fs-18 fw-semibold m-0">Delivery Management</h4>
                 </div>
+                <div class="text-end">
+                    <a href="{{ route('create.delivery') }}" class="btn btn-primary">
+                        <i class="mdi mdi-plus-circle me-1"></i> Create New Delivery
+                    </a>
+                </div>
             </div>
 
             <div class="row">
@@ -49,6 +54,9 @@
                                                 </td>
                                                 <td>{{ $item->delivery_date ? date('d M Y', strtotime($item->delivery_date)) : 'N/A' }}</td>
                                                 <td>
+                                                    <a href="{{ route('details.delivery', $item->id) }}" class="btn btn-info btn-sm" title="View Details">
+                                                        <i class="mdi mdi-eye-circle mdi-18px"></i>
+                                                    </a>
                                                     <a href="{{ route('edit.delivery', $item->id) }}" class="btn btn-success btn-sm" title="Update Delivery">
                                                         <i class="mdi mdi-truck-delivery mdi-18px"></i>
                                                     </a>

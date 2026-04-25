@@ -188,11 +188,13 @@ Route::controller(SalesOrderController::class)->group(function(){
 
 Route::controller(DeliveryController::class)->group(function(){
     Route::get('/all/delivery', 'AllDelivery')->name('all.delivery');
+    Route::get('/create/delivery', 'CreateDelivery')->name('create.delivery');
     Route::get('/add/delivery/{sale_id}', 'AddDelivery')->name('add.delivery');
     Route::post('/store/delivery', 'StoreDelivery')->name('store.delivery');
     Route::get('/edit/delivery/{id}', 'EditDelivery')->name('edit.delivery');
     Route::post('/update/delivery', 'UpdateDelivery')->name('update.delivery');
     Route::get('/delete/delivery/{id}', 'DeleteDelivery')->name('delete.delivery');
+    Route::get('/details/delivery/{id}', 'DetailsDelivery')->name('details.delivery');
 });
 
 Route::controller(SaleReturnController::class)->group(function(){
