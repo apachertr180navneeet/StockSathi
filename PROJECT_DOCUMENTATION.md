@@ -57,6 +57,37 @@ Stocksathi is a comprehensive, enterprise-grade Inventory Management System (ERP
 
 ---
 
+## Business Workflows
+
+### 1. Procurement & Inventory Flow
+```mermaid
+graph TD
+    A[Purchase Requisition] --> B[Purchase Order]
+    B --> C[Receive Stock]
+    C --> D[Update Inventory]
+    D --> E[Vendor Payment]
+    D --> F[Stock Adjustment/Transfer]
+```
+
+### 2. Sales & Fulfillment Flow
+```mermaid
+graph TD
+    A[Quotation] --> B[Sales Order]
+    B --> C[POS / Sale Entry]
+    C --> D[Generate Invoice]
+    D --> E[Deduct Inventory]
+    E --> F[Delivery Tracking]
+```
+
+### 3. HR & Payroll Flow
+```mermaid
+graph TD
+    A[Setup Dept/Designation] --> B[Add Employee]
+    B --> C[Daily Attendance Marking]
+    C --> D[Monthly Payroll Generation]
+    D --> E[Print Salary Slip]
+```
+
 ## Installation & Setup
 
 1. **Clone & Install**:
