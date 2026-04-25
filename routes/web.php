@@ -21,6 +21,10 @@ use App\Http\Controllers\Backend\DeliveryController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\PermissionController;
 use App\Http\Controllers\Backend\AdminUserController;
+use App\Http\Controllers\Backend\AccountController;
+use App\Http\Controllers\Backend\TaxController;
+use App\Http\Controllers\Backend\ExpenseController;
+use App\Http\Controllers\Backend\FinancialReportController;
 
 
 Route::get('/', function () {
@@ -311,6 +315,35 @@ Route::controller(AdminUserController::class)->group(function(){
     Route::get('/delete/admin/{id}', 'DeleteAdmin')->name('delete.admin');
 });
 
+    Route::controller(AccountController::class)->group(function(){
+        Route::get('/all/account', 'AllAccount')->name('all.account');
+        Route::get('/add/account', 'AddAccount')->name('add.account');
+        Route::post('/store/account', 'StoreAccount')->name('store.account');
+        Route::get('/edit/account/{id}', 'EditAccount')->name('edit.account');
+        Route::post('/update/account', 'UpdateAccount')->name('update.account');
+        Route::delete('/delete/account/{id}', 'DeleteAccount')->name('delete.account');
+    });
+
+    Route::controller(TaxController::class)->group(function(){
+        Route::get('/all/tax', 'AllTax')->name('all.tax');
+        Route::get('/add/tax', 'AddTax')->name('add.tax');
+        Route::post('/store/tax', 'StoreTax')->name('store.tax');
+        Route::get('/edit/tax/{id}', 'EditTax')->name('edit.tax');
+        Route::post('/update/tax', 'UpdateTax')->name('update.tax');
+        Route::get('/delete/tax/{id}', 'DeleteTax')->name('delete.tax');
+    });
+
+    Route::controller(ExpenseController::class)->group(function(){
+        Route::get('/all/expense', 'AllExpense')->name('all.expense');
+        Route::get('/add/expense', 'AddExpense')->name('add.expense');
+        Route::post('/store/expense', 'StoreExpense')->name('store.expense');
+        Route::delete('/delete/expense/{id}', 'DeleteExpense')->name('delete.expense');
+    });
+
+    Route::controller(FinancialReportController::class)->group(function(){
+        Route::get('/report/profit-loss', 'ProfitLoss')->name('report.profit.loss');
+        Route::get('/report/ledger', 'LedgerReport')->name('report.ledger');
+    });
 
 });
 

@@ -12,9 +12,16 @@ use App\Models\Purchase;
 use App\Models\PurchaseItem; 
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\FinancialService;
 
 class PurchaseController extends Controller
 {
+    protected $financialService;
+
+    public function __construct(FinancialService $financialService)
+    {
+        $this->financialService = $financialService;
+    }
     /**
      * ===============================
      * Display All Purchases
@@ -159,6 +166,12 @@ class PurchaseController extends Controller
                 'due_amount' => $grandTotalFinal,
                 'payment_status' => 'Pending',
             ]);
+
+            $purchase->total_amount = $purchase->grand_total; // Helper for service
+            $purchase->purchase_no = $purchase->id; // Fallback if no specific no
+
+            // ✅ Record Journal Entry
+            $this->financialService->recordPurchaseEntry($purchase);
 
             DB::commit();
 

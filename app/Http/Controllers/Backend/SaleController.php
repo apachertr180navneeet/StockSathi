@@ -14,9 +14,16 @@ use App\Models\Sale;
 use App\Models\SaleItem; 
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\FinancialService;
 
 class SaleController extends Controller
 {
+    protected $financialService;
+
+    public function __construct(FinancialService $financialService)
+    {
+        $this->financialService = $financialService;
+    }
     public function AllSales(){
         $allData = Sale::orderBy('id','desc')->get();
         return view('admin.backend.sales.all_sales',compact('allData')); 
@@ -85,6 +92,10 @@ class SaleController extends Controller
             }
 
             $sales->update(['grand_total' => ($grandTotal - $request->discount) + $request->tax_amount + $request->shipping]);
+            $sales->total_amount = $sales->grand_total; // Helper for service
+
+            // ✅ Record Journal Entry
+            $this->financialService->recordSaleEntry($sales);
 
             DB::commit();
 

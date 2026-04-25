@@ -325,6 +325,52 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+
+                <!-- Accounting Manage -->
+                <li>
+                    <a href="#Accounting" data-bs-toggle="collapse"
+                       class="{{ request()->routeIs('all.account','all.tax','all.expense','report.profit.loss','report.ledger') ? '' : 'collapsed' }}">
+                        <i data-feather="book"></i>
+                        <span> Accounting Manage </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+
+                    <div class="collapse {{ request()->routeIs('all.account','all.tax','all.expense','report.profit.loss','report.ledger') ? 'show' : '' }}" id="Accounting">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('all.account') }}"
+                                   class="tp-link {{ request()->routeIs('all.account') ? 'active' : '' }}">
+                                    Chart of Accounts
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.tax') }}"
+                                   class="tp-link {{ request()->routeIs('all.tax') ? 'active' : '' }}">
+                                    Tax Setup
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('all.expense') }}"
+                                   class="tp-link {{ request()->routeIs('all.expense') ? 'active' : '' }}">
+                                    Expenses
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('report.profit.loss') }}"
+                                   class="tp-link {{ request()->routeIs('report.profit.loss') ? 'active' : '' }}">
+                                    Profit & Loss
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('report.ledger') }}"
+                                   class="tp-link {{ request()->routeIs('report.ledger') ? 'active' : '' }}">
+                                    Ledger Report
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <!-- Role & Permission -->
                 <li class="menu-title">Role & Permission</li>
                 <li>
