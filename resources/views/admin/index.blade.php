@@ -172,7 +172,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card blue">
             <div class="card-title">Total Products</div>
-            <div class="card-value">245</div>
+            <div class="card-value">{{ number_format($totalProducts) }}</div>
             <div class="card-sub">All inventory items</div>
         </div>
     </div>
@@ -180,7 +180,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card green">
             <div class="card-title">Available Stock</div>
-            <div class="card-value">5,420</div>
+            <div class="card-value">{{ number_format($availableStock) }}</div>
             <div class="card-sub">Units in warehouse</div>
         </div>
     </div>
@@ -188,7 +188,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card orange">
             <div class="card-title">Low Stock</div>
-            <div class="card-value">18</div>
+            <div class="card-value">{{ $lowStock }}</div>
             <div class="card-sub">Need restock</div>
         </div>
     </div>
@@ -196,7 +196,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card red">
             <div class="card-title">Out of Stock</div>
-            <div class="card-value">7</div>
+            <div class="card-value">{{ $outOfStock }}</div>
             <div class="card-sub">Unavailable items</div>
         </div>
     </div>
@@ -209,7 +209,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card purple">
             <div class="card-title">Total Orders</div>
-            <div class="card-value">1,320</div>
+            <div class="card-value">{{ number_format($totalOrders) }}</div>
             <div class="card-sub">All orders</div>
         </div>
     </div>
@@ -217,7 +217,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card green">
             <div class="card-title">Today's Sales</div>
-            <div class="card-value">&#8377; 12,450</div>
+            <div class="card-value">&#8377; {{ number_format($todaySales, 2) }}</div>
             <div class="card-sub">Revenue today</div>
         </div>
     </div>
@@ -225,7 +225,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card blue">
             <div class="card-title">Customers</div>
-            <div class="card-value">560</div>
+            <div class="card-value">{{ number_format($totalCustomers) }}</div>
             <div class="card-sub">Active buyers</div>
         </div>
     </div>
@@ -233,7 +233,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card orange">
             <div class="card-title">Suppliers</div>
-            <div class="card-value">32</div>
+            <div class="card-value">{{ number_format($totalSuppliers) }}</div>
             <div class="card-sub">Vendors</div>
         </div>
     </div>
@@ -273,10 +273,10 @@ window.onload = function () {
         },
         series: [{
             name: 'Sales',
-            data: [10, 40, 30, 60, 50, 80, 70]
+            data: @json($salesData)
         }],
         xaxis: {
-            categories: ['Jan','Feb','Mar','Apr','May','Jun','Jul']
+            categories: @json($months)
         },
         stroke: {
             curve: 'smooth'

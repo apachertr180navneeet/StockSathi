@@ -1,48 +1,54 @@
 @extends('admin.admin_master')
 @section('admin')
 <style>
-    .pos-layout { display: flex; height: calc(100vh - 100px); overflow: hidden; }
-    .pos-left { flex: 7; display: flex; flex-direction: column; padding-right: 15px; border-right: 1px solid #dee2e6; overflow: hidden; }
-    .pos-right { flex: 3; display: flex; flex-direction: column; padding-left: 15px; overflow: hidden; background: #fff; }
-    .product-grid-container { flex-grow: 1; overflow-y: auto; padding-right: 5px; margin-top: 15px; }
-    .cart-container { flex-grow: 1; overflow-y: auto; }
+    .pos-layout { display: flex; gap: 15px; height: calc(100vh - 150px); overflow: hidden; }
+    .pos-left { flex: 7; display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .pos-right { flex: 3; display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .product-grid-container { flex-grow: 1; overflow-y: auto; margin-top: 12px; margin-right: -8px; padding-right: 8px; }
+    .cart-container { flex-grow: 1; overflow-y: auto; margin-top: 8px; }
+    .cart-table { margin-bottom: 0; }
     .cart-table th, .cart-table td { padding: 8px 5px; vertical-align: middle; }
     .cart-totals { background: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: auto; }
     .product-card:hover { transform: translateY(-3px) !important; box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; border-color: #0d6efd !important; }
-    
-    /* Responsive tweaks */
+
     @media (max-width: 991.98px) {
-        .pos-layout { flex-direction: column; height: auto; overflow: visible; }
-        .pos-left, .pos-right { flex: none; width: 100%; border-right: none; padding: 0; }
-        .pos-left { margin-bottom: 20px; }
-        .product-grid-container { height: 500px; }
+        .pos-layout { flex-direction: column; height: auto; overflow: visible; gap: 12px; }
+        .pos-left, .pos-right { flex: none; width: 100%; }
+        .product-grid-container { height: 400px; }
+    }
+
+    @media (max-width: 576px) {
+        .pos-left, .pos-right { padding: 12px; }
+        .product-grid-container { height: 350px; }
+        .cart-totals { padding: 12px; }
+        .cart-totals .row.g-2 > .col-6 { flex: 0 0 100%; max-width: 100%; }
+        #clock { font-size: 14px !important; }
+        h4 { font-size: 16px; }
     }
 </style>
 
-<div class="content">
-    <div class="container-fluid py-3">
-        
-        <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="content mt-3 px-3">
+    <div class="container-fluid">
+
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
             <h4 class="mb-0 fw-bold text-uppercase"><i class="mdi mdi-monitor-dashboard me-1"></i> Point of Sale (POS)</h4>
-            <div>
-                <span id="clock" class="fw-bold fs-5 text-primary"></span>
-            </div>
+            <span id="clock" class="fw-bold fs-5 text-primary"></span>
         </div>
 
         <div class="pos-layout">
-            
+
             <!-- LEFT SIDE: PRODUCTS -->
             <div class="pos-left">
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <select class="form-select form-control" id="pos_category">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <select class="form-select" id="pos_category">
                             <option value="">All Categories</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-6 mb-2">
+                    <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text"><i class="mdi mdi-magnify"></i></span>
                             <input type="text" id="pos_search" class="form-control" placeholder="Search by name or code...">
@@ -51,7 +57,7 @@
                 </div>
 
                 <div class="product-grid-container">
-                    <div class="row" id="product_grid">
+                    <div class="row g-2" id="product_grid">
                         @include('admin.backend.pos.pos_product_grid')
                     </div>
                 </div>
@@ -60,9 +66,9 @@
             <!-- RIGHT SIDE: CART -->
             <div class="pos-right">
                 <div class="mb-3">
-                    <div class="row">
-                        <div class="col-12 mb-2">
-                            <select class="form-select form-control" id="pos_customer" required>
+                    <div class="row g-2">
+                        <div class="col-12">
+                            <select class="form-select" id="pos_customer" required>
                                 <option value="">Select Customer (Required)</option>
                                 @foreach($customers as $cust)
                                     <option value="{{ $cust->id }}">{{ $cust->name }} - {{ $cust->phone }}</option>
@@ -70,7 +76,7 @@
                             </select>
                         </div>
                         <div class="col-12">
-                            <select class="form-select form-control" id="pos_warehouse" required>
+                            <select class="form-select" id="pos_warehouse" required>
                                 <option value="">Select Warehouse (Required)</option>
                                 @foreach($warehouses as $wh)
                                     <option value="{{ $wh->id }}">{{ $wh->name }}</option>
@@ -91,7 +97,6 @@
                             </tr>
                         </thead>
                         <tbody id="cart_body">
-                            <!-- Cart items injected here -->
                         </tbody>
                     </table>
                 </div>
@@ -103,11 +108,11 @@
                     </div>
                     <div class="d-flex justify-content-between mb-1 align-items-center">
                         <span>Discount:</span>
-                        <input type="number" id="cart_discount" class="form-control form-control-sm text-end" style="width: 100px;" value="0" min="0">
+                        <input type="number" id="cart_discount" class="form-control form-control-sm text-end" style="max-width: 100px;" value="0" min="0">
                     </div>
                     <div class="d-flex justify-content-between mb-1 align-items-center">
                         <span>Tax Rate (%):</span>
-                        <input type="number" id="cart_tax_rate" class="form-control form-control-sm text-end" style="width: 100px;" value="0" min="0">
+                        <input type="number" id="cart_tax_rate" class="form-control form-control-sm text-end" style="max-width: 100px;" value="0" min="0">
                     </div>
                     <hr class="my-2">
                     <div class="d-flex justify-content-between mb-2">
@@ -117,11 +122,11 @@
 
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <label class="form-label mb-0 fs-12">Paid Amount</label>
+                            <label class="form-label mb-0 small">Paid Amount</label>
                             <input type="number" id="cart_paid" class="form-control text-success fw-bold" value="0" min="0">
                         </div>
                         <div class="col-6">
-                            <label class="form-label mb-0 fs-12">Payment Method</label>
+                            <label class="form-label mb-0 small">Payment Method</label>
                             <select id="cart_payment_method" class="form-select">
                                 <option value="Cash">Cash</option>
                                 <option value="Card">Card</option>

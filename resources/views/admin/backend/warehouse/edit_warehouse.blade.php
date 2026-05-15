@@ -23,22 +23,26 @@
 
                         <div class="col-lg-6 mb-3">
                             <label>Name</label>
-                            <input type="text" name="name" value="{{ $warehouse->name }}" class="form-control">
+                            <input type="text" name="name" value="{{ old('name', $warehouse->name) }}" class="form-control @error('name') is-invalid @enderror">
+                            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label>Email</label>
-                            <input type="email" name="email" value="{{ $warehouse->email }}" class="form-control">
+                            <input type="email" name="email" value="{{ old('email', $warehouse->email) }}" class="form-control @error('email') is-invalid @enderror">
+                            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label>Phone</label>
-                            <input type="text" name="phone" value="{{ $warehouse->phone }}" class="form-control">
+                            <input type="text" name="phone" value="{{ old('phone', $warehouse->phone) }}" class="form-control @error('phone') is-invalid @enderror">
+                            @error('phone') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label>City</label>
-                            <input type="text" name="city" value="{{ $warehouse->city }}" class="form-control">
+                            <input type="text" name="city" value="{{ old('city', $warehouse->city) }}" class="form-control @error('city') is-invalid @enderror">
+                            @error('city') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                     </div>

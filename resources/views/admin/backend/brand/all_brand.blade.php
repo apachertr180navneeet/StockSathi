@@ -4,12 +4,22 @@
 <div class="content mt-3 px-3">
     <div class="container-fluid">
 
-        <!-- Unified Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="fs-20 fw-semibold m-0">All Brand</h4>
-            <a href="{{ route('add.brand') }}" class="btn btn-primary btn-sm">
-                + Add Brand
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('sample.brand') }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-download me-1"></i> Sample
+                </a>
+                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+                    <i class="fas fa-upload me-1"></i> Import
+                </button>
+                <a href="{{ route('add.brand') }}" class="btn btn-primary btn-sm">
+                    + Add Brand
+                </a>
+                <a href="{{ route('trash.brand') }}" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-trash me-1"></i> Trash
+                </a>
+            </div>
         </div>
 
         <!-- Unified Content Card -->
@@ -33,6 +43,38 @@
 </div>
 @endsection
 
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('import.brand') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Import Brands</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Choose CSV or Excel File</label>
+                        <input type="file" name="import_file" class="form-control" accept=".csv,.xlsx,.xls" required>
+                    </div>
+                    <div class="alert alert-info mb-0">
+                        <strong>Note:</strong> File must have a column named <code>name</code>. The brand name must be unique.
+                        <a href="{{ route('sample.brand') }}" class="d-block mt-1">
+                            <i class="fas fa-download me-1"></i> Download Sample File
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-upload me-1"></i> Import
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section('scripts')
     <script>

@@ -33,15 +33,13 @@ use App\Http\Controllers\Backend\DesignationController;
 use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\PayrollController;
-
+use App\Http\Controllers\Backend\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('admin.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
  
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -71,6 +69,11 @@ Route::controller(BrandController::class)->group(function(){
     Route::get('/edit/brand/{id}', 'EditBrand')->name('edit.brand');
     Route::post('/update/brand', 'UpdateBrand')->name('update.brand');
     Route::delete('/delete/brand/{id}', 'DeleteBrand')->name('delete.brand');
+    Route::post('/import/brand', 'ImportBrand')->name('import.brand');
+    Route::get('/sample/brand', 'DownloadSampleBrand')->name('sample.brand');
+    Route::get('/trash/brand', 'TrashList')->name('trash.brand');
+    Route::post('/restore/brand/{id}', 'RestoreBrand')->name('restore.brand');
+    Route::delete('/parmanent/delete/brand/{id}', 'ParmanentDeleteBrand')->name('parmanent.delete.brand');
 });
 
 Route::controller(WareHouseController::class)->group(function(){
@@ -80,6 +83,11 @@ Route::controller(WareHouseController::class)->group(function(){
     Route::get('/edit/warehouse/{id}', 'EditWarehouse')->name('edit.warehouse');
     Route::post('/update/warehouse', 'UpdateWarehouse')->name('update.warehouse');
     Route::delete('/delete/warehouse/{id}', 'DeleteWarehouse')->name('delete.warehouse');
+    Route::post('/import/warehouse', 'ImportWarehouse')->name('import.warehouse');
+    Route::get('/sample/warehouse', 'DownloadSampleWarehouse')->name('sample.warehouse');
+    Route::get('/trash/warehouse', 'TrashList')->name('trash.warehouse');
+    Route::post('/restore/warehouse/{id}', 'RestoreWarehouse')->name('restore.warehouse');
+    Route::delete('/parmanent/delete/warehouse/{id}', 'ParmanentDeleteWarehouse')->name('parmanent.delete.warehouse');
 });
 
 

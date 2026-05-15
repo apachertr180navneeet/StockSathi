@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use App\Imports\BrandsImport;
+use App\Exports\SampleBrandExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -23,7 +26,7 @@ class BrandController extends Controller
                 $query->where('name', 'like', '%' . $request->search . '%');
             }
 
-            $brand = $query->orderBy('name', 'asc')->paginate(4);
+            $brand = $query->orderBy('name', 'asc')->paginate(20);
 
             // ✅ AJAX RESPONSE (IMPORTANT)
             if ($request->ajax()) {
@@ -55,7 +58,7 @@ class BrandController extends Controller
 
             // ✅ Validation
             $request->validate([
-                'name'  => 'required|max:100',
+                'name'  => 'required|max:100|unique:brands,name',
                 'image' => 'nullable|mimes:jpg,jpeg,png',
             ]);
 
@@ -122,7 +125,7 @@ class BrandController extends Controller
             // ✅ Proper Validation
             $request->validate([
                 'id'    => 'required|exists:brands,id',
-                'name'  => 'required|string|max:100',
+                'name'  => 'required|string|max:100|unique:brands,name,' . $request->id,
                 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
@@ -206,6 +209,134 @@ class BrandController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Brand Deleted Successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Download sample CSV for import
+     */
+    public function DownloadSampleBrand()
+    {
+        return Excel::download(new SampleBrandExport, 'sample_brands.xlsx');
+    }
+
+    /**
+     * Import brands from CSV/Excel
+     */
+    public function ImportBrand(Request $request)
+    {
+        try {
+            $request->validate([
+                'import_file' => 'required|mimes:csv,xlsx,xls',
+            ]);
+
+            $import = new BrandsImport();
+            Excel::import($import, $request->file('import_file'));
+
+            $imported = $import->imported;
+            $failures = $import->failures();
+            $errors = [];
+
+            foreach ($failures as $failure) {
+                $errors[] = 'Row ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+            }
+
+            $msg = $imported . ' brand(s) imported successfully.';
+            $type = 'success';
+
+            if (!empty($errors)) {
+                $msg .= ' ' . count($errors) . ' row(s) skipped: ' . implode(' | ', $errors);
+                $type = 'warning';
+            }
+
+            return redirect()->route('all.brand')->with([
+                'message' => $msg,
+                'alert-type' => $type
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Import failed: ' . $e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Show trashed brands
+     */
+    public function TrashList(Request $request)
+    {
+        try {
+            $query = Brand::onlyTrashed();
+
+            if ($request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            }
+
+            $brand = $query->orderBy('deleted_at', 'desc')->paginate(20);
+
+            if ($request->ajax()) {
+                return view('admin.backend.brand.partials.brand_trash_table', compact('brand'))->render();
+            }
+
+            return view('admin.backend.brand.brand_trash', compact('brand'));
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+
+    /**
+     * Restore soft deleted brand
+     */
+    public function RestoreBrand($id)
+    {
+        try {
+            $brand = Brand::withTrashed()->findOrFail($id);
+            $brand->restore();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Brand Restored Successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * Permanently delete brand
+     */
+    public function ParmanentDeleteBrand($id)
+    {
+        try {
+            $brand = Brand::withTrashed()->findOrFail($id);
+
+            // Delete image safely
+            if (!empty($brand->image) && file_exists(public_path($brand->image))) {
+                unlink(public_path($brand->image));
+            }
+
+            $brand->forceDelete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Brand Permanently Deleted Successfully'
             ]);
 
         } catch (\Exception $e) {

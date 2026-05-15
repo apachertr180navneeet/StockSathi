@@ -21,22 +21,26 @@
 
                         <div class="col-lg-6 mb-3">
                             <label>Warehouse Name</label>
-                            <input type="text" name="name" class="form-control">
+                            <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror">
+                            @error('name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label>Email</label>
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" name="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror">
+                            @error('email') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label>Phone</label>
-                            <input type="text" name="phone" class="form-control">
+                            <input type="text" name="phone" value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror">
+                            @error('phone') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <div class="col-lg-6 mb-3">
                             <label>City</label>
-                            <input type="text" name="city" class="form-control">
+                            <input type="text" name="city" value="{{ old('city') }}" class="form-control @error('city') is-invalid @enderror">
+                            @error('city') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                     </div>
