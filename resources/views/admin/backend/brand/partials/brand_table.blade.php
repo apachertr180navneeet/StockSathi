@@ -5,6 +5,7 @@
                 <th width="5%" class="border-bottom-0">Sl</th>
                 <th class="border-bottom-0">Brand Image</th>
                 <th class="border-bottom-0">Brand Name</th>
+                <th width="10%" class="border-bottom-0">Status</th>
                 <th width="15%" class="border-bottom-0">Action</th>
             </tr>
         </thead>
@@ -17,6 +18,12 @@
                              style="width: 50px; height: 50px; object-fit:cover; border-radius: 10px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                     </td>
                     <td class="fw-medium text-dark">{{ $item->name }}</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input statusToggle" type="checkbox" data-id="{{ $item->id }}"
+                                {{ $item->status == 1 ? 'checked' : '' }}>
+                        </div>
+                    </td>
                     <td>
                         <div class="d-flex gap-2">
                             <a href="{{ route('edit.brand', $item->id) }}" class="btn btn-soft-success btn-sm border-0" 
@@ -32,7 +39,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" class="text-center text-muted py-5">
+                    <td colspan="5" class="text-center text-muted py-5">
                         <div class="mb-3">
                             <i class="fas fa-folder-open fs-1 text-light"></i>
                         </div>

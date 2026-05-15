@@ -2,114 +2,75 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8" />
-    <title> StockSathi </title>
+    <title>@yield('title', 'StockSathi')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc." />
-    <meta name="author" content="Zoyothemes" />
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('backend/assets/images/favicon.ico') }}">
 
-    <!-- Datatables css -->
-    <link href="{{ asset('backend/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css" />
-    <link href="{{ asset('backend/assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}"
-        rel="stylesheet" type="text/css" />
-
-    <!-- App css -->
-    <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
-
-    <!-- Icons -->
+    <link href="{{ asset('backend/assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/libs/boxicons/css/boxicons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="{{ asset('backend/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
+
     <style>
-        .d-flex.justify-content-between {
-            margin: 0px 13px;
+        /* Skote missing CSS variables */
+        :root {
+            --bs-header-bg: #ffffff;
+            --bs-header-item-color: #555;
+            --bs-topbar-search-bg: #f8f9fa;
         }
 
-        .app-sidebar-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 250px;
-            padding-top: 70px;
-            z-index: 100;
-            transition: transform 0.3s ease-in-out;
-            background: #ffffff;
-            box-shadow: 2px 0 15px rgba(0,0,0,0.05);
-        }
+        /* Avatar utility classes */
+        .avatar-xs { height: 1.5rem; width: 1.5rem; }
+        .avatar-sm { height: 2.25rem; width: 2.25rem; }
+        .avatar-md { height: 3.5rem; width: 3.5rem; }
+        .avatar-lg { height: 4.5rem; width: 4.5rem; }
+        .avatar-xl { height: 6rem; width: 6rem; }
+        .avatar-xxl { height: 7.5rem; width: 7.5rem; }
+        .avatar-title { align-items: center; color: #fff; display: flex; height: 100%; justify-content: center; width: 100%; }
 
-        .content-page {
-            margin-left: 250px;
-            transition: margin-left 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            padding-top: 70px;
-            background-color: #f8f9fa; /* Professional off-white background */
-        }
+        /* Badge soft variants */
+        .badge-soft-primary { color: #556ee6; background-color: rgba(85, 110, 230, 0.18); box-shadow: none; }
+        .badge-soft-secondary { color: #74788d; background-color: rgba(116, 120, 141, 0.18); box-shadow: none; }
+        .badge-soft-success { color: #34c38f; background-color: rgba(52, 195, 143, 0.18); box-shadow: none; }
+        .badge-soft-info { color: #50a5f1; background-color: rgba(80, 165, 241, 0.18); box-shadow: none; }
+        .badge-soft-warning { color: #f1b44c; background-color: rgba(241, 180, 76, 0.18); box-shadow: none; }
+        .badge-soft-danger { color: #f46a6a; background-color: rgba(244, 106, 106, 0.18); box-shadow: none; }
+        .badge-soft-light { color: #eff2f7; background-color: rgba(239, 242, 247, 0.18); box-shadow: none; }
+        .badge-soft-dark { color: #343a40; background-color: rgba(52, 58, 64, 0.18); box-shadow: none; }
 
-        .topbar-custom {
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-bottom: 1px solid #eee;
-            position: fixed;
-            top: 0;
-            left: 250px;
-            right: 0;
-            z-index: 1001;
-            transition: left 0.3s ease-in-out;
-        }
+        /* Soft background utility */
+        .bg-soft { background-color: rgba(var(--bs-primary-rgb), 0.12) !important; }
 
-        @media (max-width: 991px) {
-            .topbar-custom {
-                left: 0;
-            }
+        /* Font size utilities */
+        .font-size-10 { font-size: 10px !important; }
+        .font-size-11 { font-size: 11px !important; }
+        .font-size-12 { font-size: 12px !important; }
+        .font-size-13 { font-size: 13px !important; }
+        .font-size-14 { font-size: 14px !important; }
+        .font-size-15 { font-size: 15px !important; }
+        .font-size-16 { font-size: 16px !important; }
+        .font-size-17 { font-size: 17px !important; }
+        .font-size-18 { font-size: 18px !important; }
+        .font-size-20 { font-size: 20px !important; }
+        .font-size-22 { font-size: 22px !important; }
+        .font-size-24 { font-size: 24px !important; }
 
-            .content-page {
-                margin-left: 0 !important;
-            }
+        /* Card breadcrumb styling */
+        .breadcrumb-item + .breadcrumb-item::before { font-family: "Material Design Icons"; }
 
-            .app-sidebar-menu {
-                transform: translateX(-100%);
-                z-index: 999 !important;
-            }
-
-            body.sidebar-open .app-sidebar-menu {
-                transform: translateX(0);
-            }
-        }
-
-        .sidebar-overlay {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 150;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        body.sidebar-open .sidebar-overlay {
-            display: block;
-            opacity: 1;
-        }
-
-        /* 🔥 PAGE LOADER */
+        /* Page loader */
         #page-loader {
             position: fixed;
             width: 100%;
@@ -122,198 +83,137 @@
             flex-direction: column;
             transition: opacity 0.3s ease;
         }
-
         .loader-content p {
             margin-top: 10px;
             font-size: 14px;
             color: #555;
         }
-
         .spinner {
             width: 45px;
             height: 45px;
             border: 4px solid #eee;
-            border-top: 4px solid #4f46e5;
+            border-top: 4px solid #556ee6;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
         }
-
-        .footer {
-            background: #ffffff;
-            border-top: 1px solid rgba(152, 166, 173, 0.2);
-            padding: 20px;
-            margin-top: auto;
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
-
         .table-scroll {
             max-height: 400px;
             overflow-y: auto;
         }
-
         .table-scroll thead {
             position: sticky;
             top: 0;
             z-index: 1;
         }
-
         .table-scroll thead th {
             background: #f0f4f7;
             position: sticky;
             top: 0;
         }
-
-        @media (max-width: 991px) {
-            .footer {
-                left: 0 !important;
-            }
-        }
-
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
+        .toastr-margin {
+            margin-top: 70px;
         }
     </style>
 
+    @yield('css')
 </head>
 
-<!-- body start -->
+<body data-sidebar="dark">
 
-<body data-menu-color="light" data-sidebar="default">
-    <!-- 🔥 PAGE LOADER -->
     <div id="page-loader">
         <div class="loader-content text-center">
             <div class="spinner"></div>
             <p>Loading...</p>
         </div>
     </div>
-    <!-- Begin page -->
-    <div id="app-layout">
-        <!-- Sidebar Overlay -->
-        <div class="sidebar-overlay"></div>
-        <!-- Topbar Start -->
+
+    <div id="layout-wrapper">
+
         @include('admin.body.header')
-        <!-- end Topbar -->
 
-        <!-- Left Sidebar Start -->
         @include('admin.body.sidebar')
-        <!-- Left Sidebar End -->
 
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
-
-        <div class="content-page">
-
-            <main class="flex-fill">
-                @yield('admin')
-            </main>
-
-            <!-- Footer Start -->
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    @yield('admin')
+                </div>
+            </div>
             @include('admin.body.footer')
-            <!-- end Footer -->
-
         </div>
-        <!-- ============================================================== -->
-        <!-- End Page content -->
-        <!-- ============================================================== -->
 
     </div>
-    <!-- END wrapper -->
 
-    <!-- Vendor -->
     <script src="{{ asset('backend/assets/libs/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/libs/metismenu/metisMenu.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/node-waves/waves.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/libs/waypoints/lib/jquery.waypoints.min.js') }}"></script>
-    <script src="{{ asset('backend/assets/libs/jquery.counterup/jquery.counterup.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/feather-icons/feather.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="{{ asset('backend/assets/js/code.js') }}"></script>
-    <script src="{{ asset('backend/assets/js/custome.js') }}"></script>
-
-    <script src="{{ asset('backend/assets/js/validate.min.js') }}"></script>
-    <!-- App js-->
     <script src="{{ asset('backend/assets/js/app.js') }}"></script>
 
-    <!-- Datatables js -->
-    <script src="{{ asset('backend/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script>
+        (function() {
+            var paths = {
+                bs: '{{ asset('backend/assets/css/bootstrap.min.css') }}',
+                app: '{{ asset('backend/assets/css/app.min.css') }}'
+            };
+            var fixLinks = function() {
+                var bs = document.getElementById('bootstrap-style');
+                var app = document.getElementById('app-style');
+                if (bs && bs.href && !bs.href.startsWith(window.location.origin + '/')) {
+                    bs.href = paths.bs;
+                }
+                if (app && app.href && !app.href.startsWith(window.location.origin + '/')) {
+                    app.href = paths.app;
+                }
+            };
+            fixLinks();
+            document.querySelectorAll('#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch').forEach(function(el) {
+                el.addEventListener('change', function() { setTimeout(fixLinks, 10); });
+            });
+        })();
+    </script>
 
-    <!-- dataTables.bootstrap5 -->
+    <script>
+        feather.replace();
+    </script>
+
+    <script src="{{ asset('backend/assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('backend/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-
-    <!-- Datatable Demo App Js -->
     <script src="{{ asset('backend/assets/js/pages/datatable.init.js') }}"></script>
 
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
 
     <script>
         @if (Session::has('message'))
             var type = "{{ Session::get('alert-type', 'info') }}"
             switch (type) {
-                case 'info':
-                    toastr.info(" {{ Session::get('message') }} ");
-                    break;
-
-                case 'success':
-                    toastr.success(" {{ Session::get('message') }} ");
-                    break;
-
-                case 'warning':
-                    toastr.warning(" {{ Session::get('message') }} ");
-                    break;
-
-                case 'error':
-                    toastr.error(" {{ Session::get('message') }} ");
-                    break;
+                case 'info': toastr.info("{{ Session::get('message') }}"); break;
+                case 'success': toastr.success("{{ Session::get('message') }}"); break;
+                case 'warning': toastr.warning("{{ Session::get('message') }}"); break;
+                case 'error': toastr.error("{{ Session::get('message') }}"); break;
             }
         @endif
     </script>
+
     <script>
         window.addEventListener("load", function() {
-            let loader = document.getElementById("page-loader");
+            var loader = document.getElementById("page-loader");
             loader.style.opacity = "0";
-
-            setTimeout(() => {
+            setTimeout(function() {
                 loader.style.display = "none";
             }, 300);
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggleButton = document.querySelector('.button-toggle-menu');
-            const body = document.body;
-            const overlay = document.querySelector('.sidebar-overlay');
-
-            if(toggleButton) {
-                toggleButton.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    body.classList.toggle('sidebar-open');
-                });
-            }
-
-            if(overlay) {
-                overlay.addEventListener('click', function() {
-                    body.classList.remove('sidebar-open');
-                });
-            }
-            
-            window.addEventListener('resize', function() {
-                if (window.innerWidth > 991) {
-                    body.classList.remove('sidebar-open');
-                }
-            });
-        });
-    </script>
-
     @yield('scripts')
 </body>
-
 </html>

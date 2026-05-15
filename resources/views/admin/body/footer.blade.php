@@ -1,8 +1,13 @@
 <footer class="footer">
     <div class="container-fluid">
         <div class="row">
-            <div class="col fs-13 text-muted text-center">
-                &copy; <script>document.write(new Date().getFullYear())</script> - Made with <span class="mdi mdi-heart text-danger"></span> by <a href="#!" class="text-reset fw-semibold">gsgwebsoft.com</a> 
+            <div class="col-sm-6">
+                <script>document.write(new Date().getFullYear())</script> &copy; StockSathi.
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end d-none d-sm-block">
+                    Made with <i class="mdi mdi-heart text-danger"></i> by gsgwebsoft.com
+                </div>
             </div>
         </div>
     </div>

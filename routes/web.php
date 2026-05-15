@@ -73,6 +73,7 @@ Route::controller(BrandController::class)->group(function(){
     Route::get('/sample/brand', 'DownloadSampleBrand')->name('sample.brand');
     Route::get('/trash/brand', 'TrashList')->name('trash.brand');
     Route::post('/restore/brand/{id}', 'RestoreBrand')->name('restore.brand');
+    Route::post('/change-status/brand/{id}', 'ChangeStatus')->name('change.status.brand');
     Route::delete('/parmanent/delete/brand/{id}', 'ParmanentDeleteBrand')->name('parmanent.delete.brand');
 });
 

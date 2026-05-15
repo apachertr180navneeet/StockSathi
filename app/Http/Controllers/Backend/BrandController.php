@@ -322,6 +322,25 @@ class BrandController extends Controller
     /**
      * Permanently delete brand
      */
+    public function ChangeStatus($id)
+    {
+        try {
+            $brand = Brand::findOrFail($id);
+            $brand->status = $brand->status ? 0 : 1;
+            $brand->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status changed successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function ParmanentDeleteBrand($id)
     {
         try {

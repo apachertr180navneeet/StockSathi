@@ -140,6 +140,21 @@
                 });
             });
 
+            // Status Toggle
+            $(document).on('change', '.statusToggle', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: "{{ url('change-status/brand') }}/" + id,
+                    type: "POST",
+                    success: function(res) {
+                        toastr.success(res.message);
+                    },
+                    error: function() {
+                        toastr.error('Something went wrong!');
+                    }
+                });
+            });
+
             // 🗑 Delete
             $(document).on('click', '.deleteBtn', function() {
 

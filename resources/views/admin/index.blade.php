@@ -1,290 +1,248 @@
 @extends('admin.admin_master')
 
+@section('title', 'Dashboard | StockSathi')
+
 @section('admin')
 
-<style>
-
-/* ===== BODY ===== */
-body {
-    background: #f1f5f9;
-}
-
-/* ===== CONTAINER ===== */
-.container-xxl {
-    padding-top: 10px;
-}
-
-/* ===== HEADER ===== */
-.dashboard-header {
-    background: linear-gradient(135deg, #0f172a, #1e293b);
-    color: #fff;
-    padding: 22px;
-    border-radius: 18px;
-    margin-bottom: 50px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-    position: relative;
-    top: 10px;
-}
-
-/* ===== CARD ===== */
-.inv-card {
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(12px);
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    transition: 0.3s;
-    border-top: 4px solid;
-}
-
-.inv-card:hover {
-    transform: translateY(-5px) scale(1.02);
-}
-
-.inv-card:active {
-    transform: scale(0.97);
-}
-
-/* COLORS */
-.blue { border-color:#3b82f6; }
-.green { border-color:#22c55e; }
-.orange { border-color:#f59e0b; }
-.red { border-color:#ef4444; }
-.purple { border-color:#8b5cf6; }
-
-/* TEXT */
-.card-title { font-size:13px; color:#6b7280; }
-.card-value { font-size:26px; font-weight:700; }
-.card-sub { font-size:12px; color:#9ca3af; }
-
-/* CHART */
-#chart { min-height:320px; }
-
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-
-    .content {
-        padding: 8px;
-    }
-
-    /* Header */
-    .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start !important;
-        gap: 10px;
-        padding: 18px;
-    }
-
-    .dashboard-header h2 {
-        font-size: 18px;
-    }
-
-    .dashboard-header p {
-        font-size: 12px;
-    }
-
-    .dashboard-header .badge {
-        font-size: 10px;
-        padding: 4px 10px;
-    }
-
-    /* ===== CARD SLIDER (CENTER FIX) ===== */
-    .row.g-4 {
-        display: flex;
-        overflow-x: auto;
-        gap: 14px;
-        padding: 10px 15px;
-        scroll-snap-type: x mandatory;
-        justify-content: center;
-    }
-
-    .row.g-4::-webkit-scrollbar {
-        display: none;
-    }
-
-    .col-md-6,
-    .col-xl-3 {
-        flex: 0 0 85%;
-        max-width: 85%;
-        margin: 0 auto;
-        scroll-snap-align: center;
-    }
-
-    .inv-card {
-        padding: 16px;
-    }
-
-    .card-value {
-        font-size: 22px;
-    }
-
-    /* Chart */
-    #chart {
-        height: 240px !important;
-    }
-}
-
-/* ANIMATION */
-.inv-card {
-    animation: fadeInUp 0.6s ease;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-</style>
-
-<div class="content">
-<div class="container-xxl">
+<div class="page-title-box">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h6 class="page-title">Dashboard</h6>
+            <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item active">Welcome to Inventory Dashboard</li>
+            </ol>
+        </div>
+        <div class="col-md-4">
+            <div class="float-end d-none d-md-block">
+                <span class="badge bg-primary">{{ now()->format('l, d M Y') }}</span>
+            </div>
+        </div>
+    </div>
+</div>
 
 @php
 $hour = now()->format('H');
 $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good Evening');
 @endphp
 
-<!-- HEADER -->
-<div class="dashboard-header d-flex justify-content-between align-items-start flex-wrap">
-    <div>
-        <h2>📦 Inventory Dashboard</h2>
-        <p class="mb-0 text-light opacity-75">
-            {{ $greeting }}, <strong>{{ auth()->user()->name ?? 'User' }}</strong> 👋
-            <br>
-            <small>Here’s what’s happening in your business today</small>
-        </p>
-    </div>
-
-    <span class="badge bg-light text-dark">
-        {{ now()->format('l, d M Y') }}
-    </span>
-</div>
-
-<!-- ROW 1 -->
-<div class="row g-4 mt-3">
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card blue">
-            <div class="card-title">Total Products</div>
-            <div class="card-value">{{ number_format($totalProducts) }}</div>
-            <div class="card-sub">All inventory items</div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card green">
-            <div class="card-title">Available Stock</div>
-            <div class="card-value">{{ number_format($availableStock) }}</div>
-            <div class="card-sub">Units in warehouse</div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card orange">
-            <div class="card-title">Low Stock</div>
-            <div class="card-value">{{ $lowStock }}</div>
-            <div class="card-sub">Need restock</div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card red">
-            <div class="card-title">Out of Stock</div>
-            <div class="card-value">{{ $outOfStock }}</div>
-            <div class="card-sub">Unavailable items</div>
-        </div>
-    </div>
-
-</div>
-
-<!-- ROW 2 -->
-<div class="row g-4 mt-3">
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card purple">
-            <div class="card-title">Total Orders</div>
-            <div class="card-value">{{ number_format($totalOrders) }}</div>
-            <div class="card-sub">All orders</div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card green">
-            <div class="card-title">Today's Sales</div>
-            <div class="card-value">&#8377; {{ number_format($todaySales, 2) }}</div>
-            <div class="card-sub">Revenue today</div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card blue">
-            <div class="card-title">Customers</div>
-            <div class="card-value">{{ number_format($totalCustomers) }}</div>
-            <div class="card-sub">Active buyers</div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <div class="inv-card orange">
-            <div class="card-title">Suppliers</div>
-            <div class="card-value">{{ number_format($totalSuppliers) }}</div>
-            <div class="card-sub">Vendors</div>
-        </div>
-    </div>
-
-</div>
-
-<!-- CHART -->
-<div class="row mt-4">
+<div class="row mb-4">
     <div class="col-12">
-        <div class="inv-card">
-            <h5>📊 Sales Overview</h5>
-            <div id="chart"></div>
+        <div class="card bg-primary bg-soft">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-1">{{ $greeting }}, <strong>{{ auth()->user()->name ?? 'User' }}</strong></h4>
+                        <p class="mb-0 text-muted">Here's what's happening in your business today</p>
+                    </div>
+                    <span class="badge bg-primary font-size-12">{{ now()->format('l, d M Y') }}</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-primary rounded-circle">
+                                <i class="bx bx-package font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Total Products</p>
+                        <h5 class="mb-0">{{ number_format($totalProducts) }}</h5>
+                        <small class="text-muted">All inventory items</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-success rounded-circle">
+                                <i class="bx bx-check-circle font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Available Stock</p>
+                        <h5 class="mb-0">{{ number_format($availableStock) }}</h5>
+                        <small class="text-muted">Units in warehouse</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-warning rounded-circle">
+                                <i class="bx bx-error-circle font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Low Stock</p>
+                        <h5 class="mb-0">{{ $lowStock }}</h5>
+                        <small class="text-muted">Need restock</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-danger rounded-circle">
+                                <i class="bx bx-x-circle font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Out of Stock</p>
+                        <h5 class="mb-0">{{ $outOfStock }}</h5>
+                        <small class="text-muted">Unavailable items</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row">
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-info rounded-circle">
+                                <i class="bx bx-cart font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Total Orders</p>
+                        <h5 class="mb-0">{{ number_format($totalOrders) }}</h5>
+                        <small class="text-muted">All orders</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-success rounded-circle">
+                                <i class="bx bx-dollar font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Today's Sales</p>
+                        <h5 class="mb-0">&#8377; {{ number_format($todaySales, 2) }}</h5>
+                        <small class="text-muted">Revenue today</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-primary rounded-circle">
+                                <i class="bx bx-user font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Customers</p>
+                        <h5 class="mb-0">{{ number_format($totalCustomers) }}</h5>
+                        <small class="text-muted">Active buyers</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-sm">
+                            <span class="avatar-title bg-warning rounded-circle">
+                                <i class="bx bx-group font-size-22"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden">
+                        <p class="text-muted mb-1">Suppliers</p>
+                        <h5 class="mb-0">{{ number_format($totalSuppliers) }}</h5>
+                        <small class="text-muted">Vendors</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Sales Overview</h4>
+                <div id="chart" class="apex-charts"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
 
-
 @section('scripts')
-
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
 <script>
-window.onload = function () {
-
+document.addEventListener("DOMContentLoaded", function() {
     var chartEl = document.querySelector("#chart");
     if (!chartEl) return;
-
     var options = {
-        chart: {
-            type: 'area',
-            height: 320
-        },
-        series: [{
-            name: 'Sales',
-            data: @json($salesData)
-        }],
-        xaxis: {
-            categories: @json($months)
-        },
-        stroke: {
-            curve: 'smooth'
-        }
+        chart: { type: 'area', height: 320, toolbar: { show: false } },
+        series: [{ name: 'Sales', data: @json($salesData) }],
+        xaxis: { categories: @json($months) },
+        stroke: { curve: 'smooth', width: 2 },
+        colors: ['#556ee6'],
+        fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.1 } },
+        dataLabels: { enabled: false },
+        grid: { borderColor: '#f1f1f1' }
     };
-
     new ApexCharts(chartEl, options).render();
-};
+});
 </script>
-
 @endsection
