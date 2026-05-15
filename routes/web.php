@@ -97,7 +97,12 @@ Route::controller(SupplierController::class)->group(function(){
     Route::post('/store/supplier', 'StoreSupplier')->name('store.supplier');
     Route::get('/edit/supplier/{id}', 'EditSupplier')->name('edit.supplier');
     Route::post('/update/supplier', 'UpdateSupplier')->name('update.supplier');
-    Route::get('/delete/supplier/{id}', 'DeleteSupplier')->name('delete.supplier');
+    Route::delete('/delete/supplier/{id}', 'DeleteSupplier')->name('delete.supplier');
+    Route::post('/import/supplier', 'ImportSupplier')->name('import.supplier');
+    Route::get('/sample/supplier', 'DownloadSampleSupplier')->name('sample.supplier');
+    Route::get('/trash/supplier', 'TrashList')->name('trash.supplier');
+    Route::post('/restore/supplier/{id}', 'RestoreSupplier')->name('restore.supplier');
+    Route::delete('/parmanent/delete/supplier/{id}', 'ParmanentDeleteSupplier')->name('parmanent.delete.supplier');
 });
 
 

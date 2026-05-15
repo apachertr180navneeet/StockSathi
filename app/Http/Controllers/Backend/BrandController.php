@@ -26,7 +26,7 @@ class BrandController extends Controller
                 $query->where('name', 'like', '%' . $request->search . '%');
             }
 
-            $brand = $query->orderBy('name', 'asc')->paginate(20);
+            $brand = $query->orderBy('name', 'asc')->paginate(10);
 
             // ✅ AJAX RESPONSE (IMPORTANT)
             if ($request->ajax()) {
@@ -281,7 +281,7 @@ class BrandController extends Controller
                 $query->where('name', 'like', '%' . $request->search . '%');
             }
 
-            $brand = $query->orderBy('deleted_at', 'desc')->paginate(20);
+            $brand = $query->orderBy('deleted_at', 'desc')->paginate(10);
 
             if ($request->ajax()) {
                 return view('admin.backend.brand.partials.brand_trash_table', compact('brand'))->render();

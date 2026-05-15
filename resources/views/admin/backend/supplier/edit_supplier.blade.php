@@ -5,13 +5,11 @@
 <div class="content mt-3 px-3">
     <div class="container-fluid">
 
-        <!-- Unified Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="fs-20 fw-semibold m-0">Edit Supplier</h4>
             <a href="{{ route('all.supplier') }}" class="btn btn-dark btn-sm">Back</a>
         </div>
 
-        <!-- Unified Content Card -->
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
                             <form id="myForm" action="{{ route('update.supplier') }}" method="POST">
@@ -21,27 +19,39 @@
 
                                 <div class="row">
 
-                                    <div class="col-lg-6 mb-3">
+                                    <div class="col-lg-6 mb-3 form-group">
                                         <label>Name</label>
-                                        <input type="text" name="name" value="{{ $supplier->name }}"
+                                        <input type="text" name="name" value="{{ old('name', $supplier->name) }}"
                                             class="form-control">
+                                        @error('name')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
-                                    <div class="col-lg-6 mb-3">
+                                    <div class="col-lg-6 mb-3 form-group">
                                         <label>Email</label>
-                                        <input type="text" name="email" value="{{ $supplier->email }}"
+                                        <input type="email" name="email" value="{{ old('email', $supplier->email) }}"
                                             class="form-control">
+                                        @error('email')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
-                                    <div class="col-lg-6 mb-3">
+                                    <div class="col-lg-6 mb-3 form-group">
                                         <label>Phone</label>
-                                        <input type="text" name="phone" value="{{ $supplier->phone }}"
+                                        <input type="text" name="phone" value="{{ old('phone', $supplier->phone) }}"
                                             class="form-control">
+                                        @error('phone')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
-                                    <div class="col-lg-12 mb-3">
+                                    <div class="col-lg-12 mb-3 form-group">
                                         <label>Address</label>
-                                        <textarea name="address" class="form-control">{{ $supplier->address }}</textarea>
+                                        <textarea name="address" class="form-control">{{ old('address', $supplier->address) }}</textarea>
+                                        @error('address')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                 </div>
@@ -71,6 +81,12 @@
                     email: {
                         required: true,
                     },
+                    phone: {
+                        required: true,
+                        digits: true,
+                        minlength: 10,
+                        maxlength: 10,
+                    },
                     address: {
                         required: true,
                     },
@@ -83,8 +99,14 @@
                     email: {
                         required: 'Please Enter Supplier Email',
                     },
+                    phone: {
+                        required: 'Please Enter Supplier Phone',
+                        digits: 'Please enter only digits',
+                        minlength: 'Phone must be exactly 10 digits',
+                        maxlength: 'Phone must be exactly 10 digits',
+                    },
                     address: {
-                        required: 'Please Enter Supplier address',
+                        required: 'Please Enter Supplier Address',
                     },
 
                 },

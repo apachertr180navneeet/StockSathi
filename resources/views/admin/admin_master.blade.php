@@ -55,9 +55,29 @@
         .content-page {
             margin-left: 250px;
             transition: margin-left 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding-top: 70px;
+            background-color: #f8f9fa; /* Professional off-white background */
+        }
+
+        .topbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #eee;
+            position: fixed;
+            top: 0;
+            left: 250px;
+            right: 0;
+            z-index: 1001;
+            transition: left 0.3s ease-in-out;
         }
 
         @media (max-width: 991px) {
+            .topbar-custom {
+                left: 0;
+            }
 
             .content-page {
                 margin-left: 0 !important;
@@ -118,6 +138,36 @@
             animation: spin 0.7s linear infinite;
         }
 
+        .footer {
+            background: #ffffff;
+            border-top: 1px solid rgba(152, 166, 173, 0.2);
+            padding: 20px;
+            margin-top: auto;
+        }
+
+        .table-scroll {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table-scroll thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .table-scroll thead th {
+            background: #f0f4f7;
+            position: sticky;
+            top: 0;
+        }
+
+        @media (max-width: 991px) {
+            .footer {
+                left: 0 !important;
+            }
+        }
+
         @keyframes spin {
             100% {
                 transform: rotate(360deg);
@@ -155,9 +205,9 @@
 
         <div class="content-page">
 
-            @yield('admin')
-
-            <!-- content -->
+            <main class="flex-fill">
+                @yield('admin')
+            </main>
 
             <!-- Footer Start -->
             @include('admin.body.footer')
