@@ -8,26 +8,29 @@
                     </div>
                 </th>
                 <th width="5%" class="border-bottom-0">Sl</th>
-                <th class="border-bottom-0">Brand Image</th>
-                <th class="border-bottom-0">Brand Name</th>
+                <th class="border-bottom-0">Customer Name</th>
+                <th class="border-bottom-0">Email</th>
+                <th class="border-bottom-0">Phone</th>
+                <th class="border-bottom-0">Address</th>
                 <th width="10%" class="border-bottom-0">Status</th>
                 <th width="15%" class="border-bottom-0">Action</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($brand as $key => $item)
+            @forelse($customer as $key => $item)
                 <tr>
                     <td>
                         <div class="form-check">
-                            <input class="form-check-input brandCheckbox" type="checkbox" value="{{ $item->id }}">
+                            <input class="form-check-input custCheckbox" type="checkbox" value="{{ $item->id }}">
                         </div>
                     </td>
-                    <td>{{ $brand->firstItem() + $key }}</td>
-                    <td>
-                        <img src="{{ $item->image ? asset($item->image) : url('upload/no_image.jpg') }}" 
-                             style="width: 50px; height: 50px; object-fit:cover; border-radius: 10px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                    </td>
+                    <td>{{ $customer->firstItem() + $key }}</td>
                     <td class="fw-medium text-dark">{{ $item->name }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->phone }}</td>
+                    <td title="{{ $item->address }}">
+                        {{ \Illuminate\Support\Str::limit($item->address, 30, '...') }}
+                    </td>
                     <td>
                         <div class="form-check form-switch">
                             <input class="form-check-input statusToggle" type="checkbox" data-id="{{ $item->id }}"
@@ -36,7 +39,7 @@
                     </td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('edit.brand', $item->id) }}" class="btn btn-soft-success btn-sm border-0" 
+                            <a href="{{ route('edit.customer', $item->id) }}" class="btn btn-soft-success btn-sm border-0" 
                                style="background-color: #e8f5e9; color: #2e7d32; transition: all 0.2s;" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
@@ -49,12 +52,12 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-5">
+                    <td colspan="8" class="text-center text-muted py-5">
                         <div class="mb-3">
                             <i class="fas fa-folder-open fs-1 text-light"></i>
                         </div>
-                        <p class="mb-0 fw-medium text-dark">No Brands Found</p>
-                        <small>Try adjusting your search or add a new brand.</small>
+                        <p class="mb-0 fw-medium text-dark">No Customers Found</p>
+                        <small>Try adjusting your search or add a new customer.</small>
                     </td>
                 </tr>
             @endforelse
@@ -64,6 +67,6 @@
 
 <div class="mt-0 pt-4 border-top">
     <div class="px-1">
-        {!! $brand->links() !!}
+        {!! $customer->links() !!}
     </div>
 </div>

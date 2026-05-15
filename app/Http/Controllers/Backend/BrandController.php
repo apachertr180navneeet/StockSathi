@@ -322,6 +322,48 @@ class BrandController extends Controller
     /**
      * Permanently delete brand
      */
+    public function BulkDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Brand::whereIn('id', $ids)->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' brand(s) deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkStatusChange(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            $status = $request->status;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Brand::whereIn('id', $ids)->update(['status' => $status]);
+            $label = $status == 1 ? 'active' : 'inactive';
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' brand(s) set to ' . $label
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function ChangeStatus($id)
     {
         try {
@@ -358,6 +400,52 @@ class BrandController extends Controller
                 'message' => 'Brand Permanently Deleted Successfully'
             ]);
 
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkRestore(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Brand::withTrashed()->whereIn('id', $ids)->restore();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' brand(s) restored successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkForceDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            $brands = Brand::withTrashed()->whereIn('id', $ids)->get();
+            foreach ($brands as $brand) {
+                if (!empty($brand->image) && file_exists(public_path($brand->image))) {
+                    unlink(public_path($brand->image));
+                }
+                $brand->forceDelete();
+            }
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' brand(s) permanently deleted'
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

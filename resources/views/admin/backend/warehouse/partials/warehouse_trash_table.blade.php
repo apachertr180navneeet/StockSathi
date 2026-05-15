@@ -2,6 +2,11 @@
     <table class="table table-bordered nowrap w-100">
         <thead>
             <tr>
+                <th width="5%">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="selectAllTrash">
+                    </div>
+                </th>
                 <th>Sl</th>
                 <th>Warehouse Name</th>
                 <th>Email</th>
@@ -14,6 +19,11 @@
         <tbody>
             @forelse($warehouse as $key => $item)
                 <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input trashCheckbox" type="checkbox" value="{{ $item->id }}">
+                        </div>
+                    </td>
                     <td>{{ $warehouse->firstItem() + $key }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->email }}</td>
@@ -27,7 +37,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" class="text-center text-muted py-4">No Trashed Warehouses Found</td>
+                    <td colspan="8" class="text-center text-muted py-4">No Trashed Warehouses Found</td>
                 </tr>
             @endforelse
         </tbody>

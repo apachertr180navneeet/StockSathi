@@ -8,26 +8,29 @@
                     </div>
                 </th>
                 <th width="5%" class="border-bottom-0">Sl</th>
-                <th class="border-bottom-0">Brand Image</th>
-                <th class="border-bottom-0">Brand Name</th>
+                <th class="border-bottom-0">Customer Name</th>
+                <th class="border-bottom-0">Email</th>
+                <th class="border-bottom-0">Phone</th>
+                <th class="border-bottom-0">Address</th>
                 <th class="border-bottom-0">Deleted At</th>
                 <th width="15%" class="border-bottom-0">Action</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($brand as $key => $item)
+            @forelse($customer as $key => $item)
                 <tr>
                     <td>
                         <div class="form-check">
                             <input class="form-check-input trashCheckbox" type="checkbox" value="{{ $item->id }}">
                         </div>
                     </td>
-                    <td>{{ $brand->firstItem() + $key }}</td>
-                    <td>
-                        <img src="{{ $item->image ? asset($item->image) : url('upload/no_image.jpg') }}" 
-                             style="width: 50px; height: 50px; object-fit:cover; border-radius: 10px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-                    </td>
+                    <td>{{ $customer->firstItem() + $key }}</td>
                     <td class="fw-medium text-dark">{{ $item->name }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->phone }}</td>
+                    <td title="{{ $item->address }}">
+                        {{ \Illuminate\Support\Str::limit($item->address, 30, '...') }}
+                    </td>
                     <td class="text-muted small">{{ $item->deleted_at->format('d M Y, h:i A') }}</td>
                     <td>
                         <div class="d-flex gap-2">
@@ -44,11 +47,11 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-5">
+                    <td colspan="8" class="text-center text-muted py-5">
                         <div class="mb-3">
                             <i class="fas fa-trash-alt fs-1 text-light"></i>
                         </div>
-                        <p class="mb-0 fw-medium text-dark">No Trashed Brands Found</p>
+                        <p class="mb-0 fw-medium text-dark">No Trashed Customers Found</p>
                     </td>
                 </tr>
             @endforelse
@@ -58,6 +61,6 @@
 
 <div class="mt-0 pt-4 border-top">
     <div class="px-1">
-        {!! $brand->links() !!}
+        {!! $customer->links() !!}
     </div>
 </div>

@@ -326,4 +326,104 @@ class WareHouseController extends Controller
             ]);
         }
     }
+
+    public function ChangeStatus($id)
+    {
+        try {
+            $warehouse = WareHouse::findOrFail($id);
+            $warehouse->status = $warehouse->status ? 0 : 1;
+            $warehouse->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status changed successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            WareHouse::whereIn('id', $ids)->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' warehouse(s) deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkStatusChange(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            $status = $request->status;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            WareHouse::whereIn('id', $ids)->update(['status' => $status]);
+            $label = $status == 1 ? 'active' : 'inactive';
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' warehouse(s) set to ' . $label
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkRestore(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            WareHouse::withTrashed()->whereIn('id', $ids)->restore();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' warehouse(s) restored successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkForceDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            WareHouse::withTrashed()->whereIn('id', $ids)->forceDelete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' warehouse(s) permanently deleted'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }

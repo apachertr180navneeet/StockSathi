@@ -75,6 +75,10 @@ Route::controller(BrandController::class)->group(function(){
     Route::post('/restore/brand/{id}', 'RestoreBrand')->name('restore.brand');
     Route::post('/change-status/brand/{id}', 'ChangeStatus')->name('change.status.brand');
     Route::delete('/parmanent/delete/brand/{id}', 'ParmanentDeleteBrand')->name('parmanent.delete.brand');
+    Route::post('/bulk-delete/brand', 'BulkDelete')->name('bulk.delete.brand');
+    Route::post('/bulk-status/brand', 'BulkStatusChange')->name('bulk.status.brand');
+    Route::post('/bulk-restore/brand', 'BulkRestore')->name('bulk.restore.brand');
+    Route::post('/bulk-force-delete/brand', 'BulkForceDelete')->name('bulk.force.delete.brand');
 });
 
 Route::controller(WareHouseController::class)->group(function(){
@@ -89,6 +93,11 @@ Route::controller(WareHouseController::class)->group(function(){
     Route::get('/trash/warehouse', 'TrashList')->name('trash.warehouse');
     Route::post('/restore/warehouse/{id}', 'RestoreWarehouse')->name('restore.warehouse');
     Route::delete('/parmanent/delete/warehouse/{id}', 'ParmanentDeleteWarehouse')->name('parmanent.delete.warehouse');
+    Route::post('/change-status/warehouse/{id}', 'ChangeStatus')->name('change.status.warehouse');
+    Route::post('/bulk-delete/warehouse', 'BulkDelete')->name('bulk.delete.warehouse');
+    Route::post('/bulk-status/warehouse', 'BulkStatusChange')->name('bulk.status.warehouse');
+    Route::post('/bulk-restore/warehouse', 'BulkRestore')->name('bulk.restore.warehouse');
+    Route::post('/bulk-force-delete/warehouse', 'BulkForceDelete')->name('bulk.force.delete.warehouse');
 });
 
 
@@ -104,6 +113,11 @@ Route::controller(SupplierController::class)->group(function(){
     Route::get('/trash/supplier', 'TrashList')->name('trash.supplier');
     Route::post('/restore/supplier/{id}', 'RestoreSupplier')->name('restore.supplier');
     Route::delete('/parmanent/delete/supplier/{id}', 'ParmanentDeleteSupplier')->name('parmanent.delete.supplier');
+    Route::post('/change-status/supplier/{id}', 'ChangeStatus')->name('change.status.supplier');
+    Route::post('/bulk-delete/supplier', 'BulkDelete')->name('bulk.delete.supplier');
+    Route::post('/bulk-status/supplier', 'BulkStatusChange')->name('bulk.status.supplier');
+    Route::post('/bulk-restore/supplier', 'BulkRestore')->name('bulk.restore.supplier');
+    Route::post('/bulk-force-delete/supplier', 'BulkForceDelete')->name('bulk.force.delete.supplier');
 });
 
 
@@ -113,7 +127,15 @@ Route::controller(CustomerController::class)->group(function(){
     Route::post('/store/customer', 'StoreCustomer')->name('store.customer');
     Route::get('/edit/customer/{id}', 'EditCustomer')->name('edit.customer');
     Route::post('/update/customer', 'UpdateCustomer')->name('update.customer');
-    Route::get('/delete/customer/{id}', 'DeleteCustomer')->name('delete.customer');
+    Route::delete('/delete/customer/{id}', 'DeleteCustomer')->name('delete.customer');
+    Route::get('/trash/customer', 'TrashList')->name('trash.customer');
+    Route::post('/restore/customer/{id}', 'RestoreCustomer')->name('restore.customer');
+    Route::delete('/parmanent/delete/customer/{id}', 'ParmanentDeleteCustomer')->name('parmanent.delete.customer');
+    Route::post('/change-status/customer/{id}', 'ChangeStatus')->name('change.status.customer');
+    Route::post('/bulk-delete/customer', 'BulkDelete')->name('bulk.delete.customer');
+    Route::post('/bulk-status/customer', 'BulkStatusChange')->name('bulk.status.customer');
+    Route::post('/bulk-restore/customer', 'BulkRestore')->name('bulk.restore.customer');
+    Route::post('/bulk-force-delete/customer', 'BulkForceDelete')->name('bulk.force.delete.customer');
 });
 
 

@@ -29,6 +29,23 @@
                     <input type="text" id="search" class="form-control search-box" placeholder="Search supplier...">
                 </div>
 
+                <!-- Bulk Actions -->
+                <div id="bulkActions" style="display: none;" class="mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small" id="selectedCount">0 selected</span>
+                        <button class="btn btn-danger btn-sm" id="bulkDeleteBtn"><i class="fas fa-trash-alt me-1"></i> Delete Selected</button>
+                        <div class="dropdown">
+                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-toggle-on me-1"></i> Change Status
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item bulk-status-btn" href="#" data-status="1"><i class="fas fa-check-circle text-success me-2"></i>Active</a></li>
+                                <li><a class="dropdown-item bulk-status-btn" href="#" data-status="0"><i class="fas fa-times-circle text-danger me-2"></i>Inactive</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="supplierTable">
                     @include('admin.backend.supplier.partials.supplier_table')
                 </div>
@@ -97,6 +114,7 @@
                     search: search
                 }, function(data) {
                     $('#supplierTable').html(data);
+                    $('#bulkActions').hide();
                 });
             }
 
@@ -114,6 +132,86 @@
                 let search = $('#search').val();
                 $.get(url, { search: search }, function(data) {
                     $('#supplierTable').html(data);
+                });
+            });
+
+            // Select All
+            $(document).on('change', '#selectAll', function() {
+                $('.supCheckbox').prop('checked', $(this).prop('checked'));
+                toggleBulkActions();
+            });
+
+            $(document).on('change', '.supCheckbox', function() {
+                toggleBulkActions();
+            });
+
+            function toggleBulkActions() {
+                let count = $('.supCheckbox:checked').length;
+                if (count > 0) {
+                    $('#bulkActions').show();
+                    $('#selectedCount').text(count + ' selected');
+                } else {
+                    $('#bulkActions').hide();
+                    $('#selectAll').prop('checked', false);
+                }
+            }
+
+            // Bulk Delete
+            $('#bulkDeleteBtn').on('click', function() {
+                let ids = $('.supCheckbox:checked').map(function() { return $(this).val(); }).get();
+                if (!ids.length) return;
+                Swal.fire({
+                    title: 'Delete ' + ids.length + ' supplier(s)?',
+                    text: 'They can be restored from the trash later.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete all!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('bulk.delete.supplier') }}",
+                            type: "POST",
+                            data: { ids: ids },
+                            success: function(res) {
+                                toastr.success(res.message);
+                                loadTable($('#search').val());
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Bulk Status Change
+            $(document).on('click', '.bulk-status-btn', function(e) {
+                e.preventDefault();
+                let ids = $('.supCheckbox:checked').map(function() { return $(this).val(); }).get();
+                let status = $(this).data('status');
+                if (!ids.length) return;
+                $.ajax({
+                    url: "{{ route('bulk.status.supplier') }}",
+                    type: "POST",
+                    data: { ids: ids, status: status },
+                    success: function(res) {
+                        toastr.success(res.message);
+                        loadTable($('#search').val());
+                    }
+                });
+            });
+
+            // Status Toggle
+            $(document).on('change', '.statusToggle', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: "{{ url('change-status/supplier') }}/" + id,
+                    type: "POST",
+                    success: function(res) {
+                        toastr.success(res.message);
+                    },
+                    error: function() {
+                        toastr.error('Something went wrong!');
+                    }
                 });
             });
 

@@ -8,28 +8,38 @@ use App\Models\Customer;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display all customers.
-     */
-    public function AllCustomer()
+    public function AllCustomer(Request $request)
     {
-        $customer = Customer::latest()->get();
-        return view('admin.backend.customer.all_customer', compact('customer'));
-    }
-    // End Method
+        try {
+            $query = Customer::query();
 
-    /**
-     * Show add customer form.
-     */
+            if ($request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('email', 'like', '%' . $request->search . '%')
+                    ->orWhere('phone', 'like', '%' . $request->search . '%');
+            }
+
+            $customer = $query->orderBy('name', 'asc')->paginate(10);
+
+            if ($request->ajax()) {
+                return view('admin.backend.customer.partials.customer_table', compact('customer'))->render();
+            }
+
+            return view('admin.backend.customer.all_customer', compact('customer'));
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+
     public function AddCustomer()
     {
         return view('admin.backend.customer.add_customer');
     }
-    // End Method
 
-    /**
-     * Store a new customer.
-     */
     public function StoreCustomer(Request $request)
     {
         $request->validate([
@@ -46,28 +56,18 @@ class CustomerController extends Controller
             'address' => $request->address,
         ]);
 
-        $notification = [
-            'message'    => 'Customer Inserted Successfully',
+        return redirect()->route('all.customer')->with([
+            'message' => 'Customer Inserted Successfully',
             'alert-type' => 'success',
-        ];
-
-        return redirect()->route('all.customer')->with($notification);
+        ]);
     }
-    // End Method
 
-    /**
-     * Show edit customer form.
-     */
     public function EditCustomer($id)
     {
         $customer = Customer::findOrFail($id);
         return view('admin.backend.customer.edit_customer', compact('customer'));
     }
-    // End Method
 
-    /**
-     * Update an existing customer.
-     */
     public function UpdateCustomer(Request $request)
     {
         $cust_id = $request->id;
@@ -86,28 +86,186 @@ class CustomerController extends Controller
             'address' => $request->address,
         ]);
 
-        $notification = [
-            'message'    => 'Customer Updated Successfully',
+        return redirect()->route('all.customer')->with([
+            'message' => 'Customer Updated Successfully',
             'alert-type' => 'success',
-        ];
-
-        return redirect()->route('all.customer')->with($notification);
+        ]);
     }
-    // End Method
 
-    /**
-     * Delete a customer.
-     */
     public function DeleteCustomer($id)
     {
-        Customer::findOrFail($id)->delete();
-
-        $notification = [
-            'message'    => 'Customer Deleted Successfully',
-            'alert-type' => 'success',
-        ];
-
-        return redirect()->back()->with($notification);
+        try {
+            Customer::findOrFail($id)->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Customer Deleted Successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
-    // End Method
+
+    public function TrashList(Request $request)
+    {
+        try {
+            $query = Customer::onlyTrashed();
+
+            if ($request->search) {
+                $query->where('name', 'like', '%' . $request->search . '%')
+                    ->orWhere('email', 'like', '%' . $request->search . '%')
+                    ->orWhere('phone', 'like', '%' . $request->search . '%');
+            }
+
+            $customer = $query->orderBy('deleted_at', 'desc')->paginate(10);
+
+            if ($request->ajax()) {
+                return view('admin.backend.customer.partials.customer_trash_table', compact('customer'))->render();
+            }
+
+            return view('admin.backend.customer.customer_trash', compact('customer'));
+
+        } catch (\Exception $e) {
+            return back()->with([
+                'message' => 'Something went wrong!',
+                'alert-type' => 'error'
+            ]);
+        }
+    }
+
+    public function RestoreCustomer($id)
+    {
+        try {
+            $customer = Customer::withTrashed()->findOrFail($id);
+            $customer->restore();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Customer Restored Successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function ParmanentDeleteCustomer($id)
+    {
+        try {
+            $customer = Customer::withTrashed()->findOrFail($id);
+            $customer->forceDelete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Customer Permanently Deleted Successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function ChangeStatus($id)
+    {
+        try {
+            $customer = Customer::findOrFail($id);
+            $customer->status = $customer->status ? 0 : 1;
+            $customer->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status changed successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Customer::whereIn('id', $ids)->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' customer(s) deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkStatusChange(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            $status = $request->status;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Customer::whereIn('id', $ids)->update(['status' => $status]);
+            $label = $status == 1 ? 'active' : 'inactive';
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' customer(s) set to ' . $label
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkRestore(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Customer::withTrashed()->whereIn('id', $ids)->restore();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' customer(s) restored successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkForceDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Customer::withTrashed()->whereIn('id', $ids)->forceDelete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' customer(s) permanently deleted'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }

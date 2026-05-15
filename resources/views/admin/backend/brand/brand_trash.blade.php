@@ -21,6 +21,14 @@
                     </div>
                 </div>
 
+                <div class="mb-3" id="bulkTrashActions" style="display: none;">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small" id="selectedTrashCount">0 selected</span>
+                        <button class="btn btn-info btn-sm" id="bulkRestoreBtn"><i class="fas fa-undo me-1"></i> Restore Selected</button>
+                        <button class="btn btn-danger btn-sm" id="bulkForceDeleteBtn"><i class="fas fa-trash me-1"></i> Delete Permanently</button>
+                    </div>
+                </div>
+
                 <div id="brandTrashTable">
                     @include('admin.backend.brand.partials.brand_trash_table')
                 </div>
@@ -49,6 +57,7 @@
                     search: search
                 }, function(data) {
                     $('#brandTrashTable').html(data);
+                    $('#bulkTrashActions').hide();
                 });
             }
 
@@ -66,6 +75,80 @@
                 let search = $('#search').val();
                 $.get(url, { search: search }, function(data) {
                     $('#brandTrashTable').html(data);
+                });
+            });
+
+            // Select All (Trash)
+            $(document).on('change', '#selectAllTrash', function() {
+                $('.trashCheckbox').prop('checked', $(this).prop('checked'));
+                toggleTrashBulkActions();
+            });
+
+            $(document).on('change', '.trashCheckbox', function() {
+                toggleTrashBulkActions();
+            });
+
+            function toggleTrashBulkActions() {
+                let count = $('.trashCheckbox:checked').length;
+                if (count > 0) {
+                    $('#bulkTrashActions').show();
+                    $('#selectedTrashCount').text(count + ' selected');
+                } else {
+                    $('#bulkTrashActions').hide();
+                    $('#selectAllTrash').prop('checked', false);
+                }
+            }
+
+            // Bulk Restore
+            $('#bulkRestoreBtn').on('click', function() {
+                let ids = $('.trashCheckbox:checked').map(function() { return $(this).val(); }).get();
+                if (!ids.length) return;
+                Swal.fire({
+                    title: 'Restore ' + ids.length + ' brand(s)?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0277bd',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, restore all!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('bulk.restore.brand') }}",
+                            type: "POST",
+                            data: { ids: ids },
+                            success: function(res) {
+                                toastr.success(res.message);
+                                loadTable($('#search').val());
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Bulk Force Delete
+            $('#bulkForceDeleteBtn').on('click', function() {
+                let ids = $('.trashCheckbox:checked').map(function() { return $(this).val(); }).get();
+                if (!ids.length) return;
+                Swal.fire({
+                    title: 'Permanently delete ' + ids.length + ' brand(s)?',
+                    text: 'This action cannot be undone!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete forever!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ route('bulk.force.delete.brand') }}",
+                            type: "POST",
+                            data: { ids: ids },
+                            success: function(res) {
+                                toastr.success(res.message);
+                                loadTable($('#search').val());
+                            }
+                        });
+                    }
                 });
             });
 

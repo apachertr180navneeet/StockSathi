@@ -227,4 +227,104 @@ class SupplierController extends Controller
             ]);
         }
     }
+
+    public function ChangeStatus($id)
+    {
+        try {
+            $supplier = Supplier::findOrFail($id);
+            $supplier->status = $supplier->status ? 0 : 1;
+            $supplier->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status changed successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Supplier::whereIn('id', $ids)->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' supplier(s) deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkStatusChange(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            $status = $request->status;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Supplier::whereIn('id', $ids)->update(['status' => $status]);
+            $label = $status == 1 ? 'active' : 'inactive';
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' supplier(s) set to ' . $label
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkRestore(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Supplier::withTrashed()->whereIn('id', $ids)->restore();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' supplier(s) restored successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function BulkForceDelete(Request $request)
+    {
+        try {
+            $ids = $request->ids;
+            if (!$ids || !is_array($ids)) {
+                return response()->json(['status' => 'error', 'message' => 'No items selected']);
+            }
+            Supplier::withTrashed()->whereIn('id', $ids)->forceDelete();
+            return response()->json([
+                'status' => 'success',
+                'message' => count($ids) . ' supplier(s) permanently deleted'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }
