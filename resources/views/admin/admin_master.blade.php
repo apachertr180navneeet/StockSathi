@@ -40,12 +40,14 @@
 
         .app-sidebar-menu {
             position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
             width: 250px;
+            padding-top: 70px;
             z-index: 100;
-            /* LOWER */
             transition: transform 0.3s ease-in-out;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
             box-shadow: 2px 0 15px rgba(0,0,0,0.05);
         }
 
@@ -62,8 +64,7 @@
 
             .app-sidebar-menu {
                 transform: translateX(-100%);
-                z-index: 999;
-                /* ONLY when open */
+                z-index: 999 !important;
             }
 
             body.sidebar-open .app-sidebar-menu {
@@ -76,7 +77,6 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(3px);
             z-index: 150;
             display: none;
             opacity: 0;
@@ -86,10 +86,6 @@
         body.sidebar-open .sidebar-overlay {
             display: block;
             opacity: 1;
-        }
-
-        body.sidebar-open .sidebar-overlay {
-            display: block;
         }
 
         /* 🔥 PAGE LOADER */

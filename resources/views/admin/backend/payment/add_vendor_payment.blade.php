@@ -25,7 +25,7 @@
                                                 data-supplier="{{ $item->supplier_id }}"
                                                 data-due="{{ $item->due_amount }}"
                                                 {{ (isset($selected_purchase) && $selected_purchase->id == $item->id) ? 'selected' : '' }}>
-                                                Invoice #{{ $item->id }} - Due: ₹{{ number_format($item->due_amount, 2) }}
+                                                Invoice #{{ $item->id }} - Due: &#8377;{{ number_format($item->due_amount, 2) }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -52,7 +52,7 @@
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Amount: <span class="text-danger">*</span></label>
                                     <div class="input-group">
-                                        <span class="input-group-text">₹</span>
+                                        <span class="input-group-text">&#8377;</span>
                                         <input type="number" step="0.01" name="amount" id="amount" 
                                             class="form-control" value="{{ old('amount', isset($selected_purchase) ? $selected_purchase->due_amount : '') }}" required>
                                     </div>

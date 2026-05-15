@@ -60,7 +60,7 @@
                                                     <span class="badge bg-secondary">{{ $item->status }}</span>
                                                 @endif
                                             </td>
-                                            <td>₹{{ number_format($item->grand_total, 2) }}</td>
+                                            <td>&#8377;{{ number_format($item->grand_total, 2) }}</td>
                                             <td>
                                                 <a title="Details" href="{{ route('details.purchase.order', $item->id) }}"
                                                     class="btn btn-info btn-sm"> <span

@@ -72,7 +72,7 @@
                                         @endif
                                     </div>
                                     <div class="mb-2"><strong>Requested By:</strong> {{ $requisition->user->name ?? 'N/A' }}</div>
-                                    <div class="mb-2"><strong>Grand Total:</strong> ₹{{ number_format($requisition->total_amount, 2) }}</div>
+                                    <div class="mb-2"><strong>Grand Total:</strong> &#8377;{{ number_format($requisition->total_amount, 2) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -101,15 +101,15 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item->product->code }} - {{ $item->product->name }}</td>
                                                 <td>{{ $item->quantity }}</td>
-                                                <td>₹{{ number_format($item->estimated_cost, 2) }}</td>
-                                                <td>₹{{ number_format($item->subtotal, 2) }}</td>
+                                                <td>&#8377;{{ number_format($item->estimated_cost, 2) }}</td>
+                                                <td>&#8377;{{ number_format($item->subtotal, 2) }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th colspan="4" class="text-end">Grand Total</th>
-                                                <th>₹{{ number_format($requisition->total_amount, 2) }}</th>
+                                                <th>&#8377;{{ number_format($requisition->total_amount, 2) }}</th>
                                             </tr>
                                         </tfoot>
                                     </table>

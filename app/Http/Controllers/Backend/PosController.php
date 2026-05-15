@@ -89,19 +89,19 @@ class PosController extends Controller
 
             // Insert Sale Items and deduct stock
             foreach ($request->products as $productId => $item) {
+                $product = Product::find($productId);
+
                 $saleItem = new SaleItem();
                 $saleItem->sale_id = $sale->id;
                 $saleItem->product_id = $productId;
                 $saleItem->quantity = $item['quantity'];
                 $saleItem->net_unit_cost = $item['net_unit_cost'];
                 $saleItem->discount = $item['discount'] ?? 0;
-                $saleItem->tax_rate = $item['tax_rate'] ?? 0;
-                $saleItem->tax = $item['tax'] ?? 0;
                 $saleItem->subtotal = $item['subtotal'];
+                $saleItem->stock = $product ? $product->product_qty : 0;
                 $saleItem->save();
 
                 // Deduct stock
-                $product = Product::find($productId);
                 if ($product) {
                     $product->product_qty -= $item['quantity'];
                     $product->save();

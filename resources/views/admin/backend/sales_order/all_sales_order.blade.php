@@ -54,7 +54,7 @@
                                                     <span class="badge text-bg-warning">{{ $item->status }}</span>
                                                 @endif
                                             </td>
-                                            <td>₹{{ $item->grand_total }}</td>
+                                            <td>&#8377;{{ $item->grand_total }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d') }}</td>
                                             <td>
                                                 <a title="Details" href="{{ route('details.sales.order', $item->id) }}"

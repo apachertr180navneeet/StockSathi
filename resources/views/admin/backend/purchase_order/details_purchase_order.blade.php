@@ -64,30 +64,30 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $item->product->name }} ({{ $item->product->product_code }})</td>
-                                            <td class="text-end">₹{{ number_format($item->unit_cost, 2) }}</td>
+                                            <td class="text-end">&#8377;{{ number_format($item->unit_cost, 2) }}</td>
                                             <td class="text-center">{{ $item->quantity }}</td>
-                                            <td class="text-end">₹{{ number_format($item->tax_amount, 2) }} ({{ $item->tax_rate }}%)</td>
-                                            <td class="text-end">₹{{ number_format($item->discount, 2) }}</td>
-                                            <td class="text-end">₹{{ number_format($item->subtotal, 2) }}</td>
+                                            <td class="text-end">&#8377;{{ number_format($item->tax_amount, 2) }} ({{ $item->tax_rate }}%)</td>
+                                            <td class="text-end">&#8377;{{ number_format($item->discount, 2) }}</td>
+                                            <td class="text-end">&#8377;{{ number_format($item->subtotal, 2) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="6" class="text-end">Order Tax ({{ $order->tax_rate }}%)</th>
-                                        <td class="text-end">₹{{ number_format($order->tax_amount, 2) }}</td>
+                                        <td class="text-end">&#8377;{{ number_format($order->tax_amount, 2) }}</td>
                                     </tr>
                                     <tr>
                                         <th colspan="6" class="text-end">Order Discount</th>
-                                        <td class="text-end">₹{{ number_format($order->discount, 2) }}</td>
+                                        <td class="text-end">&#8377;{{ number_format($order->discount, 2) }}</td>
                                     </tr>
                                     <tr>
                                         <th colspan="6" class="text-end">Shipping</th>
-                                        <td class="text-end">₹{{ number_format($order->shipping, 2) }}</td>
+                                        <td class="text-end">&#8377;{{ number_format($order->shipping, 2) }}</td>
                                     </tr>
                                     <tr class="fs-18 fw-bold">
                                         <th colspan="6" class="text-end text-primary">Grand Total</th>
-                                        <td class="text-end text-primary">₹{{ number_format($order->grand_total, 2) }}</td>
+                                        <td class="text-end text-primary">&#8377;{{ number_format($order->grand_total, 2) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>

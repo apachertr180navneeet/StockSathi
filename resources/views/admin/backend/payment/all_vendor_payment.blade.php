@@ -55,7 +55,7 @@
                                                     <span class="text-muted">General</span>
                                                 @endif
                                             </td>
-                                            <td>₹{{ number_format($item->amount, 2) }}</td>
+                                            <td>&#8377;{{ number_format($item->amount, 2) }}</td>
                                             <td>{{ $item->payment_method }}</td>
                                             <td>{{ $item->reference_no ?? 'N/A' }}</td>
                                             <td>

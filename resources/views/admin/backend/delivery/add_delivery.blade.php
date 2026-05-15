@@ -61,9 +61,9 @@
                         <div class="card-body">
                             <h5 class="card-title text-primary"><i class="mdi mdi-information-outline me-1"></i> Sale Summary</h5>
                             <hr>
-                            <p class="mb-1"><strong>Grand Total:</strong> ₹{{ number_format($sale->grand_total, 2) }}</p>
-                            <p class="mb-1"><strong>Paid Amount:</strong> ₹{{ number_format($sale->paid_amount, 2) }}</p>
-                            <p class="mb-1"><strong>Due Amount:</strong> <span class="text-danger">₹{{ number_format($sale->due_amount, 2) }}</span></p>
+                            <p class="mb-1"><strong>Grand Total:</strong> &#8377;{{ number_format($sale->grand_total, 2) }}</p>
+                            <p class="mb-1"><strong>Paid Amount:</strong> &#8377;{{ number_format($sale->paid_amount, 2) }}</p>
+                            <p class="mb-1"><strong>Due Amount:</strong> <span class="text-danger">&#8377;{{ number_format($sale->due_amount, 2) }}</span></p>
                             <p class="mb-0"><strong>Warehouse:</strong> {{ $sale->warehouse->name }}</p>
                         </div>
                     </div>

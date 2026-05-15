@@ -7,7 +7,7 @@
         <div class="col-md-3 col-sm-4 col-6 mb-3">
             <div class="card h-100 product-card shadow-sm border-0" 
                  style="cursor: pointer; transition: transform 0.2s;"
-                 onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->selling_price }}, {{ $item->product_qty }})">
+                 onclick="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, {{ $item->product_qty }})">
                 <div class="card-body p-2 text-center">
                     <div style="height: 100px; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 5px; margin-bottom: 10px;">
                         @if($item->images->count() > 0)
@@ -18,7 +18,7 @@
                     </div>
                     <h6 class="mb-1 text-truncate" title="{{ $item->name }}" style="font-size: 13px;">{{ $item->name }}</h6>
                     <div class="d-flex justify-content-between align-items-center mt-2">
-                        <span class="text-primary fw-bold">₹{{ $item->selling_price }}</span>
+                        <span class="text-primary fw-bold">&#8377;{{ $item->price }}</span>
                         <span class="badge {{ $item->product_qty > 0 ? 'bg-success' : 'bg-danger' }}">{{ $item->product_qty }} In Stock</span>
                     </div>
                 </div>

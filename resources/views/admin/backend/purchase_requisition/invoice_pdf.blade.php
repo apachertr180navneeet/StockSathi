@@ -84,9 +84,9 @@
                             <strong>{{ $item->product->name }}</strong><br>
                             <span style="font-size: 10px; color: #777;">Code: {{ $item->product->code }}</span>
                         </td>
-                        <td class="text-center">₹{{ number_format($item->estimated_cost, 2) }}</td>
+                        <td class="text-center">&#8377;{{ number_format($item->estimated_cost, 2) }}</td>
                         <td class="text-center">{{ $item->quantity }}</td>
-                        <td class="text-right">₹{{ number_format($item->subtotal, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($item->subtotal, 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -105,7 +105,7 @@
                 <table>
                     <tr class="grand-total">
                         <td style="padding: 10px;">Total Amount</td>
-                        <td class="text-right" style="padding: 10px;">₹{{ number_format($requisition->total_amount, 2) }}</td>
+                        <td class="text-right" style="padding: 10px;">&#8377;{{ number_format($requisition->total_amount, 2) }}</td>
                     </tr>
                 </table>
             </div>

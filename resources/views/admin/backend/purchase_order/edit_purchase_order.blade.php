@@ -115,7 +115,7 @@
                                     <tfoot>
                                         <tr>
                                             <th colspan="5" class="text-end">Total</th>
-                                            <th id="total_display">₹{{ number_format($editData->grand_total + $editData->discount - $editData->shipping - $editData->tax_amount, 2) }}</th>
+                                            <th id="total_display">&#8377;{{ number_format($editData->grand_total + $editData->discount - $editData->shipping - $editData->tax_amount, 2) }}</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -145,7 +145,7 @@
                                         <tr class="fs-18 fw-bold">
                                             <th>Grand Total</th>
                                             <td>
-                                                <span id="grand_total_display">₹{{ number_format($editData->grand_total, 2) }}</span>
+                                                <span id="grand_total_display">&#8377;{{ number_format($editData->grand_total, 2) }}</span>
                                                 <input type="hidden" name="grand_total" id="grand_total_input" value="{{ $editData->grand_total }}">
                                                 <input type="hidden" name="tax_amount" id="order_tax_amount" value="{{ $editData->tax_amount }}">
                                             </td>
@@ -276,7 +276,7 @@ $(document).ready(function() {
             total += subtotal;
         });
 
-        $('#total_display').text('₹' + total.toFixed(2));
+        $('#total_display').text('&#8377;' + total.toFixed(2));
 
         let order_tax_rate = parseFloat($('#order_tax_rate').val()) || 0;
         let order_discount = parseFloat($('#order_discount').val()) || 0;
@@ -286,7 +286,7 @@ $(document).ready(function() {
         let grand_total = total + order_tax_amount + order_shipping - order_discount;
 
         $('#order_tax_amount').val(order_tax_amount.toFixed(2));
-        $('#grand_total_display').text('₹' + grand_total.toFixed(2));
+        $('#grand_total_display').text('&#8377;' + grand_total.toFixed(2));
         $('#grand_total_input').val(grand_total.toFixed(2));
     }
 

@@ -88,10 +88,10 @@
                             <br><span style="font-size: 10px; color: #777;">Code: {{ $item->product->code }}</span>
                             @endif
                         </td>
-                        <td class="text-center">₹{{ number_format($item->net_unit_cost, 2) }}</td>
+                        <td class="text-center">&#8377;{{ number_format($item->net_unit_cost, 2) }}</td>
                         <td class="text-center">{{ $item->quantity }}</td>
-                        <td class="text-center">₹{{ number_format($item->discount, 2) }}</td>
-                        <td class="text-right">₹{{ number_format($item->subtotal, 2) }}</td>
+                        <td class="text-center">&#8377;{{ number_format($item->discount, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($item->subtotal, 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -113,27 +113,27 @@
                 <table>
                     <tr>
                         <td>Subtotal</td>
-                        <td class="text-right">₹{{ number_format($subtotal, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($subtotal, 2) }}</td>
                     </tr>
                     @if($quotation->discount > 0)
                     <tr>
                         <td>Order Discount</td>
-                        <td class="text-right" style="color: #dc3545;">-₹{{ number_format($quotation->discount, 2) }}</td>
+                        <td class="text-right" style="color: #dc3545;">-&#8377;{{ number_format($quotation->discount, 2) }}</td>
                     </tr>
                     @endif
                     <tr>
                         <td>Tax (GST @ {{ number_format($quotation->tax_rate, 2) }}%)</td>
-                        <td class="text-right">₹{{ number_format($quotation->tax_amount, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($quotation->tax_amount, 2) }}</td>
                     </tr>
                     @if($quotation->shipping > 0)
                     <tr>
                         <td>Shipping Cost</td>
-                        <td class="text-right">₹{{ number_format($quotation->shipping, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($quotation->shipping, 2) }}</td>
                     </tr>
                     @endif
                     <tr class="grand-total">
                         <td style="padding: 10px;">Grand Total</td>
-                        <td class="text-right" style="padding: 10px;">₹{{ number_format($quotation->grand_total, 2) }}</td>
+                        <td class="text-right" style="padding: 10px;">&#8377;{{ number_format($quotation->grand_total, 2) }}</td>
                     </tr>
                 </table>
             </div>

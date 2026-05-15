@@ -99,7 +99,7 @@
                 <div class="cart-totals shadow-sm">
                     <div class="d-flex justify-content-between mb-1">
                         <span>Subtotal:</span>
-                        <strong id="cart_subtotal">₹0.00</strong>
+                        <strong id="cart_subtotal">&#8377;0.00</strong>
                     </div>
                     <div class="d-flex justify-content-between mb-1 align-items-center">
                         <span>Discount:</span>
@@ -112,7 +112,7 @@
                     <hr class="my-2">
                     <div class="d-flex justify-content-between mb-2">
                         <span class="fs-5 fw-bold text-primary">Grand Total:</span>
-                        <span class="fs-5 fw-bold text-primary" id="cart_grand_total">₹0.00</span>
+                        <span class="fs-5 fw-bold text-primary" id="cart_grand_total">&#8377;0.00</span>
                     </div>
 
                     <div class="row g-2 mb-3">
@@ -133,7 +133,7 @@
 
                     <div class="d-flex justify-content-between mb-3">
                         <span class="text-danger fw-bold">Due Amount:</span>
-                        <strong id="cart_due" class="text-danger">₹0.00</strong>
+                        <strong id="cart_due" class="text-danger">&#8377;0.00</strong>
                     </div>
 
                     <div class="row g-2">
@@ -245,7 +245,7 @@
                 <tr>
                     <td>
                         <div class="fw-bold" style="font-size: 13px; line-height: 1.2;">${item.name}</div>
-                        <small class="text-muted">₹${item.price.toFixed(2)}</small>
+                        <small class="text-muted">&#8377;${item.price.toFixed(2)}</small>
                     </td>
                     <td>
                         <div class="input-group input-group-sm">
@@ -254,7 +254,7 @@
                             <button class="btn btn-outline-secondary px-2" type="button" onclick="updateQty(${id}, ${item.qty + 1})">+</button>
                         </div>
                     </td>
-                    <td class="text-end fw-bold">₹${itemTotal.toFixed(2)}</td>
+                    <td class="text-end fw-bold">&#8377;${itemTotal.toFixed(2)}</td>
                     <td class="text-center">
                         <button class="btn btn-sm btn-light text-danger p-1" onclick="removeFromCart(${id})"><i class="mdi mdi-close"></i></button>
                     </td>
@@ -267,7 +267,7 @@
         }
 
         $('#cart_body').html(html);
-        $('#cart_subtotal').text('₹' + subtotal.toFixed(2));
+        $('#cart_subtotal').text('&#8377;' + subtotal.toFixed(2));
         calculateTotals(subtotal);
     }
 
@@ -282,7 +282,7 @@
         
         if (grandTotal < 0) grandTotal = 0;
 
-        $('#cart_grand_total').text('₹' + grandTotal.toFixed(2));
+        $('#cart_grand_total').text('&#8377;' + grandTotal.toFixed(2));
         
         // Auto fill paid amount to full if it was 0 or equal to old grand total
         let paid = parseFloat($('#cart_paid').val()) || 0;
@@ -290,7 +290,7 @@
         let due = grandTotal - paid;
         if(due < 0) due = 0;
 
-        $('#cart_due').text('₹' + due.toFixed(2));
+        $('#cart_due').text('&#8377;' + due.toFixed(2));
     }
 
     $('#cart_discount, #cart_tax_rate, #cart_paid').on('input', function() {

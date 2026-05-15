@@ -136,7 +136,7 @@
                                        data-name="${product.name}" 
                                        data-code="${product.code}" 
                                        data-price="${product.price}">
-                                        ${product.code} - ${product.name} (₹${product.price})
+                                        ${product.code} - ${product.name} (&#8377;${product.price})
                                     </a>
                                 `);
                             });

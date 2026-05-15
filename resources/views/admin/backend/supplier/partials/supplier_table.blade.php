@@ -21,7 +21,7 @@
                     <td title="{{ $item->address }}">
                         {{ \Illuminate\Support\Str::limit($item->address, 30, '...') }}
                     </td>
-                    <td>₹{{ number_format($item->purchases_sum_due_amount ?? 0, 2) }}</td>
+                    <td>&#8377;{{ number_format($item->purchases_sum_due_amount ?? 0, 2) }}</td>
                     <td>
                         <a href="{{ route('edit.supplier', $item->id) }}" class="btn btn-success btn-sm">Edit</a>
                         <button class="btn btn-danger btn-sm deleteBtn" data-id="{{ $item->id }}">Delete</button>

@@ -112,7 +112,7 @@
 
                                             <td>{{ $item['warehouse']['name'] ?? 'N/A' }}</td>
 
-                                            <td>₹{{ $item->price }}</td>
+                                            <td>&#8377;{{ $item->price }}</td>
 
                                             <td>
                                                 @if ($item->product_qty <= 3)

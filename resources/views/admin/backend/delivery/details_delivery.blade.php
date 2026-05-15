@@ -88,15 +88,15 @@
                                             <tr>
                                                 <td>{{ $item->product->name }}</td>
                                                 <td class="text-center">{{ $item->quantity }}</td>
-                                                <td class="text-end">₹{{ number_format($item->net_unit_cost, 2) }}</td>
-                                                <td class="text-end">₹{{ number_format($item->subtotal, 2) }}</td>
+                                                <td class="text-end">&#8377;{{ number_format($item->net_unit_cost, 2) }}</td>
+                                                <td class="text-end">&#8377;{{ number_format($item->subtotal, 2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr class="fw-bold">
                                             <td colspan="3" class="text-end">Grand Total</td>
-                                            <td class="text-end">₹{{ number_format($delivery->sale->grand_total, 2) }}</td>
+                                            <td class="text-end">&#8377;{{ number_format($delivery->sale->grand_total, 2) }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

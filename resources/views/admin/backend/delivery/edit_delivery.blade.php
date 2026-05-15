@@ -69,7 +69,7 @@
                             <hr>
                             <p class="mb-1"><strong>Customer:</strong> {{ $delivery->sale->customer->name }}</p>
                             <p class="mb-1"><strong>Phone:</strong> {{ $delivery->sale->customer->phone }}</p>
-                            <p class="mb-1"><strong>Amount:</strong> ₹{{ number_format($delivery->sale->grand_total, 2) }}</p>
+                            <p class="mb-1"><strong>Amount:</strong> &#8377;{{ number_format($delivery->sale->grand_total, 2) }}</p>
                             <p class="mb-0"><strong>Payment:</strong> {{ $delivery->sale->payment_method }}</p>
                         </div>
                     </div>

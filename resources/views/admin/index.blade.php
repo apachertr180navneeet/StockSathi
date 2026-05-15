@@ -217,7 +217,7 @@ $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good
     <div class="col-md-6 col-xl-3">
         <div class="inv-card green">
             <div class="card-title">Today's Sales</div>
-            <div class="card-value">₹ 12,450</div>
+            <div class="card-value">&#8377; 12,450</div>
             <div class="card-sub">Revenue today</div>
         </div>
     </div>

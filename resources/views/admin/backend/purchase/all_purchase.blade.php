@@ -45,7 +45,7 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $item['warehouse']['name'] }}</td>
                                             <td>{{ $item->status }}</td>
-                                            <td>₹{{ $item->grand_total }}</td>
+                                            <td>&#8377;{{ $item->grand_total }}</td>
                                             <td>
                                                 @if($item->payment_status == 'Paid')
                                                     <span class="badge bg-success">Paid</span>

@@ -88,10 +88,10 @@
                             <br><span style="font-size: 10px; color: #777;">Code: {{ $item->product->code }}</span>
                             @endif
                         </td>
-                        <td class="text-center">₹{{ number_format($item->net_unit_cost, 2) }}</td>
+                        <td class="text-center">&#8377;{{ number_format($item->net_unit_cost, 2) }}</td>
                         <td class="text-center">{{ $item->quantity }}</td>
-                        <td class="text-center">₹{{ number_format($item->discount, 2) }}</td>
-                        <td class="text-right">₹{{ number_format($item->subtotal, 2) }}</td>
+                        <td class="text-center">&#8377;{{ number_format($item->discount, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($item->subtotal, 2) }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -113,38 +113,38 @@
                 <table>
                     <tr>
                         <td>Subtotal</td>
-                        <td class="text-right">₹{{ number_format($subtotal, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($subtotal, 2) }}</td>
                     </tr>
                     @if($sales->discount > 0)
                     <tr>
                         <td>Order Discount</td>
-                        <td class="text-right" style="color: #dc3545;">-₹{{ number_format($sales->discount, 2) }}</td>
+                        <td class="text-right" style="color: #dc3545;">-&#8377;{{ number_format($sales->discount, 2) }}</td>
                     </tr>
                     @endif
                     <tr>
                         <td>Tax (GST @ {{ number_format($sales->tax_rate, 2) }}%)</td>
-                        <td class="text-right">₹{{ number_format($sales->tax_amount, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($sales->tax_amount, 2) }}</td>
                     </tr>
                     @if($sales->shipping > 0)
                     <tr>
                         <td>Shipping Cost</td>
-                        <td class="text-right">₹{{ number_format($sales->shipping, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($sales->shipping, 2) }}</td>
                     </tr>
                     @endif
                     <tr class="grand-total">
                         <td style="padding: 10px;">Grand Total</td>
-                        <td class="text-right" style="padding: 10px;">₹{{ number_format($sales->grand_total, 2) }}</td>
+                        <td class="text-right" style="padding: 10px;">&#8377;{{ number_format($sales->grand_total, 2) }}</td>
                     </tr>
                 </table>
                 
                 <table style="margin-top: 15px; border-top: 2px solid #ddd;">
                     <tr>
                         <td>Paid Amount</td>
-                        <td class="text-right">₹{{ number_format($sales->paid_amount, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($sales->paid_amount, 2) }}</td>
                     </tr>
                     <tr style="color: {{ $sales->due_amount > 0 ? '#dc3545' : '#28a745' }}; font-weight: bold;">
                         <td>Due Amount</td>
-                        <td class="text-right">₹{{ number_format($sales->due_amount, 2) }}</td>
+                        <td class="text-right">&#8377;{{ number_format($sales->due_amount, 2) }}</td>
                     </tr>
                 </table>
             </div>

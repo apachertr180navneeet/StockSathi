@@ -31,7 +31,7 @@
                                                 <td><span class="fw-bold">#{{ str_pad($item->id, 5, '0', STR_PAD_LEFT) }}</span></td>
                                                 <td>{{ $item->customer->name }}</td>
                                                 <td>{{ date('d M Y', strtotime($item->date)) }}</td>
-                                                <td class="fw-bold">₹{{ number_format($item->grand_total, 2) }}</td>
+                                                <td class="fw-bold">&#8377;{{ number_format($item->grand_total, 2) }}</td>
                                                 <td>{{ $item->warehouse->name }}</td>
                                                 <td>
                                                     <a href="{{ route('add.delivery', $item->id) }}" class="btn btn-primary btn-sm">
