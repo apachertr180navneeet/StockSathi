@@ -44,7 +44,7 @@
                         <select class="form-select" id="pos_category">
                             <option value="">All Categories</option>
                             @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -272,7 +272,7 @@
         }
 
         $('#cart_body').html(html);
-        $('#cart_subtotal').text('&#8377;' + subtotal.toFixed(2));
+        $('#cart_subtotal').html('&#8377;' + subtotal.toFixed(2));
         calculateTotals(subtotal);
     }
 
@@ -287,7 +287,7 @@
         
         if (grandTotal < 0) grandTotal = 0;
 
-        $('#cart_grand_total').text('&#8377;' + grandTotal.toFixed(2));
+        $('#cart_grand_total').html('&#8377;' + grandTotal.toFixed(2));
         
         // Auto fill paid amount to full if it was 0 or equal to old grand total
         let paid = parseFloat($('#cart_paid').val()) || 0;
@@ -295,7 +295,7 @@
         let due = grandTotal - paid;
         if(due < 0) due = 0;
 
-        $('#cart_due').text('&#8377;' + due.toFixed(2));
+        $('#cart_due').html('&#8377;' + due.toFixed(2));
     }
 
     $('#cart_discount, #cart_tax_rate, #cart_paid').on('input', function() {

@@ -276,7 +276,7 @@ $(document).ready(function() {
             total += subtotal;
         });
 
-        $('#total_display').text('&#8377;' + total.toFixed(2));
+        $('#total_display').html('&#8377;' + total.toFixed(2));
 
         let order_tax_rate = parseFloat($('#order_tax_rate').val()) || 0;
         let order_discount = parseFloat($('#order_discount').val()) || 0;
@@ -286,7 +286,7 @@ $(document).ready(function() {
         let grand_total = total + order_tax_amount + order_shipping - order_discount;
 
         $('#order_tax_amount').val(order_tax_amount.toFixed(2));
-        $('#grand_total_display').text('&#8377;' + grand_total.toFixed(2));
+        $('#grand_total_display').html('&#8377;' + grand_total.toFixed(2));
         $('#grand_total_input').val(grand_total.toFixed(2));
     }
 
