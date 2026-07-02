@@ -19,7 +19,7 @@ class TransferController extends Controller
     // ================= All Transfer =================
     public function AllTransfer(){
         try {
-            $allData = Transfer::with(['transferItems.product'])
+            $allData = Transfer::with(['fromWarehouse', 'toWarehouse', 'transferItems.product'])
                         ->orderBy('id','desc')
                         ->get();
 
@@ -119,16 +119,10 @@ class TransferController extends Controller
                 if ($existingProduct) {
                     $existingProduct->increment('product_qty',$quantity);
                 } else {
-                    Product::create([
-                        'name' => $product->name,
-                        'brand_id' => $product->brand_id,
-                        'warehouse_id' => $request->to_warehouse_id,
-                        'price' => $product->price,
-                        'product_qty' => $quantity,
-                        'status' => 1,
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ]);
+                    $newProduct = $product->replicate();
+                    $newProduct->warehouse_id = $request->to_warehouse_id;
+                    $newProduct->product_qty = $quantity;
+                    $newProduct->save();
                 }
             }
 

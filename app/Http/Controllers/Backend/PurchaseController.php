@@ -29,8 +29,8 @@ class PurchaseController extends Controller
      */
     public function AllPurchase()
     {
-        // Get latest purchases
-        $allData = Purchase::latest()->get();
+        // Get latest purchases with relations
+        $allData = Purchase::with(['supplier', 'warehouse'])->latest()->get();
 
         return view('admin.backend.purchase.all_purchase', compact('allData'));
     }
@@ -367,9 +367,10 @@ class PurchaseController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
+            return back()->with([
+                'message' => 'Delete Failed: ' . $e->getMessage(),
+                'alert-type' => 'error'
+            ]);
         }
     }
 }

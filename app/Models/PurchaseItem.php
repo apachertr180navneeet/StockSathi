@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchaseItem extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function purchase(){
         return $this->belongsTo(Purchase::class, 'purchase_id');

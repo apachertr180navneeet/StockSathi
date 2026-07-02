@@ -25,7 +25,7 @@ class SaleController extends Controller
         $this->financialService = $financialService;
     }
     public function AllSales(){
-        $allData = Sale::orderBy('id','desc')->get();
+        $allData = Sale::with(['customer', 'warehouse'])->orderBy('id','desc')->get();
         return view('admin.backend.sales.all_sales',compact('allData')); 
     }
     // End Method 
@@ -107,7 +107,10 @@ class SaleController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()], 500);
+            return back()->withInput()->with([
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            ]);
         } 
     }
     // End Method
@@ -144,6 +147,13 @@ class SaleController extends Controller
             'full_paid' => $request->full_paid,   
         ]);
 
+        // Reverse old stock
+        foreach ($sales->saleItems as $item) {
+            if ($item->product) {
+                $item->product->increment('product_qty', $item->quantity);
+            }
+        }
+
         // Delete old sales item
         SaleItem::where('sale_id',$sales->id)->delete();
 
@@ -159,11 +169,9 @@ class SaleController extends Controller
             ]);
 
             /// Update Product Stock
-
             $productModel = Product::find($product_id);
             if ($productModel) {
-                $productModel->product_qty += $product['quantity'];
-                $productModel->save();
+                $productModel->decrement('product_qty', $product['quantity']);
             }  
         }
 
@@ -199,8 +207,11 @@ class SaleController extends Controller
             
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => $e->getMessage()], 500);
-          }  
+            return back()->with([
+                'message' => $e->getMessage(),
+                'alert-type' => 'error'
+            ]);
+        }  
     }
     // End Method
 

@@ -9,7 +9,7 @@ class Transfer extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function fromWarehouse(){
         return $this->belongsTo(WareHouse::class, 'from_warehouse_id');

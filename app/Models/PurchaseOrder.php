@@ -8,7 +8,7 @@ class PurchaseOrder extends Model
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function supplier()
     {

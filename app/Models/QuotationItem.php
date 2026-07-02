@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class QuotationItem extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function quotation(){
         return $this->belongsTo(Quotation::class, 'quotation_id');

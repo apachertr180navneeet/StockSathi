@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payroll extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'payment_date' => 'date',

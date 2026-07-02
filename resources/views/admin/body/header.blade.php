@@ -51,9 +51,12 @@
                         <i class="bx bx-lock-open font-size-16 align-middle me-1"></i> Lock screen
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="{{ route('admin.logout') }}">
-                        <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> Logout
-                    </a>
+                    <form method="POST" action="{{ route('admin.logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                            <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> Logout
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

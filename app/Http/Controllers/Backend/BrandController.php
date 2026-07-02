@@ -200,8 +200,11 @@ class BrandController extends Controller
             $brand = Brand::findOrFail($id);
 
             // Delete image safely
-            if (!empty($brand->image) && file_exists(public_path($brand->image))) {
-                unlink(public_path($brand->image));
+            if (!empty($brand->image)) {
+                $oldPath = str_replace(url('/') . '/', '', $brand->image);
+                if (file_exists(public_path($oldPath))) {
+                    unlink(public_path($oldPath));
+                }
             }
 
             $brand->delete();
@@ -389,8 +392,11 @@ class BrandController extends Controller
             $brand = Brand::withTrashed()->findOrFail($id);
 
             // Delete image safely
-            if (!empty($brand->image) && file_exists(public_path($brand->image))) {
-                unlink(public_path($brand->image));
+            if (!empty($brand->image)) {
+                $oldPath = str_replace(url('/') . '/', '', $brand->image);
+                if (file_exists(public_path($oldPath))) {
+                    unlink(public_path($oldPath));
+                }
             }
 
             $brand->forceDelete();
@@ -437,8 +443,11 @@ class BrandController extends Controller
             }
             $brands = Brand::withTrashed()->whereIn('id', $ids)->get();
             foreach ($brands as $brand) {
-                if (!empty($brand->image) && file_exists(public_path($brand->image))) {
-                    unlink(public_path($brand->image));
+                if (!empty($brand->image)) {
+                    $oldPath = str_replace(url('/') . '/', '', $brand->image);
+                    if (file_exists(public_path($oldPath))) {
+                        unlink(public_path($oldPath));
+                    }
                 }
                 $brand->forceDelete();
             }

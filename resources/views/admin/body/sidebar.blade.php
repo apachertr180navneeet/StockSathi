@@ -13,13 +13,16 @@
 
                 <li class="menu-title">Pages</li>
 
+                @can('pos.all')
                 <li>
                     <a href="{{ route('pos.index') }}" class="waves-effect">
                         <i class="bx bx-cart"></i>
                         <span>POS</span>
                     </a>
                 </li>
+                @endcan
 
+                @can('brand.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-box"></i>
@@ -29,7 +32,9 @@
                         <li><a href="{{ route('all.brand') }}">All Brand</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('warehouse.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-archive"></i>
@@ -39,7 +44,9 @@
                         <li><a href="{{ route('all.warehouse') }}">All Warehouse</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('supplier.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-group"></i>
@@ -49,7 +56,9 @@
                         <li><a href="{{ route('all.supplier') }}">All Supplier</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('customer.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-user"></i>
@@ -59,7 +68,9 @@
                         <li><a href="{{ route('all.customer') }}">All Customer</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('product.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-shopping-bag"></i>
@@ -70,7 +81,9 @@
                         <li><a href="{{ route('all.product') }}">Product</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('purchase.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-cart-alt"></i>
@@ -84,7 +97,9 @@
                         <li><a href="{{ route('all.return.purchase') }}">Purchase Return</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('sale.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-dollar"></i>
@@ -97,7 +112,9 @@
                         <li><a href="{{ route('all.sale.return') }}">Sale Return</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('sale.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-alarm-exclamation"></i>
@@ -108,7 +125,9 @@
                         <li><a href="{{ route('due.sale.return') }}">Sales Return Due</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('transfer.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-transfer"></i>
@@ -118,7 +137,9 @@
                         <li><a href="{{ route('all.transfer') }}">Transfers</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('financial.report.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-bar-chart"></i>
@@ -128,9 +149,11 @@
                         <li><a href="{{ route('all.report') }}">All Reports</a></li>
                     </ul>
                 </li>
+                @endcan
 
                 <li class="menu-title">Inventory & Logistics</li>
 
+                @can('stock.adjustment.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-slider"></i>
@@ -141,7 +164,9 @@
                         <li><a href="{{ route('add.stock.adjustment') }}">Add Adjustment</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('batch.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-layer"></i>
@@ -152,7 +177,9 @@
                         <li><a href="{{ route('add.batch') }}">Add Batch</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('bin.rack.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-grid-alt"></i>
@@ -163,7 +190,9 @@
                         <li><a href="{{ route('all.bin') }}">Bin Management</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('delivery.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-package"></i>
@@ -174,9 +203,11 @@
                         <li><a href="{{ route('create.delivery') }}">Create Delivery</a></li>
                     </ul>
                 </li>
+                @endcan
 
                 <li class="menu-title">HR Management</li>
 
+                @can('hr.menu')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-briefcase"></i>
@@ -190,9 +221,11 @@
                         <li><a href="{{ route('all.payroll') }}">Payroll</a></li>
                     </ul>
                 </li>
+                @endcan
 
                 <li class="menu-title">Accounting</li>
 
+                @can('account.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-book"></i>
@@ -206,9 +239,11 @@
                         <li><a href="{{ route('report.ledger') }}">Ledger Report</a></li>
                     </ul>
                 </li>
+                @endcan
 
                 <li class="menu-title">Role & Permission</li>
 
+                @can('role.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-shield"></i>
@@ -221,7 +256,9 @@
                         <li><a href="{{ route('all.roles.permission') }}">All Roles in Permission</a></li>
                     </ul>
                 </li>
+                @endcan
 
+                @can('admin.all')
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="bx bx-user-pin"></i>
@@ -232,6 +269,7 @@
                         <li><a href="{{ route('add.admin') }}">Add Admin</a></li>
                     </ul>
                 </li>
+                @endcan
 
             </ul>
         </div>

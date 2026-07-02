@@ -9,5 +9,5 @@ class WareHouse extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 }

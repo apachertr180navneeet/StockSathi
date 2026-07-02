@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SalesOrderItem extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function salesOrder(){
         return $this->belongsTo(SalesOrder::class, 'sales_order_id','id');

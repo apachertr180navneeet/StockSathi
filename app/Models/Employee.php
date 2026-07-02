@@ -9,7 +9,7 @@ class Employee extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'joining_date' => 'date',

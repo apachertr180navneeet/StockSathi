@@ -9,7 +9,7 @@ class SaleReturn extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id');

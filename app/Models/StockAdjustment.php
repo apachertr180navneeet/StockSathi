@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class StockAdjustment extends Model
 {
     use SoftDeletes;
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function items()
     {

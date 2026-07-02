@@ -9,7 +9,7 @@ class ReturnPurchase extends Model
 {
     use SoftDeletes;
 
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function purchaseItems(){
         return $this->hasMany(ReturnPurchaseItem::class, 'return_purchase_id');
