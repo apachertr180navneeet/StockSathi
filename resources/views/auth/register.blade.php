@@ -20,7 +20,7 @@
             <div class="text-center mb-4">
                 <a href="{{ route('dashboard') }}" class="logo logo-dark">
                     <span class="logo-lg">
-                        <img src="{{ asset('backend/assets/images/logo-dark.png') }}" alt="" height="22">
+                        <img src="{{ asset('backend/assets/images/logo-dark.png') }}" alt="StockSathi Logo" height="60" style="height: 60px;">
                     </span>
                 </a>
             </div>
