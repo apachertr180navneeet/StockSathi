@@ -1109,7 +1109,6 @@
                     <li><a href="#features" class="nav-link">Features</a></li>
                     <li><a href="#showcase" class="nav-link">Live Modules</a></li>
                     <li><a href="#warehouses" class="nav-link">Multi-Warehouse</a></li>
-                    <li><a href="#pricing" class="nav-link">Pricing</a></li>
                     <li><a href="#faq" class="nav-link">FAQ</a></li>
                 </ul>
 
@@ -1744,141 +1743,7 @@
         </div>
     </section>
 
-    <!-- Pricing Plans -->
-    <section class="section" id="pricing">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Annual Cloud Packages &bull; Save Up To 25%</span>
-                <h2 class="section-title">All-Inclusive Yearly Pricing with Domain &amp; Hosting</h2>
-                <p class="section-desc">Billed annually. Every yearly subscription includes your 1-year free custom domain registration, dedicated high-speed NVMe cloud hosting, SSL security, and automated daily backups.</p>
-            </div>
 
-            <div class="pricing-grid">
-                <!-- Starter Plan -->
-                <div class="pricing-card">
-                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: #ecfdf5; color: #065f46; font-size: 0.75rem; font-weight: 700; margin-bottom: 14px; width: fit-content;">
-                        <i class="bx bx-server"></i> Domain &amp; 1-Yr Hosting Included
-                    </div>
-                    <div class="pricing-header">
-                        <h4>Starter (Annual)</h4>
-                        <p>Perfect for single-location retail stores and boutiques.</p>
-                    </div>
-                    <div class="pricing-amount" style="margin-bottom: 0.25rem;">
-                        <span class="price-num">&#8377;14,999</span>
-                        <span class="price-period">/ year</span>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1.75rem;">
-                        Just <strong>&#8377;1,249/mo</strong> &bull; Billed annually (Save &#8377;3,000)
-                    </div>
-                    <ul class="pricing-features">
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-globe" style="color: #4f46e5;"></i> Free .in / .com Domain (1 Year Included)</li>
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-server" style="color: #4f46e5;"></i> 1-Year Fast NVMe Cloud SSD Hosting</li>
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-lock-alt" style="color: #4f46e5;"></i> Free SSL Certificate &amp; Daily Cloud Backups</li>
-                        <li><i class="bx bx-check"></i> 1 Warehouse / Store Location</li>
-                        <li><i class="bx bx-check"></i> High-Speed Barcode POS Terminal</li>
-                        <li><i class="bx bx-check"></i> Up to 2,000 Product SKUs</li>
-                        <li><i class="bx bx-check"></i> GST Ready Invoicing &amp; Thermal Receipts</li>
-                        <li><i class="bx bx-check"></i> Standard Email &amp; Ticket Support</li>
-                    </ul>
-                    <a href="{{ route('register') }}" class="btn btn-ghost w-100">Get Started Yearly</a>
-                </div>
-
-                <!-- Professional Plan (Featured) -->
-                <div class="pricing-card featured">
-                    <div class="popular-tag">Most Popular &bull; Best Value</div>
-                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: #eef2ff; color: #4338ca; font-size: 0.75rem; font-weight: 700; margin-bottom: 14px; width: fit-content;">
-                        <i class="bx bx-server"></i> Free Domain + High-Speed VPS
-                    </div>
-                    <div class="pricing-header">
-                        <h4>Professional (Annual)</h4>
-                        <p>For multi-branch stores, distributors and growing wholesale.</p>
-                    </div>
-                    <div class="pricing-amount" style="margin-bottom: 0.25rem;">
-                        <span class="price-num">&#8377;39,999</span>
-                        <span class="price-period">/ year</span>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #4f46e5; font-weight: 600; margin-bottom: 1.75rem;">
-                        Just <strong>&#8377;3,333/mo</strong> &bull; Billed annually (Save &#8377;8,000)
-                    </div>
-                    <ul class="pricing-features">
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-globe" style="color: #4f46e5;"></i> Free Premium Custom Domain (.com / .in)</li>
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-server" style="color: #4f46e5;"></i> 1-Year Dedicated Cloud VPS Hosting</li>
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-lock-alt" style="color: #4f46e5;"></i> Wildcard SSL, CDN &amp; Real-Time Cloud Backups</li>
-                        <li><i class="bx bx-check"></i> Up to 5 Warehouses &amp; Distribution Hubs</li>
-                        <li><i class="bx bx-check"></i> Unlimited POS Register Terminals</li>
-                        <li><i class="bx bx-check"></i> Physical Rack &amp; Bin Location Mapping</li>
-                        <li><i class="bx bx-check"></i> Batch Number &amp; Expiry Tracking</li>
-                        <li><i class="bx bx-check"></i> Complete Accounting, P&amp;L &amp; GST Taxes</li>
-                        <li><i class="bx bx-check"></i> HR Attendance &amp; Payroll (50 Staff)</li>
-                        <li><i class="bx bx-check"></i> Role-Based Permissions (RBAC)</li>
-                    </ul>
-                    <a href="{{ route('register') }}" class="btn btn-primary w-100">Start 14-Day Free Trial</a>
-                </div>
-
-                <!-- Enterprise Plan -->
-                <div class="pricing-card">
-                    <div style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; background: #faf5ff; color: #7e22ce; font-size: 0.75rem; font-weight: 700; margin-bottom: 14px; width: fit-content;">
-                        <i class="bx bx-server"></i> Multi-Domain + Private Cloud
-                    </div>
-                    <div class="pricing-header">
-                        <h4>Enterprise (Annual)</h4>
-                        <p>For large-scale retail chains, manufacturers and franchises.</p>
-                    </div>
-                    <div class="pricing-amount" style="margin-bottom: 0.25rem;">
-                        <span class="price-num">&#8377;99,999</span>
-                        <span class="price-period">/ year</span>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1.75rem;">
-                        Just <strong>&#8377;8,333/mo</strong> &bull; Billed annually (Save &#8377;20,000)
-                    </div>
-                    <ul class="pricing-features">
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-globe" style="color: #4f46e5;"></i> Multiple Custom Domains &amp; Subdomains</li>
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-server" style="color: #4f46e5;"></i> 1-Year Private Isolated Cloud Server</li>
-                        <li style="font-weight: 600; color: #0f172a;"><i class="bx bx-lock-alt" style="color: #4f46e5;"></i> Disaster Recovery, 99.99% Uptime &amp; Auto-Failover</li>
-                        <li><i class="bx bx-check"></i> Unlimited Warehouses &amp; Outlets</li>
-                        <li><i class="bx bx-check"></i> Unlimited Product SKUs &amp; Batches</li>
-                        <li><i class="bx bx-check"></i> Custom Roles &amp; Permission Matrices</li>
-                        <li><i class="bx bx-check"></i> Multi-Branch Consolidated P&amp;L</li>
-                        <li><i class="bx bx-check"></i> Unlimited Employees &amp; Multi-Branch HR</li>
-                        <li><i class="bx bx-check"></i> Priority 24/7 Phone &amp; Dedicated SLA</li>
-                    </ul>
-                    <a href="{{ route('register') }}" class="btn btn-ghost w-100">Contact Enterprise Sales</a>
-                </div>
-            </div>
-
-            <!-- All-Inclusive Included Features Ribbon -->
-            <div style="margin-top: 3.5rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem; text-align: center;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 42px; height: 42px; border-radius: 10px; background: #eff6ff; color: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 1.35rem;"><i class="bx bx-globe"></i></div>
-                    <div style="text-align: left;">
-                        <strong style="font-size: 0.9rem; color: #0f172a; display: block;">Free Custom Domain</strong>
-                        <span style="font-size: 0.775rem; color: #64748b;">.com, .in, or .co.in included</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 42px; height: 42px; border-radius: 10px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.35rem;"><i class="bx bx-server"></i></div>
-                    <div style="text-align: left;">
-                        <strong style="font-size: 0.9rem; color: #0f172a; display: block;">Fast NVMe Cloud Hosting</strong>
-                        <span style="font-size: 0.775rem; color: #64748b;">99.9% Uptime &bull; Zero Lag</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 42px; height: 42px; border-radius: 10px; background: #fdf4ff; color: #a855f7; display: flex; align-items: center; justify-content: center; font-size: 1.35rem;"><i class="bx bx-shield-quarter"></i></div>
-                    <div style="text-align: left;">
-                        <strong style="font-size: 0.9rem; color: #0f172a; display: block;">Free SSL Certificate</strong>
-                        <span style="font-size: 0.775rem; color: #64748b;">256-Bit Bank-Grade HTTPS</span>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div style="width: 42px; height: 42px; border-radius: 10px; background: #fffbeb; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.35rem;"><i class="bx bx-cloud-upload"></i></div>
-                    <div style="text-align: left;">
-                        <strong style="font-size: 0.9rem; color: #0f172a; display: block;">Daily Cloud Backups</strong>
-                        <span style="font-size: 0.775rem; color: #64748b;">Automated &bull; 1-Click Restore</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- FAQ Accordion -->
     <section class="section" id="faq" style="background: #ffffff; border-top: 1px solid #e2e8f0;">
@@ -1997,8 +1862,7 @@
                     <ul>
                         <li><a href="{{ route('login') }}">Admin Login</a></li>
                         <li><a href="{{ route('register') }}">Register Store</a></li>
-                        <li><a href="#pricing">Pricing Plans</a></li>
-                        <li><a href="#faq">Support & FAQ</a></li>
+                        <li><a href="#faq">Support &amp; FAQ</a></li>
                         <li><a href="{{ url('/dashboard') }}">ERP Dashboard</a></li>
                     </ul>
                 </div>
