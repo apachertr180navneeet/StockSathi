@@ -34,6 +34,46 @@ use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\PayrollController;
 use App\Http\Controllers\Backend\DashboardController;
+use Illuminate\Support\Facades\Artisan;
+
+// Utility / Server Helper Routes
+Route::prefix('server-cmd')->group(function () {
+    Route::get('/migrate', function () {
+        try {
+            Artisan::call('migrate', ['--force' => true]);
+            return '<pre style="background:#111;color:#10b981;padding:20px;font-family:monospace;">' . e(Artisan::output()) . '</pre>';
+        } catch (\Exception $e) {
+            return '<pre style="background:#111;color:#ef4444;padding:20px;font-family:monospace;">Error: ' . e($e->getMessage()) . '</pre>';
+        }
+    });
+
+    Route::get('/seed', function () {
+        try {
+            Artisan::call('db:seed', ['--force' => true]);
+            return '<pre style="background:#111;color:#10b981;padding:20px;font-family:monospace;">' . e(Artisan::output()) . '</pre>';
+        } catch (\Exception $e) {
+            return '<pre style="background:#111;color:#ef4444;padding:20px;font-family:monospace;">Error: ' . e($e->getMessage()) . '</pre>';
+        }
+    });
+
+    Route::get('/storage-link', function () {
+        try {
+            Artisan::call('storage:link');
+            return '<pre style="background:#111;color:#10b981;padding:20px;font-family:monospace;">' . e(Artisan::output()) . '</pre>';
+        } catch (\Exception $e) {
+            return '<pre style="background:#111;color:#ef4444;padding:20px;font-family:monospace;">Error: ' . e($e->getMessage()) . '</pre>';
+        }
+    });
+
+    Route::get('/clear', function () {
+        try {
+            Artisan::call('optimize:clear');
+            return '<pre style="background:#111;color:#10b981;padding:20px;font-family:monospace;">' . e(Artisan::output()) . '</pre>';
+        } catch (\Exception $e) {
+            return '<pre style="background:#111;color:#ef4444;padding:20px;font-family:monospace;">Error: ' . e($e->getMessage()) . '</pre>';
+        }
+    });
+});
 
 Route::get('/', function () {
     return view('welcome');
